@@ -733,14 +733,14 @@ body.bg-night { min-height: 100dvh; }
 
 /* rsvp: tighter rhythm so the whole form fits one screen */
 #rsvpForm { padding: 1.05rem 1rem .9rem; }
-#rsvpForm .form-group { margin-bottom: .8rem; }
-#rsvpForm .form-group > label { font-size: .84rem; margin-bottom: .35rem; }
-#rsvpForm input[type="text"] { padding: 10px 13px; font-size: .95rem; }
+#rsvpForm .form-group { margin-bottom: .4rem; }
+#rsvpForm .form-group > label { font-size: .84rem; margin-bottom: .2rem; }
+#rsvpForm input[type="text"] { padding: 6px 13px; font-size: .95rem; }
 #rsvpForm .choice { padding: 9px 11px; font-size: .86rem; gap: .55rem; }
 #rsvpForm .choice-row { gap: .45rem; }
 .choice-row.cols { flex-direction: row; }
 .choice-row.cols .choice { flex: 1; align-items: flex-start; }
-#rsvpForm .tent-line { font-size: .74rem; margin-top: .55rem; line-height: 1.45; }
+#rsvpForm .tent-line { font-size: .74rem; margin-top: .35rem; line-height: 1.4; }
 .saved-banner { padding: .55rem .8rem; font-size: .78rem; margin-bottom: .7rem; line-height: 1.4; }
 
 /* compact nav row under the form */
@@ -1201,8 +1201,8 @@ input[type="text"], textarea { font-size: 16px !important; }
   border: none !important;
   border-bottom: 1px solid #dfc4ce !important;
   border-radius: 0;
-  min-height: 48px;
-  padding: 11px 4px;
+  min-height: 44px;
+  padding: 8px 4px;
   font-size: 15px;
   color: #655557;
   gap: .8rem;
@@ -1277,8 +1277,8 @@ input[type="text"], textarea { font-size: 16px !important; }
 
 /* panel proportions */
 #rsvpForm { max-width: 420px; }
-.bg-sakura #rsvpForm { border-radius: 14px; padding: 28px 22px 30px; }
-.bg-paper #rsvpForm { border-radius: 12px; padding: 28px 22px 30px; border: 1px solid rgba(200, 149, 66, .5) !important; box-shadow: 0 18px 44px rgba(74, 16, 40, .18) !important; }
+.bg-sakura #rsvpForm { border-radius: 14px; padding: 18px 16px 18px; }
+.bg-paper #rsvpForm { border-radius: 12px; padding: 18px 16px 18px; border: 1px solid rgba(200, 149, 66, .5) !important; box-shadow: 0 18px 44px rgba(74, 16, 40, .18) !important; }
 
 /* footnote navigation: engraved, not buttons */
 .foot-nav {
@@ -1304,7 +1304,7 @@ input[type="text"], textarea { font-size: 16px !important; }
 .bg-paper .foot-dot { color: #6a2036; }
 
 /* tent line: italic serif whisper */
-#rsvpForm .tent-line { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 12px !important; opacity: .75; }
+#rsvpForm .tent-line { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 11px !important; opacity: .75; }
 
 /* short screens: stacked hairline rows need tighter rhythm */
 @media (max-height: 760px) {
@@ -1558,7 +1558,7 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 #rsvpForm #submitBtn {
   display: block; width: fit-content; max-width: none;
   height: 44px; line-height: 44px; padding: 0 36px;
-  margin: 22px auto 0;
+  margin: 14px auto 0;
   border-radius: 22px !important;
   font-size: 11px !important; letter-spacing: .2em !important; text-transform: uppercase;
 }
@@ -1951,3 +1951,7 @@ body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.g
   .gtk-answer { font-size: .875rem; }
 }
 @media (prefers-reduced-motion: reduce) { .gtk-map { transition: none; } }
+
+/* RSVP card: narrow paper panel — blossoms breathe on both sides */
+#rsvpForm { max-width: 350px; margin-left: auto; margin-right: auto; }
+#editRsvp, #savedBanner { max-width: 350px; margin-left: auto; margin-right: auto; }
