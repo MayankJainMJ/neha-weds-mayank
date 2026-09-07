@@ -240,21 +240,6 @@
     setTimeout(function () { if (!run.dead) b.classList.remove('hold-bloom', 'go1', 'go2', 'go3', 'go4'); }, 1600);
   }
 
-  /* fullscreen is a bonus, never a requirement: called synchronously inside
-     the seal-tap gesture; unsupported or rejected -> open normally, silently.
-     (iPhone Safari cannot hide its chrome via this API — that is expected.) */
-  function requestFullscreenSafely() {
-    var root = document.documentElement;
-    try {
-      if (document.fullscreenEnabled && typeof root.requestFullscreen === 'function') {
-        var p = root.requestFullscreen();
-        if (p && typeof p.catch === 'function') p.catch(function () {});
-      } else if (typeof root.webkitRequestFullscreen === 'function') {
-        root.webkitRequestFullscreen();
-      }
-    } catch (e) { /* fullscreen is optional; opening must continue */ }
-  }
-
   /* card content groups revealed in sequence after the FLIP lands */
   function contentGroups() {
     var sel = [
@@ -308,7 +293,6 @@
     ov.querySelector('.ck-seal').addEventListener('click', function () {
       if (opened) return;
       opened = true;
-      requestFullscreenSafely();   /* first thing inside the user gesture */
       try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {}
 
       var staleInk = document.querySelector('.ink-names');
