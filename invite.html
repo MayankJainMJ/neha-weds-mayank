@@ -60,15 +60,35 @@
 </main>
 
 <div class="lb-modal" id="gtkModal" hidden>
-  <div class="lb-box gtk-box" role="dialog" aria-modal="true" aria-label="Good to know">
+  <div class="lb-box gtk-box" role="dialog" aria-modal="true" aria-labelledby="gtkTitle">
     <button type="button" class="lb-close" id="gtkClose" aria-label="Close">&times;</button>
-    <p class="inv-eyebrow" style="margin-bottom:.8rem">Good to know</p>
+    <p class="inv-eyebrow gtk-title" id="gtkTitle">Good to know</p>
+    <span class="gtk-titleline" aria-hidden="true"></span>
     <div class="gtk-body">
-      <p><b>Getting there</b><br>&#128663; From Mumbai: ~3 hours &middot; &#128747; From Pune: ~2 hours<br><a class="linklike" href="https://maps.google.com/?q=Khanna+Pawna+Estate" target="_blank" rel="noopener">Open in Google Maps &rarr;</a></p>
-      <p><b>Come up early?</b><br>Yes &mdash; arrive on the 2nd, settle in, grab a chai, eat too much. Wedding is on the 3rd at 4:00 PM.</p>
-      <p><b>Where do I sleep?</b><br>On the hill, with us. Nobody drives home.</p>
-      <p><b>What do I pack?</b><br>December hilltop nights get properly cold &mdash; bring a warm layer you can dance in.</p>
-      <p><b>What do I wear?</b><br>Festive and comfortable. It&rsquo;s a hill, not a hotel lobby &mdash; heels at your own risk.</p>
+      <div class="gtk-item">
+        <p class="gtk-question">Getting there</p>
+        <p class="gtk-answer gtk-travel">
+          <svg class="gtk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 5.5 9.5C5.8 8.6 6.6 8 7.5 8h9c.9 0 1.7.6 2 1.5L20 15"/><rect x="3" y="15" width="18" height="4" rx="1.2"/><circle cx="7.2" cy="19" r="1.4"/><circle cx="16.8" cy="19" r="1.4"/></svg><span>From Mumbai: ~3 hours</span> &middot;
+          <svg class="gtk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19h19M10 17.5 4 12l2-1 5.5 3L17 9.5c.9-.5 2-.2 2.5.7.4.9 0 1.9-.9 2.4L10 17.5Z"/></svg><span>From Pune: ~2 hours</span>
+        </p>
+        <a class="gtk-map" href="https://maps.google.com/?q=Khanna+Pawna+Estate" target="_blank" rel="noopener">Open in Google Maps &rarr;</a>
+      </div>
+      <div class="gtk-item">
+        <p class="gtk-question">Come up early?</p>
+        <p class="gtk-answer">Yes &mdash; arrive on the 2nd, settle in, grab a chai, eat too much. Wedding is on the 3rd at 4:00 PM.</p>
+      </div>
+      <div class="gtk-item">
+        <p class="gtk-question">Where do I sleep?</p>
+        <p class="gtk-answer">On the hill, with us. Nobody drives home.</p>
+      </div>
+      <div class="gtk-item">
+        <p class="gtk-question">What do I pack?</p>
+        <p class="gtk-answer">December hilltop nights get properly cold &mdash; bring a warm layer you can dance in.</p>
+      </div>
+      <div class="gtk-item">
+        <p class="gtk-question">What do I wear?</p>
+        <p class="gtk-answer">Festive and comfortable. It&rsquo;s a hill, not a hotel lobby &mdash; heels at your own risk.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -79,10 +99,29 @@
 (function () {
   'use strict';
   var m = document.getElementById('gtkModal');
-  document.getElementById('gtkOpen').addEventListener('click', function () { m.hidden = false; });
-  document.getElementById('gtkClose').addEventListener('click', function () { m.hidden = true; });
-  m.addEventListener('click', function (e) { if (e.target === m) m.hidden = true; });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') m.hidden = true; });
+  var openBtn = document.getElementById('gtkOpen');
+  var closeBtn = document.getElementById('gtkClose');
+  function open() {
+    m.hidden = false;
+    try { closeBtn.focus({ preventScroll: true }); } catch (e) {}
+  }
+  function close() {
+    if (m.hidden) return;
+    m.hidden = true;
+    try { openBtn.focus({ preventScroll: true }); } catch (e) {}
+  }
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  m.addEventListener('click', function (e) { if (e.target === m) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  /* focus containment: Tab cycles within the dialog while it is open */
+  m.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || m.hidden) return;
+    var f = m.querySelectorAll('button, a[href]');
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 })();
 </script>
 <script src="js/logo.js"></script>
