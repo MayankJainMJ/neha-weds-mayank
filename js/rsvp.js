@@ -137,7 +137,15 @@
   var lbOpen = document.getElementById('lbOpen');
   var lbClose = document.getElementById('lbClose');
   if (lbModal && lbOpen) {
-    lbOpen.addEventListener('click', function () { lbModal.hidden = false; });
+    lbOpen.addEventListener('click', function () {
+      lbModal.hidden = false;
+      /* the leaderboard tempts guests toward the game — warm up that hop */
+      if (!document.getElementById('pfGame') && !(navigator.connection && navigator.connection.saveData)) {
+        var l = document.createElement('link');
+        l.id = 'pfGame'; l.rel = 'prefetch'; l.href = 'index.html';
+        document.head.appendChild(l);
+      }
+    });
     lbClose.addEventListener('click', function () { lbModal.hidden = true; });
     lbModal.addEventListener('click', function (e) { if (e.target === lbModal) lbModal.hidden = true; });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lbModal.hidden = true; });

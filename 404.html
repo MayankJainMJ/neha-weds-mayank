@@ -1,6 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-page="404">
 <head>
+<script>
+/* arrival veil: raised before first paint so page loads dissolve instead of cut */
+(function () { try {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if ('onpagereveal' in window) return; /* native view transitions handle it */
+  var h = document.documentElement;
+  try { if (localStorage.getItem('mwn.theme') === 'lotus') h.classList.add('veil-lotus'); } catch (e) {}
+  h.classList.add('nav-arriving');
+  setTimeout(function () { h.classList.remove('nav-arriving'); }, 1500);
+} catch (e) {} })();
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — This page eloped</title>
@@ -9,7 +20,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 8 8%27%3E%3Crect x=%271%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%275%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%271%27 y=%273%27 width=%276%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%272%27 y=%275%27 width=%274%27 height=%271%27 fill=%27%23e85d75%27/%3E%3Crect x=%273%27 y=%276%27 width=%272%27 height=%271%27 fill=%27%23a4133c%27/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=59">
+  <link rel="stylesheet" href="css/style.css?v=60">
+  <link rel="prefetch" href="invite.html">
 </head>
 <body class="bg-night">
   <div class="stars" aria-hidden="true"></div>
@@ -18,5 +30,6 @@
     <p class="pixel" style="font-size:clamp(.6rem,3vw,.85rem);color:#fff8ec;margin:1.4rem 0 2.2rem;line-height:2.2">THIS PAGE ELOPED.<br>THE WEDDING IS THAT WAY &rarr;</p>
     <a class="btn btn-pixel" href="invite.html">TAKE ME THERE</a>
   </main>
+<script src="js/nav.js?v=1"></script>
 </body>
 </html>

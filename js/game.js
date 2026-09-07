@@ -94,8 +94,8 @@
     if (a === 'continue') { loadAct(actIdx); startAct(); } // full act rebuild — no stale enemies/icicles
     if (a === 'replay') beginRun();
     if (a === 'resume') { mode = 'run'; hideOverlay(); lastT = 0; }
-    if (a === 'goinvite') location.href = 'invite.html';
-    if (a === 'gorsvp') location.href = 'rsvp.html';
+    if (a === 'goinvite') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('invite.html');
+    if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('rsvp.html');
     if (a === 'share') {
       var url = 'https://mayankjainmj.github.io/neha-weds-mayank/';
       var txt = (store.name ? store.name + ' scored ' : 'I scored ') + lastScore +

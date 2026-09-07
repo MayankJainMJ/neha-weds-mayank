@@ -1955,3 +1955,25 @@ body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.g
 /* RSVP card: narrow paper panel — blossoms breathe on both sides */
 #rsvpForm { max-width: 350px; margin-left: auto; margin-right: auto; }
 #editRsvp, #savedBanner { max-width: 350px; margin-left: auto; margin-right: auto; }
+
+/* ============ page-to-page paper veil ============ */
+html { --nav-veil: #f6e9eb; }               /* sakura wash (default) */
+html.veil-lotus { --nav-veil: #f0ddd2; }    /* lotus/ivory wash */
+html[data-page="game"] { --nav-veil: #f2debc; } /* leaving the game: marigold */
+html::after {
+  content: ''; position: fixed; inset: 0; z-index: 220;
+  background: var(--nav-veil);
+  opacity: 0; pointer-events: none;
+  transition: opacity .18s ease;
+}
+html.nav-arriving:not(.nav-ready)::after { opacity: 1; transition: none; }
+html.nav-arriving.nav-ready::after { opacity: 0; transition: opacity .25s ease; }
+html.nav-leaving::after { opacity: 1 !important; pointer-events: auto; transition: opacity .18s ease !important; }
+@media (prefers-reduced-motion: reduce) {
+  html::after { display: none; }
+}
+/* native cross-document dissolve where supported (progressive enhancement) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+}
