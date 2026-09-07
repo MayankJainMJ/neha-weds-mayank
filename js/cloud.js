@@ -25,6 +25,22 @@ let app = null, db = null, auth = null, uid = null, timer = null;
 const BLOCKLIST = ['ping', 'test player'];
 const blocked = v => BLOCKLIST.includes(String(v.name || '').trim().toLowerCase());
 
+/* one person, many devices -> many anonymous docs. Collapse to the best
+   score per typed name (nameLower) so the board reads one row per guest. */
+function dedupeByName(rows) {
+  const best = new Map();
+  for (const v of rows) {
+    const k = String(v.nameLower || v.name || '').trim().toLowerCase();
+    if (!k) continue;
+    const prev = best.get(k);
+    if (!prev || (v.bestScore | 0) > (prev.bestScore | 0) ||
+        ((v.bestScore | 0) === (prev.bestScore | 0) && v.rsvp && !prev.rsvp)) {
+      best.set(k, v);
+    }
+  }
+  return [...best.values()].sort((a, b) => (b.bestScore | 0) - (a.bestScore | 0));
+}
+
 function init() {
   if (!app) {
     app = initializeApp(CFG);
@@ -76,13 +92,14 @@ async function renderBoard() {
   if (!el) return;
   try {
     init();
-    const snap = await getDocs(query(collection(db, 'guests'), orderBy('bestScore', 'desc'), limit(10)));
-    const rows = [];
+    const snap = await getDocs(query(collection(db, 'guests'), orderBy('bestScore', 'desc'), limit(25)));
+    const raw = [];
     snap.forEach(d => {
       const v = d.data();
       if (blocked(v)) return;
-      if ((v.bestScore | 0) > 0 || v.name) rows.push(v);
+      if ((v.bestScore | 0) > 0 || v.name) raw.push(v);
     });
+    const rows = dedupeByName(raw);
     if (!rows.length) return; // keep the device-local fallback rows
     el.innerHTML = '';
     rows.slice(0, 5).forEach((v, i) => {
@@ -109,7 +126,7 @@ async function renderChamp() {
   if (!el) return;
   try {
     init();
-    const snap = await getDocs(query(collection(db, 'guests'), orderBy('bestScore', 'desc'), limit(5)));
+    const snap = await getDocs(query(collection(db, 'guests'), orderBy('bestScore', 'desc'), limit(10)));
     let top = null;
     snap.forEach(d => { const v = d.data(); if (!top && !blocked(v)) top = v; });
     if (!top || (top.bestScore | 0) <= 0 || !top.name) return; // line stays hidden
