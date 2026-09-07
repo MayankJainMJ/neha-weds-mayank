@@ -1554,6 +1554,14 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   border-radius: 22px !important;
   font-size: 11px !important; letter-spacing: .2em !important;
 }
+/* RSVP submit: same small cartouche as the invite's RSVP button */
+#rsvpForm #submitBtn {
+  display: block; width: fit-content; max-width: none;
+  height: 44px; line-height: 44px; padding: 0 36px;
+  margin: 22px auto 0;
+  border-radius: 22px !important;
+  font-size: 11px !important; letter-spacing: .2em !important; text-transform: uppercase;
+}
 
 /* the real illustrated logo (raster, background keyed out) */
 .card-logo img { width: 104px; height: auto; display: block; }
