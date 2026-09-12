@@ -1,8 +1,8 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 12 September 2026 · v7.4 live; production browser checks passed**
+**Last updated: 12 September 2026 · v7.4.1 live; production reveal checks passed**
 
-**Current position: v7.4 is live.** The approved refinement was committed, pushed and successfully deployed; production reveal and audio checks passed in Chromium and WebKit. **RB-01 and RB-03 are resolved**. The existing RB-02 follow-up remains open, and physical phone checks remain pending.
+**Current position: v7.4.1 is live.** Names and wedding details now take 50% longer to appear, as requested. The envelope, 5.5-second prelude and card lift keep their timing. Production reveal checks passed in Chromium and WebKit; review found no new blocker. **RB-01 and RB-03 remain resolved**. RB-02 remains open, and physical phone checks are pending.
 
 Live invitation: https://mayankjainmj.github.io/neha-weds-mayank/
 
@@ -13,47 +13,51 @@ Live invitation: https://mayankjainmj.github.io/neha-weds-mayank/
 - Once music starts, two romantic lines appear during a **5.5-second prelude**, followed by the envelope opening.
 - Guests can RSVP on the same page while the invitation soundtrack continues.
 
-Guests now see the calmer v7.4 reveal, verified on the live site in Chromium and WebKit. Physical iPhone Safari and WhatsApp in-app browser checks remain pending.
+Guests now see the slower v7.4.1 names-and-details reveal, verified on the live site in Chromium and WebKit. Physical iPhone Safari and WhatsApp in-app browser checks remain pending.
 
 ## What is happening now
 
-The implementation agent has completed the approved reveal changes. Both the implementation agent’s checks and the independent reviewer’s reveal/audio suites passed. The reviewer confirmed the finished card matches the previous layout across seven screen sizes in both browser engines, with no overflow. Independent checks of the final reduced-motion fix have also passed, completing this reveal review.
+The requested slower appearance is implemented and deployed. The implementation agent’s slower-reveal and reduced-motion heading tests passed locally in both engines; the reviewer inspected the latest changes and found no new blocker. Updated production reveal checks also passed. Earlier audio and layout evidence is labeled below by release.
 
 The live sequence is: **card settles → names → date and countdown → venue → bonfire message → RSVP and footer links**, with flowers appearing in gentle stages around the card. Timing now follows the card’s actual lift, helping the sequence stay coordinated even when the browser starts an animation late.
 
 ### Guest-visible before and after
 
-“After” describes v7.4, now deployed and checked on the live site.
+“After” describes v7.4.1, now deployed and checked on the live site.
 
-| Moment | Before — previous v7.3 sequence | After — live v7.4 |
+| Moment | Before — v7.4 | After — live v7.4.1 |
 | --- | --- | --- |
-| Card arrival and names | The handwritten names begin while the card is still moving into place. | The card settles first, then the handwritten names lead into the formal names. |
-| Wedding date | Date, year and countdown begin appearing before the formal names finish arriving. | The names get their own moment before the date, year and countdown appear together. |
-| Venue | Venue follows the date in a closely spaced reveal. | The divider and venue receive a distinct next beat. |
-| Bonfire message | The message arrives together with RSVP and footer links. | The bonfire message gets its own pause before the actions appear. |
-| RSVP and footer | Actions enter alongside the message. | RSVP and footer links arrive last, after guests have seen the invitation details. |
-| Flowers | Floral stages begin close together during the card’s arrival. | Floral appearances are more gently staggered to support the reading order. |
+| Card arrival and names | Card settles first; handwriting takes 0.85s, formal names 0.45s. | Same card arrival; handwriting takes 1.275s, formal names 0.675s. |
+| Date and venue | Details fade in over 0.5s, with starts 0.5s apart. | Fades and spacing each take 0.75s, giving guests more reading time. |
+| Bonfire message and actions | Separate message, then RSVP/footer; reveal completes around 4.6s after lift. | Same reading order at a slower pace; completion starts around 6.35s and waits for the actual fade to finish. |
+| Flowers | First blooms, sides and lower flowers lead into drifting petals at 3.1s. | First three stages retain their timing; petals wait until 4.1s to accompany the venue. |
 
 ### Implemented pacing at a glance
 
-These are the implemented timing settings **from the actual start of the card lift**, after the music prelude and initial envelope movement. Independent tests measured invitation access becoming available at **4.612–4.659 seconds** after the lift, with content fully visible.
+These are the live timing settings **from the actual start of the card lift**, after the music prelude and initial envelope movement. Access waits for the actions to finish fading in fully.
 
 - **0–1.05 seconds:** card moves into place and settles.
-- **1.10 seconds:** handwritten names begin.
-- **2.00–2.45 seconds:** formal names appear.
-- **2.60 seconds:** date, year and countdown follow.
-- **3.10 seconds:** divider and venue appear.
-- **3.60 seconds:** bonfire message appears separately.
-- **4.10 seconds:** RSVP and footer links appear.
-- **About 4.60 seconds:** reveal completes.
+- **1.10 seconds:** handwriting begins, lasting **1.275 seconds**.
+- **2.45–3.125 seconds:** formal names appear over **0.675 seconds**.
+- **3.35 seconds:** date, year and countdown follow.
+- **4.10 seconds:** divider and venue appear.
+- **4.85 seconds:** bonfire message appears separately.
+- **5.60 seconds:** RSVP and footer links appear.
+- **About 6.35 seconds onward:** reveal completes once the actual final fade has finished.
 
-Flowers begin in stages: first blooms at **1.05 seconds**, sides at **1.55**, lower flowers at **2.05**, and drifting petals at **3.10**. The extra handwriting delay has been removed, and its dissolve now lasts **0.45 seconds**.
+Flowers begin in stages: first blooms at **1.05 seconds**, sides at **1.55**, lower flowers at **2.05**, and drifting petals at **4.10**. Detail fades and the interval between their starts are now **0.75 seconds** each.
 
-The complete entry takes approximately **11.6 seconds after music is confirmed**, including the preserved **5.5-second romantic prelude**. Any wait for the guest to press Play invite comes before this.
+The complete entry takes approximately **13.3 seconds after music is confirmed**, previously 11.6 seconds. The **5.5-second prelude**, envelope and card-lift timing are unchanged. Any wait for the guest to press Play invite comes before this.
 
-**How much slower?** Detail spacing increases from about **200ms to 500ms**; the post-card reveal expands from about **2 to 4.6 seconds**. Total entry increases from about **9 to 11.6 seconds**, with the **5.5-second prelude unchanged**. Production access-restoration measurements after lift: **4.632 seconds in Chromium**, **4.627 seconds in WebKit**.
+**How much slower?** Appearance durations are **50% longer**: handwriting **0.85 → 1.275s**, formal names **0.45 → 0.675s**, and detail fades/spacing **0.5 → 0.75s**. Production unlock after lift: normal **6.373s Chromium / 6.421s WebKit**; delayed start **6.388s / 6.419s**, with actions fully visible.
 
 ## Completed checks and remaining follow-up
+
+**v7.4.1 production reveal: PASS, Chromium and WebKit.** The parent ran the updated `refined-reveal.mjs` against the live URL: full timing, delayed animation-frame start, opacity, music gates (pending/error/keyboard/retry/refresh), reduced-motion interruption, static/deep links and scoped script fallback checks passed. Local slower-reveal and `refined-reveal-rm-heading.mjs` checks passed in both engines; reviewer inspection found no new blocker.
+
+**Audio evidence:** no new real-audio suite was run for v7.4.1; the audio controller was untouched. Real MP3/gain evidence below belongs to v7.4.
+
+### Historical v7.4 verification
 
 **Production verification: passed in Chromium and WebKit.** Against the live URL, `refined-reveal.mjs` passed normal 390px and delayed-start 1280px timelines, pending/error music states, keyboard retry, refresh, reduced-motion interruptions, static deep links and the scoped missing/late-script fallback checks. `refined-reveal-audio.mjs` passed real MP3 decoding, real Web Audio gain with simulated read-only element volume, the full reveal, continuous RSVP audio and per-visit mute. Tests mocked `cloud.js` to avoid production writes; these checks do not close RB-02.
 
@@ -69,9 +73,11 @@ The complete entry takes approximately **11.6 seconds after music is confirmed**
 
 **Reduced-motion polish (RB-03): resolved and independently verified.** Switching to reduced motion could leave the formal names briefly fading in. The fix makes them immediately fully visible and stops the remaining animation. The reviewer inspected the fix and ran `refined-reveal-rm-heading.mjs` in Chromium and WebKit, confirming an active fade before the switch, then opacity **1** and **zero animations** immediately in the same task after the reveal was stopped. Subsequent frames and samples through **one second**, including after restoring normal motion, stayed clean. Reveal cleanup, restored interaction and cleared inline styles also passed. This independently confirms the implementation agent’s earlier results.
 
+### Current follow-up
+
 **Existing uncommon follow-up (RB-02): still tracked.** A direct RSVP link (`?entry=0#rsvp`) may remain non-interactive if `entry.js` fails to load. This is a preexisting script-failure case, separate from the normal reveal that passed browser checks. The suggested startup-timer recovery fix has not been applied; this issue is not marked resolved.
 
-Implementation-agent evidence includes temporary QA scripts `refined-reveal.mjs` and `refined-reveal-audio.mjs`. The independent results and latest reduced-motion measurements were supplied in the final handoff. **Physical iPhone Safari and WhatsApp in-app browsers remain untested.**
+**Physical iPhone Safari and WhatsApp in-app browsers remain untested.**
 
 ## Progress tracker
 
@@ -79,21 +85,21 @@ Implementation-agent evidence includes temporary QA scripts `refined-reveal.mjs`
 
 | Item | Current status | Evidence / next milestone |
 | --- | --- | --- |
-| Music-led envelope opening | **Live in v7.4** | Production gate, retry, refresh, real music/gain and per-visit mute checks passed in both engines. |
-| Card settles before names; details appear in reading order | **Live in v7.4** | Local, independent and production reveal suites passed; RB-01 resolved. |
-| Separate bonfire message; RSVP/footer last | **Live in v7.4** | Message at 3.6 seconds; actions at 4.1 seconds; production access restored at 4.632s / 4.627s after lift. |
-| Gentler floral staging | **Live in v7.4** | Deployed stages start at 1.05 / 1.55 / 2.05 / 3.10 seconds after lift; production reveal suites passed. |
+| Music-led envelope opening | **Live in v7.4.1** | Current production gate checks pass; real MP3/gain tests passed historically in v7.4. |
+| Names and detail appearance 50% longer | **Live in v7.4.1** | Local and production slower-reveal checks pass; reviewer found no new blocker. |
+| Separate bonfire message; RSVP/footer last | **Live in v7.4.1** | Message at 4.85s; actions at 5.6s; normal production unlock 6.373s / 6.421s after lift, fully visible. |
+| Floral staging | **Live in v7.4.1** | Stages start at 1.05 / 1.55 / 2.05 / 4.10s after lift. |
 | Remove hidden eight-tap names surprise; make names non-interactive | **Planned** | Approved fixes listed as pending in `STATUS.md`; awaiting actual fix results. |
-| Implementation-agent QA | **Verified locally — agent QA passed** | Chromium/WebKit, 390px and 1280px; timing, final visibility/access, keyboard, refresh/mute, reduced-motion interruption and real audio checks reported above. |
-| Independent reveal/audio and layout checks | **Verified locally** | Reviewer suites passed; no new blocker; 14/14 loaded-font layout comparisons match baseline with no overflow. |
-| Reduced-motion names fix — RB-03 | **Live in v7.4 — resolved** | Independent targeted checks passed in both engines; production reduced-motion interruption checks also passed. |
+| Implementation-agent QA | **Verified locally for v7.4.1** | Slower-reveal and reduced-motion heading tests PASS Chromium/WebKit. |
+| Independent review | **Latest changes inspected** | No new blocker; 14/14 layout comparisons and independent audio-suite results are historical v7.4 evidence. |
+| Reduced-motion names fix — RB-03 | **Live in v7.4.1 — resolved** | Current local heading tests and production reduced-motion interruption checks pass in both engines. |
 | Existing direct-RSVP script-failure issue — RB-02 | **Tracked follow-up — open** | Uncommon preexisting failure case; proposed recovery fix not applied. |
-| Release of the refined reveal | **Live — production verified** | App `1b3c526`; successful Pages run `34698513067`; production reveal/audio suites passed in Chromium/WebKit. |
+| Release of the slower reveal | **Live — production reveal verified** | App `6259774`; successful Pages run `34700102114`; updated production reveal suite passed in Chromium/WebKit. |
 
 ## Remaining milestones
 
 1. **Physical phone checks:** check the live invitation in physical iPhone Safari and WhatsApp’s in-app browser.
-2. **Existing follow-up:** address and verify RB-02’s uncommon direct-RSVP script-failure recovery separately. The v7.4 release and production browser verification are complete.
+2. **Existing follow-up:** address and verify RB-02’s uncommon direct-RSVP script-failure recovery separately. The v7.4.1 release and production reveal verification are complete.
 
 Separate tracked work: RB-02 recovery remains open, and completion evidence for the previously approved names-interaction/eight-tap-surprise fixes has not been supplied. Neither is claimed complete by the reveal QA results.
 
@@ -112,8 +118,12 @@ Separate tracked work: RB-02 recovery remains open, and completion evidence for 
 
 - **12 September 2026 — v7.4 live and production verified.** User-authorized app release `1b3c526` committed/pushed; Pages run `34698513067` succeeded. Live reveal and real-audio suites passed in Chromium/WebKit, with normal unlock at 4.632s / 4.627s after lift. RB-01/RB-03 resolved; RB-02 unchanged and open. Physical phones remain untested.
 
+- **12 September 2026 — v7.4.1 slower reveal live.** Names/detail appearance durations increased 50%; total entry ~13.3s, with prelude/envelope/card lift unchanged. App `6259774`, Pages `34700102114` succeeded; updated production reveal checks PASS both engines. Local slower/reduced-motion tests pass; reviewer found no new blocker. Real-audio evidence remains from v7.4; RB-02 and physical-phone follow-ups remain open.
+
 ### Evidence behind this update
+
+**v7.4.1 release:** app `6259774f651cdd1e537116ed8842f3d8fd9dd432`; Pages `34700102114` succeeded. Current cache references: CSS **67** / entry **17**. Parent-reported updated `refined-reveal.mjs` PASS with `QA_BASE=https://mayankjainmj.github.io/neha-weds-mayank/` in both engines; local and review evidence supplied in the latest handoff. No new real-audio run for this release.
 
 **v7.4 release:** user-authorized commit/push of app `1b3c526cf3576e29a42c5a1d1c50202bcca172f1`; successful Pages run `34698513067`. The parent agent reported PASS for `refined-reveal.mjs` and `refined-reveal-audio.mjs` with `QA_BASE=https://mayankjainmj.github.io/neha-weds-mayank/`, covering both Chromium and WebKit as detailed above. Cloud writes were mocked during these production tests.
 
-Historical baseline claims come from `STATUS.md`, `js/entry.js` at `6086d99`, and the supplied v7.3 release context. Local and independent QA evidence includes `refined-reveal.mjs`, `refined-reveal-audio.mjs`, 14/14 geometry comparisons and the reviewer’s Chromium/WebKit runs of `refined-reveal-rm-heading.mjs`. Current deployed cache references are CSS `66` / entry `16`. The v7.4 deployment and production evidence above establish the current live state.
+Historical v7.3/v7.4 evidence comes from `STATUS.md` and the supplied release/review handoffs, including 14/14 geometry comparisons and independent reduced-motion checks. The v7.4.1 release evidence above establishes the current live state.
