@@ -1,6 +1,47 @@
 # Post-envelope reveal — independent bug tracker
 
-## Review state
+## Current delta review — 50% longer names/details (CSS 67 / entry 17)
+
+**2026-09-12: no new blocker found in the application diff against `1b3c526cf3576e29a42c5a1d1c50202bcca172f1` (v7.4). Ready for the requested release within this review's scope.** RB-01 and RB-03 remain resolved; RB-02 remains the unrelated, unchanged open follow-up.
+
+Reviewed working-tree Git blobs, stable across this delta review:
+
+| File | Git blob hash |
+| --- | --- |
+| `js/entry.js` | `373fefdb118cc00d69a14023d750ea9ce45985d0` |
+| `css/style.css` | `83184741c2d22de49fe8a22a2134a2520d27a978` |
+| `index.html` | `494b6b1c2ca09de5cd6d9f33d903f1a07e261f80` |
+
+### Current choreography and code-review evidence
+
+All times below are relative to **actual double-rAF FLIP launch**. Names/details durations and cue offsets after the unchanged 1.10s ink start are multiplied by 1.5:
+
+| Milestone | Current timing |
+| --- | --- |
+| Card settles / first blossoms | 1.05s |
+| Handwriting starts / wipe duration | 1.10s / 1.275s (nominal wipe end 2.375s) |
+| Side / lower blossoms | 1.55s / 2.05s |
+| Formal-name transition | 2.450–3.125s; 675ms handwriting dissolve and formal fade |
+| Date/year/countdown | 3.35s |
+| Venue / drifting petals | 4.10s |
+| Note | 4.85s |
+| RSVP/card footer | 5.60s |
+| Unlock | 6.35s minimum, then wait for actual content transitions to finish |
+
+- Detail fades and appearance intervals are **750ms**. `.ck-g.ckh { transition: none; }` makes the initial hidden state immediate, preventing a visible fade-out when groups are prepared for lift; removing `ckh` uses the 750ms `.ck-g` reveal transition.
+- The diff preserves the **5.5s romantic prelude**, 1.4s envelope-to-FLIP preparation, double-rAF/lift geometry, single launch-relative timeline, actual-animation completion guard, audio gate and RB-03 heading cleanup. Blossom cues remain chronologically ordered; drift follows the later venue cue. No new timer/cancellation path is introduced.
+- HTML changes only advance shared CSS to **67** (`index.html`, `game.html`, `404.html`) and entry JS to **17**. No audio/bootstrap change; RB-02's missing-script path is unaffected.
+
+### Current validation evidence and attribution
+
+- **Independently performed:** inspected only the latest application diff against v7.4, checked timing/duration arithmetic and hidden/revealed CSS states, inspected updated `refined-reveal.mjs` assertions, ran `node --check js/entry.js` and `git diff 1b3c526 --check` (PASS), and rechecked the three application hashes above.
+- **Implementation-agent reported browser results, not rerun by this reviewer:** Chromium unlock **6.370s / 6.384s**; WebKit **6.394s / 6.447s** after lift, at full action opacity **6–10ms after the actual action fade ended**. Both engines passed; the updated suite asserts a 750ms action transition, minimum 6.35s unlock, proximity to actual `transitionend`, hidden details before their cues, and unchanged prelude/flap/preparation timings.
+- **Implementation-agent reported RB-03 regression:** `refined-reveal-rm-heading.mjs` PASS in both engines, opacity 1 / zero heading animations immediately and through 1s with normal motion restored. The previously independently verified cleanup implementation is unchanged.
+- No new issue was suspected from this confined delta, so broader passing browser suites were not rerun. No new browser or physical-device coverage is claimed. Only this bug document was edited; this reviewer did not commit, push or deploy.
+
+## Historical v7.4 review state — evidence retained below
+
+**All timeline tables, measurements, browser runs and hashes in the following historical sections refer to earlier v7.3/v7.4 states, not the current slower reveal. Use the current delta section above for CSS 67 / entry 17 timing and validation.**
 
 - **2026-09-12, final working-tree review and targeted RB-03 fix verification completed. No blocking reveal issue remains.** RB-01 and RB-03 are resolved. RB-02 remains the previously reproduced, unchanged preexisting follow-up, not a blocker for this choreography change.
 - Baseline: `4ba6aea132ab957853d5c882588f07774da4e913` (`docs: record v7.3 production verification`). Initial browser responses were pinned to that commit. Final tests used the **uncommitted working tree** served by Python at `http://127.0.0.1:8765/`, with `cloud.js` mocked in every browser context. No production RSVP writes.
@@ -17,7 +58,7 @@
 - Read the container `AGENTS.md`, project handoff/status and relevant migration contract/QA guidance. No project `AGENTS.md` or `CLAUDE.md` was found. Reviewer owns only this tracker in the application repository.
 - Priorities: **P2** = meaningful functional/choreography defect; **P3** = minor cleanup/polish defect. No P0/P1 finding established. Pending-verification items are not confirmed bugs.
 
-## Target choreography
+## Historical v7.4 target choreography
 
 Use **actual card FLIP/lift launch inside the committed double-rAF**, not playback confirmation, seal opening, or the timer that requests the FLIP, as `t=0`:
 
@@ -67,7 +108,7 @@ The existing confirmed-output **Play invite** gate and 5.5s romantic prelude rem
 - **Implemented fix reviewed:** `bail()` now sets heading `transition = 'none'`, clears inline opacity, forces the computed-opacity style update, then clears inline transition. Committing the non-transitioning full-opacity state cancels the running CSS transition before normal styling is restored. This is confined to force-finish cleanup; the reveal timeline is unchanged.
 - **Test gap closed:** the older `refined-reveal.mjs:193–205` checks heading opacity only after a 4.8s wait and counts parent animations only. The new `refined-reveal-rm-heading.mjs` directly checks heading opacity/animations in the bail task's mutation microtask, then subsequent frames and timed samples. Independent rerun passes.
 
-## Implementation checks and remaining coverage
+## Historical v7.4 implementation checks and remaining coverage
 
 | ID | Check priority | Risk and suggested verification | Current evidence |
 | --- | --- | --- | --- |
@@ -139,7 +180,7 @@ Inspected the heading-only cleanup change and independently ran the unchanged ex
 - Normal motion is restored after that snapshot. Every subsequent sample remains fully opaque with no surviving or restarted heading transition; inline opacity/transition are cleared, overlay/ink are absent, card/RSVP are unlocked, and RSVP `aria-hidden` is removed. No page errors.
 - **Result: RB-03 PASS in both engines.** This targeted retest was sufficient for the isolated cleanup/cache-token change; broader suites were not rerun.
 
-## Final validation record
+## Historical v7.4 final validation record
 
 - **Validation states:** the broader suites, geometry comparisons and historical RB-02/RB-03 repros below ran on pre-heading-fix entry blob `b03605c22727d9dc2971e6dad2dab3a50b60efe7` and index blob `13c32cf1eeb11d484a446df1841ff59945bb6d29`. The later heading-only fix and entry cache token 16 were inspected and tested with the focused suite above; latest hashes are at the top. CSS/audio hashes did not change. RB-02's bootstrap path is unchanged and was not redundantly retested in the heading-fix pass.
 - **Ran unchanged existing scripts:** `refined-reveal.mjs` and `refined-reveal-audio.mjs` in the external QA directory. Both report PASS for **Chromium and WebKit**. They use a Python-served working tree and replace `cloud.js` with an empty module. Native-audio checks exercise real MP3 decoding/AudioContext gain with simulated read-only element volume; they do not constitute an iPhone-hardware test.
@@ -157,4 +198,4 @@ Inspected the heading-only cleanup change and independently ran the unchanged ex
 
 ## Final recommendation
 
-**Ready for release from this independent review's tested scope; no blocking reveal finding remains in the hashed working-tree state.** RB-01 and RB-03 are resolved with browser evidence. Preserve RB-02 as the explicitly tracked preexisting missing-script follow-up; it is unchanged and does not block this reveal change. Existing coverage limitations remain documented above. This reviewer pass modified only `REVEAL-BUGS.md`; no application fix, commit, push or deployment was performed.
+**Ready for the requested release within the current delta review's scope; no new blocking reveal finding was identified against v7.4.** RB-01 and RB-03 remain resolved; RB-02 stays open as the unchanged preexisting missing-script follow-up and does not block this refinement. Current timing and agent-reported browser evidence are at the top; earlier independent browser measurements are explicitly historical. This reviewer pass modified only `REVEAL-BUGS.md`; no application fix, commit, push or deployment was performed.

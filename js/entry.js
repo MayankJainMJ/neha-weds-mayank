@@ -71,7 +71,7 @@
     var names = card.querySelector('.inv-names');
     if (ink) ink.classList.add('ink-keep');
     if (names) {
-      names.style.transition = 'opacity .45s ease';
+      names.style.transition = 'opacity .675s ease';
       names.style.opacity = '1';
     }
   }
@@ -378,24 +378,25 @@
         function showGroup(i) { return function () {
           groups[i].forEach(function (el) { el.classList.remove('ckh'); });
         }; }
-        /* Card settles at 1050ms; the name pass has the stage to itself
-           before information arrives in 500ms beats. Drift waits for venue. */
+        /* Card settles at 1050ms. Names/details run 1.5x slower from the
+           unchanged 1100ms ink start, with 750ms information beats.
+           Envelope and first blossoms keep their pace; drift waits for venue. */
         var cues = [
           [1050, bloom('go1')],
           [1100, inkNames],
           [1550, bloom('go2')],
-          [2000, formalNames],
           [2050, bloom('go3')],
-          [2450, function () {
+          [2450, formalNames],
+          [3125, function () {
             var ink = card.querySelector('.ink-names');
             if (ink) ink.remove();
           }],
-          [2600, showGroup(0)],
-          [3100, showGroup(1)],
-          [3100, bloom('go4')],
-          [3600, showGroup(2)],
-          [4100, showGroup(3)],
-          [4600, complete]
+          [3350, showGroup(0)],
+          [4100, showGroup(1)],
+          [4100, bloom('go4')],
+          [4850, showGroup(2)],
+          [5600, showGroup(3)],
+          [6350, complete]
         ];
         var next = 0;
         function tick() {

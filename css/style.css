@@ -1649,7 +1649,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 /* names: handwriting lifts and dissolves in one continuous motion,
    formal caps appear beneath — no watermark pause */
 .ink-names.ink-keep {
-  transition: transform .45s cubic-bezier(.3, 0, .3, 1), opacity .45s ease;
+  transition: transform .675s cubic-bezier(.3, 0, .3, 1), opacity .675s ease;
   transform: translateY(-14px) scale(.6);
   opacity: 0;
 }
@@ -1666,8 +1666,8 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 }
 
 /* sequential content reveal after the card lands */
-.ck-g { transition: opacity .5s ease, transform .5s cubic-bezier(.2, .6, .2, 1); }
-.ck-g.ckh { opacity: 0; transform: translateY(10px); }
+.ck-g { transition: opacity .75s ease, transform .75s cubic-bezier(.2, .6, .2, 1); }
+.ck-g.ckh { opacity: 0; transform: translateY(10px); transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .ck-ov { display: none !important; }
@@ -1685,7 +1685,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 .ink-wipe {
   display: inline-block;
   clip-path: inset(-12% 100% -12% -4%);
-  animation: inkwipe .85s cubic-bezier(.35, 0, .35, 1) forwards;
+  animation: inkwipe 1.275s cubic-bezier(.35, 0, .35, 1) forwards;
 }
 @keyframes inkwipe { to { clip-path: inset(-12% -6% -12% -4%); } }
 
