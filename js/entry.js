@@ -3,7 +3,8 @@
    layered envelope (body/interior/insert/folds/flap), dusty-rose wax seal
    with embossed monogram + SVG crack, weighted flap, and a SHARED-CARD
    transition: the insert becomes the real invite card via FLIP.
-   The envelope opens automatically two seconds after load; ?entry=0 and
+   A romantic prelude holds the envelope before it opens at 5.5 seconds;
+   ?entry=0 and
    reduced-motion skip it.
    The personalised illustrated logo is used AS-IS (small, on the flap). */
 (function () {
@@ -233,7 +234,9 @@
           '<div class="ck-seal" aria-hidden="true">' + sealSVG() + '</div>' +
         '</div>' +
       '</div>' +
-      '<p class="ck-hint">Opening shortly<span class="ck-hintline" aria-hidden="true"></span></p>';
+      '<p class="ck-hint"><span class="ck-hintcopy ck-hint-one">invite you to share in their joy</span>' +
+        '<span class="ck-hintcopy ck-hint-two">as they begin their forever</span>' +
+        '<span class="ck-hintline" aria-hidden="true"></span></p>';
     return ov;
   }
 
@@ -306,8 +309,8 @@
       var staleInk = document.querySelector('.ink-names');
       if (staleInk) staleInk.remove();                    /* replay: clear last run's watermark */
 
-      ov.classList.add('ck-crack');                       /* 0-220 compress, 180-460 crack+separate */
-      setTimeout(function () { if (!run.dead) ov.classList.add('ck-open'); }, 240);   /* flap 240-960, insert rises 540+ */
+      ov.classList.add('ck-crack');                       /* 0-320 compress, 240-620 crack+separate */
+      setTimeout(function () { if (!run.dead) ov.classList.add('ck-open'); }, 360);   /* flap 360-1510, insert rises 760+ */
 
       var groups = contentGroups();
       /* shared-card FLIP: the insert becomes the real invitation.
@@ -346,21 +349,21 @@
             var fl = card.animate([
               { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')', transformOrigin: 'top left' },
               { transform: 'translate(0,0) scale(1)', transformOrigin: 'top left' }
-            ], { duration: 800, easing: 'cubic-bezier(.22,.72,.18,1)', fill: 'both' });
+            ], { duration: 1050, easing: 'cubic-bezier(.22,.72,.18,1)', fill: 'both' });
             fl.onfinish = function () { fl.cancel(); };   /* lingering transform breaks text painting */
             var cl = card.animate([
               { clipPath: 'inset(0 0 ' + hid.toFixed(2) + '% 0 round 6px)' },
               { clipPath: 'inset(0 0 0% 0 round 6px)' }
-            ], { duration: 560, easing: 'cubic-bezier(.3, .4, .2, 1)', fill: 'both' });
+            ], { duration: 780, easing: 'cubic-bezier(.3, .4, .2, 1)', fill: 'both' });
             cl.onfinish = function () { cl.cancel(); };
           } catch (e) {}
         }); });
-      }, 950);
+      }, 1400);
 
-      setTimeout(function () { if (!run.dead) inkNames(run); }, 1200);
-      setTimeout(function () { if (!run.dead) releaseBloom(run); }, 1250);
+      setTimeout(function () { if (!run.dead) inkNames(run); }, 1750);
+      setTimeout(function () { if (!run.dead) releaseBloom(run); }, 1800);
       /* staggered reveal: date/countdown -> venue -> note/actions */
-      [1600, 1750, 1900].forEach(function (t, i) {
+      [2250, 2450, 2650].forEach(function (t, i) {
         setTimeout(function () {
           if (run.dead) return;
           groups[i].forEach(function (el) { el.classList.remove('ckh'); });
@@ -385,9 +388,9 @@
             try { names.focus({ preventScroll: true }); } catch (e) {}
           }
         }
-      }, 2450);
+      }, 3400);
     }
-    setTimeout(function () { if (!run.dead) openEnvelope(); }, 2000);
+    setTimeout(function () { if (!run.dead) openEnvelope(); }, 5500);
   }
 
   addCardLogo();
