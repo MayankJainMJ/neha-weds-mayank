@@ -3,9 +3,8 @@
    layered envelope (body/interior/insert/folds/flap), dusty-rose wax seal
    with embossed monogram + SVG crack, weighted flap, and a SHARED-CARD
    transition: the insert becomes the real invite card via FLIP.
-   A romantic prelude holds the envelope before it opens at 5.5 seconds;
-   ?entry=0 and
-   reduced-motion skip it.
+   Confirmed music playback starts the 5.5-second romantic prelude.
+   ?entry=0 and reduced-motion skip animation, but retain the music gate.
    The personalised illustrated logo is used AS-IS (small, on the flap). */
 (function () {
   'use strict';
@@ -20,11 +19,10 @@
     rsvpSection.removeAttribute('aria-hidden');
   }
 
-  /* the envelope greets EVERY visit — only ?entry=0 (tests/deep-links)
-     and reduced-motion skip it. If the bootstrap's 4s safety net already
+  /* The music gate greets every visit. ?entry=0 and reduced-motion skip
+     the animated prelude after playback starts. If the bootstrap's 4s safety net already
      released the card (entry.js arrived very late), stay skipped rather
      than yanking the visible invite back behind an envelope. */
-  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var skip = false;
   try {
     if (new URLSearchParams(location.search).get('entry') === '0') skip = true;
@@ -209,7 +207,7 @@
 
   function buildOverlay() {
     var ov = document.createElement('div');
-    ov.className = 'ck-ov';
+    ov.className = 'ck-ov ck-wait';
     ov.id = 'envOv';
     ov.innerHTML =
       '<div class="ck-vignette" aria-hidden="true"></div>' +
@@ -236,7 +234,8 @@
       '</div>' +
       '<p class="ck-hint"><span class="ck-hintcopy ck-hint-one">invite you to share in their joy</span>' +
         '<span class="ck-hintcopy ck-hint-two">as they begin their forever</span>' +
-        '<span class="ck-hintline" aria-hidden="true"></span></p>';
+        '<span class="ck-hintline" aria-hidden="true"></span></p>' +
+      '<p class="ck-audio-prompt" role="status" aria-live="polite">Starting your invitation with music…</p>';
     return ov;
   }
 
@@ -267,6 +266,7 @@
      run.dead invalidates every timer/rAF queued by this play() run. */
   function bail(mq, onmq, run) {
     run.dead = true;
+    if (run.dispose) run.dispose();
     try { if (mq.removeEventListener) mq.removeEventListener('change', onmq); else mq.removeListener(onmq); } catch (e) {}
     var o = document.getElementById('envOv');
     if (o) o.remove();
@@ -284,16 +284,22 @@
   }
 
   function play() {
-    /* live check: replay must never build an overlay the reduced-motion CSS hides */
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var instant = skip || matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (document.getElementById('envOv')) return;
     document.body.classList.add('hold-bloom', 'env-locked');
     card.inert = true;
     var run = { dead: false };
+    var sequenceStarted = false;
     var mq = matchMedia('(prefers-reduced-motion: reduce)');
-    var onmq = function (e) { if (e.matches) bail(mq, onmq, run); };
+    var onmq = function (e) {
+      if (!e.matches) return;
+      instant = true;
+      if (sequenceStarted) bail(mq, onmq, run);
+      else ov.classList.add('ck-static');
+    };
     try { if (mq.addEventListener) mq.addEventListener('change', onmq); else mq.addListener(onmq); } catch (e) {}
     var ov = buildOverlay();
+    if (instant) ov.classList.add('ck-static');
     document.body.appendChild(ov);
     requestAnimationFrame(function () {
       if (run.dead) return;
@@ -390,7 +396,31 @@
         }
       }, 3400);
     }
-    setTimeout(function () { if (!run.dead) openEnvelope(); }, 5500);
+    function beginPrelude() {
+      if (run.dead || sequenceStarted) return;
+      sequenceStarted = true;
+      run.dispose();
+      if (instant) { bail(mq, onmq, run); return; }
+      ov.classList.remove('ck-wait');
+      ov.querySelector('.ck-audio-prompt').hidden = true;
+      setTimeout(function () { if (!run.dead) openEnvelope(); }, 5500);
+    }
+    function audioState() {
+      if (run.dead || sequenceStarted) return;
+      var controller = window.INVITE_AUDIO;
+      if (!controller || controller.getState() === 'playing') {
+        beginPrelude();
+        return;
+      }
+      var state = controller.getState();
+      var prompt = ov.querySelector('.ck-audio-prompt');
+      prompt.textContent = state === 'pending' ? 'Starting your invitation with music…' :
+        state === 'error' ? 'Music could not start. Press Play invite to try again.' :
+        'Press Play invite to begin with music';
+    }
+    run.dispose = function () { window.removeEventListener('invite-audio-state', audioState); };
+    window.addEventListener('invite-audio-state', audioState);
+    audioState();
   }
 
   addCardLogo();
@@ -399,7 +429,7 @@
   /* play SYNCHRONOUSLY — the fonts gate caused the card to flash before
      the envelope. env-locked lands in the same task, then the inline
      bootstrap lock (html.env-boot) hands over without a visible gap. */
-  if (!skip && !reduced) play();
+  if (!window.mwnEnvExpired) play();
   else unlockRsvp();
   document.documentElement.classList.remove('env-boot');
 })();

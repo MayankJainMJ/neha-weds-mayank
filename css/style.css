@@ -1599,6 +1599,17 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 }
 .ck-hint-one { animation: ckhintcopy .9s ease 1.1s forwards; }
 .ck-hint-two { animation: ckhintcopy .9s ease 2.7s forwards; }
+.ck-wait .ck-hintcopy, .ck-wait .ck-hintline { animation: none; }
+.ck-wait .ck-hint { visibility: hidden; }
+.ck-audio-prompt {
+  position: absolute; bottom: max(28px, 7vh); left: 20px; right: 20px;
+  text-align: center; font: italic 15px/1.5 'Playfair Display', Georgia, serif;
+  color: #6b4353;
+}
+.ck-static, .ck-static *, .ck-static *::before, .ck-static *::after {
+  animation: none !important; transition: none !important;
+}
+.ck-static .ck-head { opacity: 1; }
 @keyframes ckhintcopy {
   to { opacity: 1; transform: translateY(0); }
 }
@@ -1660,6 +1671,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 
 @media (prefers-reduced-motion: reduce) {
   .ck-ov { display: none !important; }
+  .ck-ov.ck-wait { display: flex !important; opacity: 1; }
   body.env-locked .invite-card, html.env-boot .invite-card { visibility: visible; }
   .ck-g, .ck-g.ckh { opacity: 1 !important; transform: none !important; transition: none !important; }
 }

@@ -13,3 +13,13 @@
 .invite-sound[aria-pressed="true"] .sound-waves { display: inline; }
 .invite-sound[aria-pressed="true"] .sound-off { display: none; }
 html.env-boot .invite-sound { visibility: hidden; }
+.invite-sound[aria-pressed="false"] {
+  width: auto; min-width: 44px; padding: 0 16px; gap: 8px; border-radius: 24px;
+}
+.invite-sound-label { font: 600 13px/1.2 Georgia, serif; }
+.invite-sound[aria-pressed="false"] svg { display: none; }
+.invite-sound[aria-pressed="false"]::before {
+  content: ''; width: 0; height: 0;
+  border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}

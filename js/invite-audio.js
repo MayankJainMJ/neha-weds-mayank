@@ -8,8 +8,9 @@
   var button = document.getElementById('inviteSound');
   if (!audio || !button) return;
 
-  var preferenceKey = 'mwn.inviteMusicMuted';
   var muted = false;
+  var state = 'pending';
+  var waitTimer = 0;
   var requested = false;
   var started = false;
   var attempt = 0;
@@ -20,7 +21,6 @@
   var gainNode = null;
   var autoReady = true;
   var autoAttempted = false;
-  try { muted = localStorage.getItem(preferenceKey) === '1'; } catch (e) {}
   try { audio.volume = 0; } catch (e) {}
 
   // iOS ignores HTMLMediaElement.volume. Route through a gain node there so
@@ -42,11 +42,19 @@
 
   function render() {
     var playing = requested && started && !audio.paused && !audio.error;
+    button.hidden = false;
     button.setAttribute('aria-pressed', playing ? 'true' : 'false');
-    button.title = (playing ? 'Mute' : 'Play') + ' invitation music — Darkhaast';
+    button.dataset.state = state;
+    button.title = playing ? 'Mute invitation music — Darkhaast' : 'Play invite with music';
+    button.setAttribute('aria-label', button.title);
+    var label = button.querySelector('.invite-sound-label');
+    if (label) label.textContent = playing ? '' : (state === 'pending' ? 'Starting…' : 'Play invite');
+    window.dispatchEvent(new CustomEvent('invite-audio-state', { detail: state }));
   }
 
-  function pause() {
+  function pause(nextState) {
+    clearTimeout(waitTimer);
+    state = typeof nextState === 'string' ? nextState : 'paused';
     requested = false;
     started = false;
     attempt++;
@@ -54,7 +62,10 @@
     fadeFrame = 0;
     audio.pause();
     if (gainNode) {
-      try { gainNode.gain.setValueAtTime(0, audioContext.currentTime); } catch (e) {}
+      try {
+        gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      } catch (e) {}
     }
     try { audio.volume = 0; } catch (e) {}
     render();
@@ -85,9 +96,18 @@
   function play() {
     if (requested) return Promise.resolve(!audio.paused);
     requested = true;
+    state = 'pending';
     var currentAttempt = ++attempt;
-    function failed() {
-      if (currentAttempt === attempt) pause();
+    render();
+    clearTimeout(waitTimer);
+    waitTimer = setTimeout(function () {
+      if (currentAttempt === attempt && !started) {
+        state = 'blocked';
+        render();
+      }
+    }, 1200);
+    function failed(error) {
+      if (currentAttempt === attempt) pause(error && error.name === 'NotAllowedError' ? 'blocked' : 'error');
       return false;
     }
     try {
@@ -99,9 +119,11 @@
       var result = audio.play();
       var mediaReady = result && typeof result.then === 'function' ? result : Promise.resolve();
       return Promise.all([mediaReady, outputReady]).then(function () {
-        if (currentAttempt !== attempt || !requested ||
+        if (currentAttempt !== attempt || !requested || audio.paused ||
             (audioContext && audioContext.state !== 'running')) return failed();
         started = true;
+        clearTimeout(waitTimer);
+        state = 'playing';
         fadeIn(currentAttempt);
         render();
         return true;
@@ -109,18 +131,17 @@
     } catch (e) { return Promise.resolve(failed()); }
   }
 
-  function remember(value) {
+  function setMuted(value) {
     muted = value;
-    try { localStorage.setItem(preferenceKey, value ? '1' : '0'); } catch (e) {}
   }
 
   button.addEventListener('click', function () {
     try { button.focus({ preventScroll: true }); } catch (e) {}
     if (started && !audio.paused) {
-      remember(true);
-      pause();
+      setMuted(true);
+      pause('muted');
     } else {
-      remember(false);
+      setMuted(false);
       if (requested) pause(); // replace a pending autoplay attempt in this gesture
       play();
     }
@@ -133,16 +154,20 @@
   }
   function playbackStarted() {
     if (!requested) audio.pause();
-    else if (!audioContext || audioContext.state === 'running') started = true;
+    // Only the play + AudioContext promises together confirm output readiness.
     render();
   }
   audio.addEventListener('play', playbackRequested);
   audio.addEventListener('playing', playbackStarted);
   audio.addEventListener('pause', function () {
-    if (audio.paused) { requested = false; started = false; attempt++; }
+    if (audio.paused) {
+      requested = false; started = false; attempt++;
+      clearTimeout(waitTimer);
+      if (state === 'playing' || state === 'pending') state = 'paused';
+    }
     render();
   });
-  audio.addEventListener('error', pause);
+  audio.addEventListener('error', function () { pause('error'); });
 
   // Stop on backgrounding/navigation, including bfcache. Resume only through
   // the music button, not an automatic page event.
@@ -159,6 +184,7 @@
   window.addEventListener('pageshow', render);
 
   window.INVITE_AUDIO = {
+    getState: function () { return state; },
     open: function () {
       if (muted) { button.hidden = false; render(); return Promise.resolve(false); }
       var revealTimer = setTimeout(function () { button.hidden = false; render(); }, 1200);
