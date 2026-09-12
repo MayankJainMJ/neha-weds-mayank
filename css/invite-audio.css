@@ -1,14 +1,10 @@
-/* A small soundtrack control beside the existing theme chip. */
+/* A small soundtrack control in the invitation's top-right corner. */
 .invite-sound {
-  position: fixed; top: 10px; right: 64px; z-index: 60;
+  position: fixed; top: 10px; right: 10px; z-index: 60;
   display: flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; padding: 0; border-radius: 50%;
   border: 1px solid rgba(107, 90, 82, .2);
   background: #fffdfc; color: #6b4353; cursor: pointer;
-}
-.bg-paper .invite-sound {
-  background: #fff9f0; color: #6a2036;
-  border-color: rgba(169, 110, 38, .3);
 }
 .invite-sound:hover { box-shadow: 0 2px 8px rgba(107, 90, 82, .15); }
 .invite-sound:focus-visible { outline: 2px solid #6a2036; outline-offset: 3px; }

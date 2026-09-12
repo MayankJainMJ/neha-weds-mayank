@@ -2,7 +2,7 @@
    Modeled on the reference template: white/blush watercolor card paper,
    sakura clusters (5-petal blossoms, tulip buds, green leaves) on brown
    twigs entering from the corners, petals drifting down.
-   Same layer contract as lotus.js:
+   Shared blossom layer contract:
      .lotus-bg  — canvas watercolor paper (behind content)
      .lotus-fg  — blooming blossoms + falling petals (above, pointer-events:none)
    Reuses the .petal bloom / .lotus-sway / .drift CSS animations. */

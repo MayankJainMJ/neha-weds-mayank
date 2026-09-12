@@ -14,9 +14,10 @@
   var leaving = false;
 
   function veilFor(url) {
-    /* destination-aware wash: game = warm marigold, paper pages = theme wash */
-    if (/index\.html(\?|#|$)|\/$/.test(url)) return '#f2debc';
-    return '';   /* keep the theme veil set by the head snippet */
+    /* destination-aware wash: game = warm marigold, paper pages = blush */
+    var destination = new URL(url, location.href);
+    if (/(^|\/)game\.html$/.test(destination.pathname)) return '#f2debc';
+    return '';   /* keep the blush veil set by the destination head snippet */
   }
 
   function go(url) {

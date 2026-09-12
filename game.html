@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-page="game">
+<head>
+<script>
+/* arrival veil: raised before first paint so page loads dissolve instead of cut */
+(function () { try {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if ('onpagereveal' in window) return; /* native view transitions handle it */
+  var h = document.documentElement;
+  h.classList.add('nav-arriving');
+  setTimeout(function () { h.classList.remove('nav-arriving'); }, 1500);
+} catch (e) {} })();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neha ♥ Mayank — Press Start</title>
+  <meta name="description" content="Neha & Mayank are getting married in the hills. Press start.">
+  <meta property="og:title" content="Neha ♥ Mayank — Press Start">
+  <meta property="og:description" content="A wedding invitation you can play. Pawna, 2–3 December 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 8 8%27%3E%3Crect x=%271%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%275%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%271%27 y=%273%27 width=%276%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%272%27 y=%275%27 width=%274%27 height=%271%27 fill=%27%23e85d75%27/%3E%3Crect x=%273%27 y=%276%27 width=%272%27 height=%271%27 fill=%27%23a4133c%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css?v=61">
+</head>
+<body class="bg-morning">
+
+  <div class="garland"></div>
+
+  <main class="splash" id="splash">
+    <!-- original pixel scene: sun over Pawna hills, flag on the tabletop -->
+    <svg class="pixel-scene" viewBox="0 0 64 36" shape-rendering="crispEdges" role="img" aria-label="Pixel art: sunrise over a hilltop with a wedding flag">
+      <!-- sun -->
+      <rect x="46" y="4" width="8" height="8" fill="#ffd23f"/>
+      <rect x="44" y="6" width="2" height="4" fill="#ffd23f"/>
+      <rect x="54" y="6" width="2" height="4" fill="#ffd23f"/>
+      <rect x="48" y="2" width="4" height="2" fill="#ffd23f"/>
+      <rect x="48" y="12" width="4" height="2" fill="#ffd23f"/>
+      <!-- clouds -->
+      <rect x="6" y="7" width="10" height="2" fill="#ffffff" opacity=".9"/>
+      <rect x="9" y="5" width="5" height="2" fill="#ffffff" opacity=".9"/>
+      <rect x="26" y="11" width="8" height="2" fill="#ffffff" opacity=".75"/>
+      <!-- far hill -->
+      <rect x="0" y="26" width="64" height="10" fill="#6da34d"/>
+      <rect x="2" y="24" width="12" height="2" fill="#6da34d"/>
+      <rect x="4" y="22" width="8" height="2" fill="#6da34d"/>
+      <!-- tabletop hill -->
+      <rect x="22" y="20" width="26" height="16" fill="#4a7c59"/>
+      <rect x="24" y="18" width="22" height="2" fill="#4a7c59"/>
+      <rect x="26" y="16" width="18" height="2" fill="#4a7c59"/>
+      <!-- lake glint -->
+      <rect x="50" y="30" width="12" height="3" fill="#8ecae6"/>
+      <rect x="52" y="29" width="8" height="1" fill="#bde0fe"/>
+      <!-- mandap posts + flag on the tabletop -->
+      <rect x="32" y="8" width="1" height="8" fill="#7b4a12"/>
+      <rect x="33" y="8" width="4" height="3" fill="#e85d75"/>
+      <rect x="30" y="14" width="1" height="2" fill="#ffb703"/>
+      <rect x="38" y="14" width="1" height="2" fill="#ffb703"/>
+      <rect x="29" y="13" width="11" height="1" fill="#fb8500"/>
+      <!-- tiny couple -->
+      <rect x="33" y="14" width="1" height="2" fill="#3a2a10"/>
+      <rect x="35" y="14" width="1" height="2" fill="#a4133c"/>
+    </svg>
+
+    <h1 class="pixel splash-title">NEHA &hearts; MAYANK</h1>
+    <p class="pixel splash-sub">THE ROAD TO PAWNA &middot; 2&ndash;3 DEC 2026</p>
+
+    <button class="btn btn-pixel" id="pressStart">&#9654; PRESS START</button>
+
+    <a class="skip-link" href="./">In a hurry? Walk straight to the mandap &rarr;</a>
+  </main>
+
+  <!-- game shell (hidden until PRESS START; invite is never gated) -->
+  <div id="game" hidden>
+    <canvas id="gc" width="320" height="480" aria-label="Road to Pawna — Act 1: Mumbai. Tap to jump."></canvas>
+    <div class="hud">
+      <span id="hudLives" aria-label="Lives">&hearts;&hearts;&hearts;</span>
+      <span id="hudScore">ACT 1 &middot; 0</span>
+      <button id="hudMute" aria-label="Toggle music">&#128266;</button>
+    </div>
+    <button id="shootBtn" class="btn-pixel shoot-btn" hidden>&#128165; SHOOT</button>
+    <div id="gameOverlay" class="game-overlay"></div>
+  </div>
+
+  <div class="pixel-dialog-backdrop" id="nameDlg">
+    <div class="pixel-dialog" role="dialog" aria-modal="true" aria-label="Your name">
+      <p>PLAYER ONE,<br>WHAT'S YOUR NAME?</p>
+      <input type="text" id="playerName" class="pixel-input" maxlength="20" placeholder="YOUR NAME" autocomplete="name">
+      <button class="btn btn-pixel" id="nameGo" style="width:100%">&#9654; START</button>
+      <a href="#" id="nameSkip" class="skip-link" style="display:block;margin-top:.9rem">Skip &rarr;</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/game.js?v=2"></script>
+  <script>
+    (function () {
+      var dlg = document.getElementById('nameDlg');
+      var input = document.getElementById('playerName');
+      function begin() {
+        dlg.classList.remove('open');
+        window.GAME.begin();
+      }
+      document.getElementById('pressStart').addEventListener('click', function () {
+        window.MUSIC.unlock();
+        var st = window.MWN.load();
+        if (st.name) { window.GAME.begin(); return; }
+        dlg.classList.add('open');
+        setTimeout(function () { input.focus(); }, 120);
+      });
+      document.getElementById('nameGo').addEventListener('click', function () {
+        var st = window.MWN.load();
+        st.name = input.value.trim().slice(0, 20);
+        window.MWN.save(window.MWN.sanitizeState(st));
+        begin();
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') document.getElementById('nameGo').click();
+      });
+      document.getElementById('nameSkip').addEventListener('click', function (e) {
+        e.preventDefault();
+        begin();
+      });
+    })();
+  </script>
+  <script type="module" src="js/cloud.js"></script>
+<script src="js/nav.js?v=2"></script>
+<script>
+window.addEventListener('load', function () {
+  if (navigator.connection && navigator.connection.saveData) return;
+  var l = document.createElement('link'); l.rel = 'prefetch'; l.href = './';
+  document.head.appendChild(l);
+});
+</script>
+</body>
+</html>

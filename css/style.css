@@ -797,62 +797,10 @@ body.editing .deadline-banner, body.editing .tent-line { display: none; }
 /* author display rules must never defeat the hidden attribute */
 [hidden] { display: none !important; }
 
-/* ============ lotus stationery theme (invite + rsvp) ============ */
-body.bg-paper {
-  min-height: 100dvh;
-  color: #4a2530;
-  background:
-    radial-gradient(110% 80% at 12% 6%, rgba(201, 143, 145, .34), transparent 58%),
-    radial-gradient(120% 90% at 92% 88%, rgba(185, 127, 133, .32), transparent 60%),
-    radial-gradient(90% 60% at 78% 12%, rgba(217, 171, 165, .3), transparent 55%),
-    radial-gradient(95% 70% at 50% 46%, rgba(255, 244, 232, .75), transparent 72%),
-    linear-gradient(168deg, #ecd4cc 0%, #ead0ca 40%, #e4c4bd 100%);
-}
-
-/* fixed decorative layers — never add layout height */
+/* Shared blossom primitives. Historical lotus-* names are used by Sakura. */
 .lotus-bg, .lotus-fg { position: fixed; inset: 0; overflow: hidden; }
 .lotus-bg { z-index: 0; }
 .lotus-fg { z-index: 2; pointer-events: none; }
-.bg-paper .deck-wrap, .bg-paper main, .bg-paper .invite-hero,
-.bg-paper .nav-row, .bg-paper .deadline-banner, .bg-paper .saved-banner,
-.bg-paper #editRsvp { position: relative; z-index: 1; }
-
-/* watercolor paper layers */
-.wclouds { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-/* baroque frame: double inset rules + corner scrollwork */
-.pframe {
-  position: absolute; inset: 10px;
-  border: 1px solid rgba(169, 82, 104, .48);
-  border-radius: 4px;
-  pointer-events: none;
-}
-.pframe::after {
-  content: '';
-  position: absolute; inset: 11px;
-  border: 2px solid rgba(169, 82, 104, .42);
-  border-radius: 3px;
-}
-.orn { position: absolute; width: min(46vw, 225px); height: min(46vw, 225px); }
-.orn svg { width: 100%; height: 100%; }
-.orn-tl { top: 4px; left: 4px; transform: rotate(90deg); }
-.orn-tr { top: 4px; right: 4px; transform: rotate(180deg); }
-.orn-bl { bottom: 4px; left: 4px; }
-.orn-br { bottom: 4px; right: 4px; transform: rotate(-90deg); }
-
-/* painterly lotuses: large, asymmetric, bleeding off edges */
-.lo { position: absolute; filter: drop-shadow(0 4px 9px rgba(107, 24, 57, .22)); }
-.lo .lotus { width: 100%; height: auto; display: block; }
-.lo-br1 { width: min(50vw, 360px); right: -13vw; bottom: -5vh; transform: rotate(12deg); }
-.lo-br2 { width: min(30vw, 210px); right: 17vw; bottom: -8vh; transform: rotate(-7deg); }
-.lo-tl { width: min(38vw, 270px); left: -14vw; top: -7vh; transform: rotate(-155deg); }
-.lo-ml { width: min(26vw, 180px); left: -13vw; top: 27vh; transform: rotate(-8deg); }
-.lo-bl { width: min(19vw, 130px); left: -4vw; bottom: -2vh; transform: rotate(10deg); }
-.lo-bud1 { width: min(9vw, 60px); left: 13vw; bottom: -3vh; transform: rotate(-6deg); }
-
-/* petal veining */
-.vein { fill: none; stroke: #861344; stroke-width: .9; opacity: .22; stroke-linecap: round; }
-.vein.v2 { opacity: .13; }
 
 /* bloom: petals unfurl from a closed bud, staggered */
 .petal {
@@ -889,23 +837,6 @@ body.bg-paper {
   100% { opacity: 0; transform: translate3d(7vw, 106vh, 0) rotate(300deg); }
 }
 
-/* paper-theme adaptations of existing components */
-.bg-paper h1.names, .bg-paper .wcard h2 { color: #6b1839; }
-.bg-paper .greet-line { color: #a4133c; }
-.bg-paper .deck-nav button { color: #6b1839; border-color: rgba(107, 24, 57, .45); }
-.bg-paper .deck-dots span { background: rgba(107, 24, 57, .22); }
-.bg-paper .deck-dots span.on { background: #b98c28; }
-.bg-paper .wcard { box-shadow: 0 0 0 6px rgba(212, 175, 55, .22), 0 14px 34px rgba(107, 24, 57, .28); background: rgba(255, 248, 236, .94); }
-.bg-paper .deck { margin: 30px 34px 8px; }
-@media (min-height: 800px) { .bg-paper .deck { margin: 38px 38px 10px; } }
-.bg-paper .card-dark {
-  background: linear-gradient(160deg, rgba(62, 13, 38, .96), rgba(43, 9, 27, .96));
-  border-color: rgba(212, 175, 55, .5);
-}
-.bg-paper .saved-banner { background: rgba(74, 124, 89, .16); border-color: rgba(74, 124, 89, .45); color: #2e5d3a; }
-.bg-paper .toast { z-index: 80; }
-.bg-paper .lb-modal { z-index: 70; }
-
 @media (prefers-reduced-motion: reduce) {
   .petal, .lotus-heart, .lotus-stem { animation: none; opacity: 1; stroke-dashoffset: 0; }
   .lotus-sway { animation: none; }
@@ -921,16 +852,6 @@ body.bg-sakura {
 }
 .bg-sakura main, .bg-sakura .invite-hero, .bg-sakura .nav-row,
 .bg-sakura .deadline-banner, .bg-sakura .saved-banner, .bg-sakura #editRsvp { position: relative; z-index: 1; }
-
-/* theme toggle chip */
-.theme-toggle {
-  position: fixed; top: 10px; right: 10px; z-index: 60;
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, .12);
-  background: rgba(255, 255, 255, .55);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  font-size: 1.1rem; cursor: pointer; line-height: 1;
-}
 
 /* sakura clusters */
 .scluster { position: absolute; pointer-events: none; }
@@ -961,19 +882,12 @@ body.bg-sakura {
   box-shadow: 0 22px 60px rgba(122, 66, 88, .18), 0 4px 16px rgba(122, 66, 88, .1);
   color: #6b5a52;
 }
-.bg-paper .invite-card {
-  background: rgba(255, 248, 236, .96);
-  border: 2px solid #d4af37;
-  box-shadow: 0 0 0 6px rgba(212, 175, 55, .22), 0 14px 34px rgba(107, 24, 57, .28);
-  color: #3a1220;
-}
 
 /* invitation typography (reference: gold serif caps + script) */
 .inv-eyebrow {
   font-size: .72rem; letter-spacing: .34em; text-transform: uppercase;
   color: #9a8578; font-weight: 600;
 }
-.bg-paper .inv-eyebrow { color: #b06000; }
 .inv-names {
   font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   font-weight: 600;
@@ -984,26 +898,22 @@ body.bg-sakura {
   margin: .7rem 0 .55rem;
   display: flex; flex-direction: column; align-items: center; gap: .1em;
 }
-.bg-paper .inv-names { color: #6b1839; }
 .inv-and {
   font-family: 'Great Vibes', cursive;
   text-transform: none; letter-spacing: .02em;
   font-size: .58em; color: #8a7968; font-weight: 400;
   margin: -.15em 0;
 }
-.bg-paper .inv-and { color: #b98c28; }
 .inv-caps {
   font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
   color: #6b5a52; font-weight: 600; margin: .3rem 0;
 }
-.bg-paper .inv-caps { color: #4a2530; }
 .inv-day { margin-top: .7rem; }
 .inv-script {
   font-family: 'Great Vibes', cursive;
   font-size: clamp(1.9rem, 8vw, 2.5rem);
   color: #c9863f; line-height: 1.15; margin: .15rem 0;
 }
-.bg-paper .inv-script { color: #b98c28; }
 .inv-rule { width: 120px; height: 1px; background: #d9c1a8; margin: .85rem auto; position: relative; }
 .inv-rule::after {
   content: '\2766'; position: absolute; left: 50%; top: 50%;
@@ -1015,12 +925,10 @@ body.bg-sakura {
   font-weight: 700; color: #6b5a52; line-height: 1.8;
 }
 .inv-venue span { font-weight: 400; font-size: .72rem; opacity: .85; }
-.bg-paper .inv-venue { color: #4a2530; }
 .inv-note {
   font-family: 'Playfair Display', Georgia, serif; font-style: italic;
   font-size: .86rem; line-height: 1.65; color: #8a7264; margin: .9rem 0 1.2rem;
 }
-.bg-paper .inv-note { color: #6b4a3a; }
 .inv-rsvp { width: 100%; max-width: 250px; }
 .bg-sakura .btn-primary {
   background: linear-gradient(135deg, #eb9db5, #dd7396);
@@ -1053,7 +961,6 @@ body.bg-sakura {
 .bg-sakura #rsvpForm { padding: 1.5rem 1.4rem 1.2rem; }
 .form-title { line-height: 1.3; }
 .bg-sakura .form-title { color: #b8637f; font-family: 'Playfair Display', Georgia, serif; }
-.bg-paper .form-title { color: #ffd98a; }
 .bg-sakura .card-dark {
   background: rgba(255, 253, 253, .94);
   border: none;
@@ -1101,7 +1008,6 @@ body.bg-sakura {
   color: #fff;
 }
 .bg-sakura .inv-links { font-size: 11px; color: #8c7470; margin-top: 6px; gap: 10px; }
-.bg-paper .inv-links { font-size: 11px; margin-top: 6px; gap: 10px; }
 .bg-sakura .inv-champ { font-size: 11px; color: #8c7470; margin-top: 10px; }
 
 /* rsvp panel: clean stationery column */
@@ -1121,37 +1027,7 @@ body.bg-sakura {
 .bg-sakura .nav-row .btn { border-radius: 2px; }
 .bg-sakura #editRsvp { border-radius: 2px; }
 
-/* ============ loop-4: cross-theme parity ============ */
-/* lotus invite CTA: flat antique gold, stationery corners */
-.bg-paper .inv-rsvp {
-  background: #c88a35; border-radius: 4px; height: 48px; line-height: 48px; padding: 0 30px;
-  box-shadow: none; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #fff8ec;
-}
-.bg-paper .inv-eyebrow { letter-spacing: .3em; }
-.bg-paper .inv-names { letter-spacing: .12em; }
-.bg-paper .inv-venue { letter-spacing: .22em; }
-
-/* lotus RSVP: converge to light panel — cream paper, maroon ink */
-.bg-paper .card-dark {
-  background: #fff9f0;
-  color: #4a1028;
-  border: 1.5px solid rgba(74, 16, 40, .3);
-  box-shadow: 0 18px 44px rgba(74, 16, 40, .22);
-  backdrop-filter: none; -webkit-backdrop-filter: none;
-}
-.bg-paper .card-dark.gold-frame { border: 1.5px solid rgba(212, 175, 55, .8) !important; box-shadow: 0 0 0 5px rgba(212, 175, 55, .14), 0 18px 44px rgba(74, 16, 40, .22); }
-.bg-paper .form-title { color: #6b1839; font-family: 'Playfair Display', Georgia, serif; }
-.bg-paper .card-dark .form-group > label { color: #4a1028; }
-.bg-paper .card-dark input[type="text"] { background: #fff; border-color: rgba(74, 16, 40, .35); color: #4a1028; }
-.bg-paper .card-dark input[type="text"]::placeholder { color: rgba(74, 16, 40, .4); }
-.bg-paper .card-dark input[type="text"]:focus { border-color: #c88a35; background: #fff; }
-.bg-paper .choice { background: #fffdf8; border-color: rgba(74, 16, 40, .3); color: #4a1028; }
-.bg-paper .choice.selected { border-color: #c88a35; background: rgba(200, 138, 53, .12); }
-.bg-paper .card-dark .tent-line { color: #7a5a48; }
-.bg-paper .saved-banner { background: rgba(74, 124, 89, .14); border-color: rgba(74, 124, 89, .5); color: #2e5d3a; }
-.bg-paper #rsvpForm .btn-primary { border-radius: 4px; letter-spacing: .1em; }
-
-/* custom radio controls (both themes) */
+/* custom radio controls */
 .choice input[type="radio"] {
   appearance: none; -webkit-appearance: none;
   width: 18px; height: 18px; border-radius: 50%;
@@ -1159,20 +1035,12 @@ body.bg-sakura {
   display: inline-block; flex: none; transition: border-color .15s, background .15s;
 }
 .bg-sakura .choice input[type="radio"]:checked { border-color: #c9879d; background: radial-gradient(circle, #c9879d 0 4.5px, transparent 5px); }
-.bg-paper .choice input[type="radio"] { border-color: rgba(74, 16, 40, .5); }
-.bg-paper .choice input[type="radio"]:checked { border-color: #4a1028; background: radial-gradient(circle, #c88a35 0 4.5px, transparent 5px); }
-
-/* clearance: toggle below deadline banner; fewer petals over controls */
-.rsvp-page .theme-toggle { top: 48px; }
+/* fewer petals over controls */
 .rsvp-page .sc-br { width: min(45vw, 240px); height: min(28vw, 150px); opacity: .92; }
-.rsvp-page .lo-br1 { width: min(38vw, 270px); }
-.rsvp-page .lo-tl { width: min(28vw, 200px); }
 
 /* loop-5 final nitpicks */
 .bg-sakura.rsvp-page .invite-hero { padding-top: calc(1.1rem + 24px); }
 .bg-sakura .tent-line, .bg-sakura .inv-note { color: #9b777d; }
-.bg-paper #rsvpForm .btn-primary { letter-spacing: .06em; }
-.bg-paper .orn { opacity: .85; }
 
 /* year as engraved numerals, not spelled-out text */
 .inv-year {
@@ -1181,7 +1049,6 @@ body.bg-sakura {
   letter-spacing: .55em; text-indent: .55em; /* re-center tracked text */
   color: #b88732; margin: .2rem 0 0;
 }
-.bg-paper .inv-year { color: #6b1839; }
 
 /* ============ mobile polish (device-emulation audit) ============ */
 /* iOS zooms the page when a focused input is under 16px — never allow that */
@@ -1191,7 +1058,6 @@ input[type="text"], textarea { font-size: 16px !important; }
 .linklike { display: inline-block; padding: 12px 6px; margin: -10px -2px; }
 
 /* 44px minimum touch targets */
-.theme-toggle { width: 44px; height: 44px; }
 .lb-close { padding: 8px 14px; }
 
 /* ============ couture RSVP: de-boxed stationery controls ============ */
@@ -1216,8 +1082,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   color: #4c3f42;
   font-weight: 600;
 }
-.bg-paper #rsvpForm .choice { border-bottom-color: #d8c2b8 !important; color: #5a2031; }
-.bg-paper #rsvpForm .choice.selected { background: rgba(247, 235, 221, .55) !important; color: #43101f; }
 
 /* selector circles: 16px hairline, 6px dot + halo when chosen */
 #rsvpForm .choice input[type="radio"] {
@@ -1227,12 +1091,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   border-color: #c7839d;
   background: radial-gradient(circle, #c7839d 0 3px, transparent 3.5px);
   box-shadow: 0 0 0 4px rgba(199, 131, 157, .16);
-}
-.bg-paper #rsvpForm .choice input[type="radio"] { border-color: #a96e26; }
-.bg-paper #rsvpForm .choice input[type="radio"]:checked {
-  border-color: #a96e26;
-  background: radial-gradient(circle, #a96e26 0 3px, transparent 3.5px);
-  box-shadow: 0 0 0 4px rgba(169, 110, 38, .16);
 }
 
 /* written-line inputs */
@@ -1245,8 +1103,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   color: #4c3f42;
 }
 #rsvpForm input[type="text"]:focus { border-bottom-color: #c7839d !important; }
-.bg-paper #rsvpForm input[type="text"] { border-bottom-color: #d8c2b8 !important; color: #43101f; }
-.bg-paper #rsvpForm input[type="text"]:focus { border-bottom-color: #a96e26 !important; }
 
 /* labels: quiet engraved captions */
 #rsvpForm .form-group > label {
@@ -1254,7 +1110,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   letter-spacing: .14em; text-transform: uppercase;
   color: #9b8489 !important; margin-bottom: .3rem;
 }
-.bg-paper #rsvpForm .form-group > label { color: #8a6a5a !important; }
 
 /* submit: centered cartouche */
 #rsvpForm .btn-primary {
@@ -1270,15 +1125,10 @@ input[type="text"], textarea { font-size: 16px !important; }
   background: #c7839d; color: #fffdfb;
   box-shadow: inset 0 0 0 1px #e2b9c8, 0 10px 26px rgba(199, 131, 157, .3);
 }
-.bg-paper #rsvpForm .btn-primary {
-  background: #6a2036; color: #fff9ee;
-  box-shadow: inset 0 0 0 1px #c89542, 0 10px 26px rgba(106, 32, 54, .3);
-}
 
 /* panel proportions */
 #rsvpForm { max-width: 420px; }
 .bg-sakura #rsvpForm { border-radius: 14px; padding: 18px 16px 18px; }
-.bg-paper #rsvpForm { border-radius: 12px; padding: 18px 16px 18px; border: 1px solid rgba(200, 149, 66, .5) !important; box-shadow: 0 18px 44px rgba(74, 16, 40, .18) !important; }
 
 /* footnote navigation: engraved, not buttons */
 .foot-nav {
@@ -1299,9 +1149,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   height: 1px; background: #dab3c2;
 }
 .foot-dot { color: #a96c83; opacity: .6; }
-.bg-paper .footlink { color: #6a2036; }
-.bg-paper .footlink::after { background: #be8b39; }
-.bg-paper .foot-dot { color: #6a2036; }
 
 /* tent line: italic serif whisper */
 #rsvpForm .tent-line { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 11px !important; opacity: .75; }
@@ -1325,7 +1172,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   letter-spacing: .22em; text-transform: uppercase;
   padding: 14px 12px 2px !important;
 }
-.bg-paper .deadline-banner { color: #8a5a28 !important; }
 #rsvpForm .choice { border-bottom: none !important; position: relative; }
 #rsvpForm .choice::after {
   content: ''; position: absolute; left: 24px; right: 0; bottom: 0;
@@ -1347,7 +1193,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   opacity: 0; transition: opacity .45s ease;
 }
 .bg-sakura .env-ov { background: linear-gradient(170deg, #fdf6f4, #f8e7ea); }
-.bg-paper .env-ov { background: linear-gradient(168deg, #ecd4cc, #e4c4bd); }
 .env-ov.env-in { opacity: 1; }
 .env-ov.env-gone { opacity: 0; pointer-events: none; }
 body.env-locked { overflow: hidden; }
@@ -1365,7 +1210,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 .env-back, .env-front, .env-flap, .env-card { position: absolute; border-radius: 6px; }
 .env-back { inset: 0; box-shadow: 0 30px 70px rgba(90, 40, 60, .3); }
 .bg-sakura .env-back { background: #f3d3dd; }
-.bg-paper .env-back { background: #efe0c8; }
 .env-card {
   left: 4%; right: 4%; top: 6%; height: 88%;
   background: #fffdfb; box-shadow: 0 4px 18px rgba(0, 0, 0, .12);
@@ -1376,7 +1220,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   padding-bottom: 12px; overflow: hidden;
 }
 .bg-sakura .env-front { background: linear-gradient(180deg, #f9dfe7 0%, #f5d2dd 100%); }
-.bg-paper .env-front { background: linear-gradient(180deg, #f5e8d0 0%, #eeddc0 100%); }
 .env-front::before, .env-front::after { /* envelope side folds */
   content: ''; position: absolute; top: 0; bottom: 0; width: 52%;
   opacity: .35;
@@ -1395,7 +1238,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   z-index: 3;
 }
 .bg-sakura .env-flap { background: linear-gradient(180deg, #f0c3d2, #ecb5c8); }
-.bg-paper .env-flap { background: linear-gradient(180deg, #eddcb9, #e6d0a8); }
 .env-seal {
   position: absolute; left: 50%; top: 64%; z-index: 4;
   width: 76px; height: 76px; margin: -38px 0 0 -38px;
@@ -1407,7 +1249,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 .env-seal:active { transform: scale(.93); }
 .env-seal svg { width: 100%; height: 100%; }
 .bg-sakura .env-seal .wax { fill: #ad5872; }
-.bg-paper .env-seal .wax { fill: #9c6b1e; }
 .env-seal .seal-mono { color: rgba(255, 248, 236, .92); }
 @keyframes sealglint {
   0%, 100% { filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .3)) brightness(1); }
@@ -1444,12 +1285,10 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   -webkit-background-clip: text; background-clip: text;
   animation: inkwrite 1.7s cubic-bezier(.3, 0, .4, 1) .2s forwards;
 }
-.bg-paper .ink-line { background-image: linear-gradient(90deg, #6b1839 0%, #6b1839 50%, transparent 50.5%); }
 @keyframes inkwrite { to { background-position: 0% 0; } }
 .ink-flourish {
   width: 170px; height: 14px; color: #c9a24b; display: block; margin: .1rem auto 0;
 }
-.bg-paper .ink-flourish { color: #b98c28; }
 .ink-flourish path { stroke-dasharray: 220; stroke-dashoffset: 220; animation: flourishdraw .9s ease 1.6s forwards; }
 @keyframes flourishdraw { to { stroke-dashoffset: 0; } }
 .ink-names.ink-out { transition: opacity .55s ease; opacity: 0; position: absolute; left: 0; right: 0; }
@@ -1460,7 +1299,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   color: #9a8578; margin: .45rem 0 0;
   animation: hintin .8s ease .3s both;
 }
-.bg-paper .inv-count { color: #8a5a3a; }
 
 /* sakura: branches draw themselves */
 .scluster .twig path {
@@ -1481,17 +1319,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   100% { opacity: 0; transform: translate3d(4vw, 108vh, 0) rotate(340deg); }
 }
 
-/* lotus: petals breathe — two furl-and-unfurl cycles after blooming, then settle */
-.bg-paper .lo .petal {
-  animation: bloom 1.6s cubic-bezier(.18, .8, .28, 1) both,
-             lbreathe 9s ease-in-out 4s 2 alternate;
-  animation-delay: calc(var(--d, 0s) + var(--i) * .13s), calc(var(--d, 0s) + 3.5s);
-}
-@keyframes lbreathe {
-  from { transform: rotate(var(--a)) scale(var(--s, 1)); }
-  to   { transform: rotate(calc(var(--a) * .42)) scale(calc(var(--s, 1) * .82)); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .env-ov { display: none !important; }
   .ink-names { display: none; }
@@ -1499,7 +1326,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   .inv-count { animation: none; }
 }
 .bg-sakura .env-seal .wax-rim { fill: #a94b64; }
-.bg-paper .env-seal .wax-rim { fill: #7d5416; }
 .env-front svg { margin-bottom: 0; }
 
 /* critical-loop-1: entry refinement */
@@ -1537,11 +1363,9 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   background-position: 100% 0;
   animation: inkwrite 2.1s cubic-bezier(.35, 0, .35, 1) .15s forwards;
 }
-.bg-paper .ink-line { background-image: linear-gradient(90deg, #6b1839 0%, #6b1839 47%, rgba(107, 24, 57, 0) 53%); }
 
-/* good-to-know modal: solid readable panel in BOTH themes */
+/* good-to-know modal: solid readable panel */
 .lb-modal .lb-box { background: #fffdfd; color: #5f534f; border: none; box-shadow: 0 22px 60px rgba(90, 40, 60, .3); }
-.bg-paper .lb-modal .lb-box { background: #fff9f0; color: #43101f; border: 1px solid rgba(200, 149, 66, .5); }
 .lb-modal .lb-box .lead b { color: inherit; }
 .gtk-body p { color: inherit; }
 
@@ -1606,7 +1430,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   opacity: 0; transition: opacity .45s ease;
   background: linear-gradient(170deg, #f8eff0 0%, #f6e9eb 55%, #f3e2e5 100%);
 }
-.bg-paper .ck-ov { background: linear-gradient(168deg, #f0ddd2 0%, #ecd4c8 100%); }
 .ck-ov.ck-in { opacity: 1; }
 .ck-vignette { position: absolute; inset: 0; box-shadow: inset 0 0 120px 30px rgba(112, 67, 78, .08); pointer-events: none; }
 .ck-glow {
@@ -1631,8 +1454,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 500;
   letter-spacing: .14em; text-transform: uppercase; color: #554648;
 }
-.bg-paper .ck-eyebrow { color: #6b4534; }
-.bg-paper .ck-topnames { color: #5a3a2a; }
 
 /* the envelope — physical stationery */
 .ck-scene { perspective: 1150px; position: relative; }
@@ -1772,7 +1593,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   animation: ckline 1s ease 1.5s forwards;
 }
 @keyframes ckline { to { width: 44px; } }
-.bg-paper .ck-hint { color: #57402f; }
 /* the invitation obeyed — the hint leaves the moment the seal is pressed */
 .ck-ov.ck-crack .ck-hint { animation: none; opacity: 0; transition: opacity .3s ease; }
 .ck-ov.ck-crack .ck-hintline { animation: none; }
@@ -1792,7 +1612,6 @@ body.env-locked .invite-card { visibility: hidden; z-index: 90; will-change: tra
 /* pre-script bootstrap lock (inline body-top script) — same hiding, earlier */
 html.env-boot .invite-card { visibility: hidden; }
 /* nothing behind the envelope is reachable while it is up */
-body.env-locked .theme-toggle { visibility: hidden; }
 body.ck-flip .invite-card { visibility: visible; }
 body.ck-flip .ck-ov { z-index: 10; }
 
@@ -1801,10 +1620,6 @@ body.go1 .sc-tl .petal, body.go1 .sc-tl .twig path, body.go1 .sc-tl .lotus-stem,
 body.go2 .sc-le .petal, body.go2 .sc-rm .petal, body.go2 .sc-le .lotus-heart, body.go2 .sc-rm .lotus-heart { animation-play-state: running !important; }
 body.go3 .sc-br .petal, body.go3 .sc-br .twig path, body.go3 .sband .petal, body.go3 .sc-br .lotus-heart, body.go3 .sband .lotus-heart, body.go3 .sc-bl .petal { animation-play-state: running !important; }
 body.go4 .lotus-fg .drift { animation-play-state: running !important; }
-/* lotus theme groups */
-body.go1 .lo-tl .petal, body.go1 .lo-ml .petal, body.go1 .lo-tl .lotus-stem, body.go1 .lo-ml .lotus-stem { animation-play-state: running !important; }
-body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.go3 .lo-bud1 .petal, body.go3 .lo .lotus-stem, body.go3 .lo .lotus-heart { animation-play-state: running !important; }
-
 /* names: handwriting lifts and dissolves in one continuous motion,
    formal caps appear beneath — no watermark pause */
 .ink-names.ink-keep {
@@ -1840,7 +1655,6 @@ body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.g
   color: #b88732;
   animation: none !important;
 }
-.bg-paper .ink-names .ink-line { color: #6b1839; }
 .ink-wipe {
   display: inline-block;
   clip-path: inset(-12% 100% -12% -4%);
@@ -1895,11 +1709,6 @@ body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.g
   --gtk-paper: #fffdfc; --gtk-ink: #6b5a52; --gtk-heading: #4f3f45;
   --gtk-accent: #c7839d; --gtk-accent-soft: rgba(199, 131, 157, .09);
   --gtk-line: rgba(199, 131, 157, .3); --gtk-gold: #bf8731;
-}
-.bg-paper {
-  --gtk-paper: #fff9f0; --gtk-ink: #4a3527; --gtk-heading: #43101f;
-  --gtk-accent: #c89542; --gtk-accent-soft: rgba(200, 149, 66, .1);
-  --gtk-line: rgba(200, 149, 66, .42); --gtk-gold: #a96e26;
 }
 .lb-box.gtk-box {
   background: var(--gtk-paper) !important;
@@ -1958,7 +1767,6 @@ body.go3 .lo-br1 .petal, body.go3 .lo-br2 .petal, body.go3 .lo-bl .petal, body.g
 
 /* ============ page-to-page paper veil ============ */
 html { --nav-veil: #f6e9eb; }               /* sakura wash (default) */
-html.veil-lotus { --nav-veil: #f0ddd2; }    /* lotus/ivory wash */
 html[data-page="game"] { --nav-veil: #f2debc; } /* leaving the game: marigold */
 html::after {
   content: ''; position: fixed; inset: 0; z-index: 220;
