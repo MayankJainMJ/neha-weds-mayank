@@ -139,5 +139,8 @@ async function renderChamp() {
 window.CLOUD = { schedulePush, pushNow, renderBoard, renderChamp };
 
 schedulePush();   // auto-resync anything saved locally, every visit
-renderBoard();    // global board (rsvp page only — no-op elsewhere)
+const lbOpen = document.getElementById('lbOpen');
+const lbModal = document.getElementById('lbModal');
+if (lbModal && !lbModal.hidden) renderBoard();
+else if (lbOpen) lbOpen.addEventListener('click', renderBoard, { once: true });
 renderChamp();    // challenge line (invite deck's last card — no-op elsewhere)

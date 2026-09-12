@@ -14,7 +14,7 @@
      MID = arrive mid-season (negative phase delays); envelope entries start
      each blossom at grow(0%) so the go1-go4 release choreography still owns
      the first bloom. Separate RNG seed — paperTexture's stays untouched. */
-  var SEASON = !document.body.classList.contains('rsvp-page');
+  var SEASON = true;
   if (SEASON) document.body.classList.add('blossom-season');
   var MID = false;
   try {

@@ -95,7 +95,7 @@
     if (a === 'replay') beginRun();
     if (a === 'resume') { mode = 'run'; hideOverlay(); lastT = 0; }
     if (a === 'goinvite') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./');
-    if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('rsvp.html');
+    if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./?entry=0#rsvp');
     if (a === 'share') {
       var url = 'https://mayankjainmj.github.io/neha-weds-mayank/';
       var txt = (store.name ? store.name + ' scored ' : 'I scored ') + lastScore +

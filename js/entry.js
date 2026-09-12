@@ -3,14 +3,21 @@
    layered envelope (body/interior/insert/folds/flap), dusty-rose wax seal
    with embossed monogram + SVG crack, weighted flap, and a SHARED-CARD
    transition: the insert becomes the real invite card via FLIP.
-   Sequence target: ~2.8s after tap. Once per browser session
-   (sessionStorage), ?entry=1 forces, ?entry=0 skips, reduced-motion skips.
+   The envelope opens automatically two seconds after load; ?entry=0 and
+   reduced-motion skip it.
    The personalised illustrated logo is used AS-IS (small, on the flap). */
 (function () {
   'use strict';
 
   var card = document.querySelector('.invite-card');
   if (!card) return;
+  var rsvpSection = document.getElementById('rsvp');
+
+  function unlockRsvp() {
+    if (!rsvpSection) return;
+    rsvpSection.inert = false;
+    rsvpSection.removeAttribute('aria-hidden');
+  }
 
   /* the envelope greets EVERY visit — only ?entry=0 (tests/deep-links)
      and reduced-motion skip it. If the bootstrap's 4s safety net already
@@ -223,10 +230,10 @@
           '<div class="ck-grain"></div>' +
           '<div class="ck-flapcast" aria-hidden="true"></div>' +
           '<div class="ck-flap"><picture><source srcset="img/logo.webp" type="image/webp"><img class="ck-flaplogo" src="img/logo.png" alt=""></picture></div>' +
-          '<button type="button" class="ck-seal" aria-label="Open Neha and Mayank\u2019s wedding invitation">' + sealSVG() + '</button>' +
+          '<div class="ck-seal" aria-hidden="true">' + sealSVG() + '</div>' +
         '</div>' +
       '</div>' +
-      '<p class="ck-hint">Tap the seal to open<span class="ck-hintline" aria-hidden="true"></span></p>';
+      '<p class="ck-hint">Opening shortly<span class="ck-hintline" aria-hidden="true"></span></p>';
     return ov;
   }
 
@@ -262,6 +269,7 @@
     if (o) o.remove();
     try { card.getAnimations().forEach(function (a) { a.cancel(); }); } catch (e) {}
     card.style.opacity = '';
+    card.inert = false;
     document.body.classList.remove('hold-bloom', 'env-locked', 'ck-flip', 'go1', 'go2', 'go3', 'go4');
     var els = document.querySelectorAll('.ck-g');
     for (var i = 0; i < els.length; i++) els[i].classList.remove('ck-g', 'ckh');
@@ -269,6 +277,7 @@
     if (names) { names.style.opacity = ''; names.style.transition = ''; }
     var ink = document.querySelector('.ink-names');
     if (ink) ink.remove();
+    unlockRsvp();
   }
 
   function play() {
@@ -276,6 +285,7 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (document.getElementById('envOv')) return;
     document.body.classList.add('hold-bloom', 'env-locked');
+    card.inert = true;
     var run = { dead: false };
     var mq = matchMedia('(prefers-reduced-motion: reduce)');
     var onmq = function (e) { if (e.matches) bail(mq, onmq, run); };
@@ -285,16 +295,12 @@
     requestAnimationFrame(function () {
       if (run.dead) return;
       ov.classList.add('ck-in');
-      /* keyboard users start at the only interactive thing on screen */
-      try { ov.querySelector('.ck-seal').focus({ preventScroll: true }); } catch (e) {}
     });
 
     var opened = false;
-    ov.querySelector('.ck-seal').addEventListener('click', function () {
+    function openEnvelope() {
       if (opened) return;
       opened = true;
-      // Start in this same user gesture; optional audio must never block entry.
-      try { if (window.INVITE_AUDIO) window.INVITE_AUDIO.open(); } catch (e) {}
       try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {}
 
       var staleInk = document.querySelector('.ink-names');
@@ -365,17 +371,23 @@
         try { if (mq.removeEventListener) mq.removeEventListener('change', onmq); else mq.removeListener(onmq); } catch (e) {}
         ov.remove();
         document.body.classList.remove('env-locked', 'ck-flip');
+        card.inert = false;
+        unlockRsvp();
         groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('ck-g', 'ckh'); }); });
         var names = document.querySelector('.inv-names');
         if (names) {
           /* idempotent: if the ink pass never ran, restore visibility here */
           if (!document.querySelector('.ink-names')) { names.style.opacity = ''; names.style.transition = ''; }
-          names.setAttribute('tabindex', '-1');
-          names.addEventListener('blur', function () { names.removeAttribute('tabindex'); }, { once: true });
-          try { names.focus({ preventScroll: true }); } catch (e) {}
+          var active = document.activeElement;
+          if (!active || active === document.body || active === document.documentElement || ov.contains(active)) {
+            names.setAttribute('tabindex', '-1');
+            names.addEventListener('blur', function () { names.removeAttribute('tabindex'); }, { once: true });
+            try { names.focus({ preventScroll: true }); } catch (e) {}
+          }
         }
       }, 2450);
-    });
+    }
+    setTimeout(function () { if (!run.dead) openEnvelope(); }, 2000);
   }
 
   addCardLogo();
@@ -385,5 +397,6 @@
      the envelope. env-locked lands in the same task, then the inline
      bootstrap lock (html.env-boot) hands over without a visible gap. */
   if (!skip && !reduced) play();
+  else unlockRsvp();
   document.documentElement.classList.remove('env-boot');
 })();

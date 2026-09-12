@@ -88,7 +88,7 @@
   }
   var editBtn = document.getElementById('editRsvp');
 
-  /* RSVP'd: collapse the form into summary + edit button (page stays one screen) */
+  /* RSVP'd: collapse the form into a summary + edit button. */
   function showSummary() {
     savedBanner.textContent = state.rsvp.attending
       ? '\u2713 You\u2019ve RSVP\u2019d \u2014 ' + (state.rsvp.partySize > 1 ? 'you + 1, ' : '') + 'arriving on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '. See you on the hill!'
@@ -139,6 +139,7 @@
   if (lbModal && lbOpen) {
     lbOpen.addEventListener('click', function () {
       lbModal.hidden = false;
+      try { lbClose.focus({ preventScroll: true }); } catch (e) {}
       /* the leaderboard tempts guests toward the game — warm up that hop */
       if (!document.getElementById('pfGame') && !(navigator.connection && navigator.connection.saveData)) {
         var l = document.createElement('link');
@@ -146,9 +147,21 @@
         document.head.appendChild(l);
       }
     });
-    lbClose.addEventListener('click', function () { lbModal.hidden = true; });
-    lbModal.addEventListener('click', function (e) { if (e.target === lbModal) lbModal.hidden = true; });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lbModal.hidden = true; });
+    function closeBoard() {
+      if (lbModal.hidden) return;
+      lbModal.hidden = true;
+      try { lbOpen.focus({ preventScroll: true }); } catch (e) {}
+    }
+    lbClose.addEventListener('click', closeBoard);
+    lbModal.addEventListener('click', function (e) { if (e.target === lbModal) closeBoard(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBoard(); });
+    lbModal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || lbModal.hidden) return;
+      var focusable = lbModal.querySelectorAll('button, a[href]');
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
 
   form.addEventListener('submit', function (e) {

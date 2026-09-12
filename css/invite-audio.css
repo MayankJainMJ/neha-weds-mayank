@@ -1,6 +1,6 @@
 /* A small soundtrack control in the invitation's top-right corner. */
 .invite-sound {
-  position: fixed; top: 10px; right: 10px; z-index: 60;
+  position: fixed; top: 10px; right: 10px; z-index: 100;
   display: flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; padding: 0; border-radius: 50%;
   border: 1px solid rgba(107, 90, 82, .2);
@@ -12,5 +12,4 @@
 .invite-sound .sound-waves { display: none; }
 .invite-sound[aria-pressed="true"] .sound-waves { display: inline; }
 .invite-sound[aria-pressed="true"] .sound-off { display: none; }
-html.env-boot .invite-sound,
-body.env-locked:not(.ck-flip) .invite-sound { visibility: hidden; }
+html.env-boot .invite-sound { visibility: hidden; }

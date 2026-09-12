@@ -6,6 +6,8 @@
 **Domain:** Frontend routing migration and theme retirement
 **Parent:** [SPEC.md](./SPEC.md)
 **Progress:** [STATUS.md](./STATUS.md), phases IF0–IF5
+
+> **Superseded behavior:** The released v7.0 route contract below records the invitation-first migration. A subsequent local v7.1 change removes the standalone RSVP route, embeds RSVP in the invitation, and replaces seal activation with timed automatic entry. Current progress and verification live in `STATUS.md`.
 **Audited baseline:** `ac0de7f` — invitation soundtrack release
 
 > Guests should arrive at the sealed wedding invitation through the main site URL, with cherry blossom as the only invitation/RSVP presentation and the game available as an optional destination. The central implementation requirement was to change the homepage and every route consumer together because `index.html` previously meant “game” in both links and transition code. Release requires working root/legacy routes, preserved artwork and guest data, and passing visual and interaction checks.

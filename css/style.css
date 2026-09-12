@@ -1,5 +1,4 @@
-/* Mayank Weds Neha — shared styles. Day-arc palettes:
-   morning (splash/game) → golden hour (invite) → dusk (story) → night+bonfire (rsvp) */
+/* Mayank Weds Neha — shared styles. */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -426,6 +425,7 @@ textarea { min-height: 84px; resize: vertical; }
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .blink, .flicker { animation: none; }
 }
@@ -749,7 +749,7 @@ body.bg-night { min-height: 100dvh; }
 
 /* leaderboard modal */
 .lb-modal {
-  position: fixed; inset: 0; z-index: 70;
+  position: fixed; inset: 0; z-index: 110;
   background: rgba(8, 6, 18, .78);
   backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center;
@@ -861,15 +861,34 @@ body.bg-sakura {
 .sc-br { bottom: -42px; right: -44px; width: min(48vw, 258px); height: min(30vw, 162px); transform-origin: 100% 100%; }
 .sband { position: absolute; left: 0; right: 0; bottom: 0; height: 20vh; pointer-events: none; }
 .sband .sp { position: absolute; }
-.rsvp-page .sc-tl { width: min(30vw, 160px); height: min(24vw, 130px); top: -22px; left: -20px; opacity: .9; }
 .sak { display: block; }
 
-/* single-page invite card */
+/* invitation card + embedded RSVP */
+.invite-experience { position: relative; z-index: 1; }
 .invite-single {
   min-height: 100dvh;
   display: flex; align-items: center; justify-content: center;
   padding: max(20px, 4vh) 22px;
 }
+.invite-rsvp-section {
+  min-height: 100dvh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-top: max(44px, 7vh);
+  padding-bottom: max(28px, calc(4vh + env(safe-area-inset-bottom)));
+  scroll-margin-top: 10px;
+}
+.invite-rsvp-section .deadline-banner { margin: 0 auto 10px; }
+.invite-rsvp-section .greet-line { text-align: center; }
+.invite-rsvp-section .form-title {
+  font-size: clamp(1.15rem, 4.6vw, 1.5rem);
+  text-align: center; margin-bottom: .6rem;
+}
+.invite-rsvp-section #editRsvp {
+  width: 100%; max-width: 350px; margin: 0 auto .7rem;
+  font-size: .85rem; padding: 10px 16px;
+}
+.leaderboard-game { margin-top: 1rem; font-size: .85rem; padding: 10px 22px; }
+#lbRows { margin-top: .7rem; }
 .invite-card {
   position: relative; z-index: 1;
   width: 100%; max-width: 340px;
@@ -1036,10 +1055,8 @@ body.bg-sakura {
 }
 .bg-sakura .choice input[type="radio"]:checked { border-color: #c9879d; background: radial-gradient(circle, #c9879d 0 4.5px, transparent 5px); }
 /* fewer petals over controls */
-.rsvp-page .sc-br { width: min(45vw, 240px); height: min(28vw, 150px); opacity: .92; }
 
 /* loop-5 final nitpicks */
-.bg-sakura.rsvp-page .invite-hero { padding-top: calc(1.1rem + 24px); }
 .bg-sakura .tent-line, .bg-sakura .inv-note { color: #9b777d; }
 
 /* year as engraved numerals, not spelled-out text */
@@ -1162,7 +1179,6 @@ input[type="text"], textarea { font-size: 16px !important; }
   #rsvpForm .choice { min-height: 38px; padding: 6px 3px; font-size: 13px; }
   #rsvpForm .tent-line { display: none; }
 }
-.rsvp-page .sband { opacity: .55; height: 14vh; }
 
 /* loop-2 refinements: kill the last web-form tells */
 .deadline-banner {
@@ -1420,7 +1436,6 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 /* reference-style side cascades — hug the edges, never the text */
 .sc-le { left: -12px; top: 15vh; width: min(15vw, 64px); height: 58vh; transform-origin: 0 50%; }
 .sc-rm { right: -10px; top: 34vh; width: min(12vw, 52px); height: 20vh; transform-origin: 100% 50%; }
-.rsvp-page .sc-le, .rsvp-page .sc-rm { opacity: .8; }
 
 /* ============ Cherry Blossom Keepsake — entry v2 ============ */
 .ck-ov {
@@ -1548,16 +1563,9 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   position: absolute; left: 50%; top: calc(65% - 20px);
   width: clamp(61px, 16vw, 67px); height: clamp(61px, 16vw, 67px);
   margin: calc(clamp(61px, 16vw, 67px) / -2) 0 0 calc(clamp(61px, 16vw, 67px) / -2);
-  padding: 0; background: none; border: none; cursor: pointer;
+  padding: 0; background: none; border: none;
   z-index: 4;
   filter: drop-shadow(0 5px 9px rgba(84, 34, 49, .3));
-}
-.ck-seal::after { content: ''; position: absolute; inset: -8px; } /* 48px+ hit target */
-/* focus: a soft wax glow instead of the UA's blue ring */
-.ck-seal:focus { outline: none; }
-.ck-seal:focus-visible {
-  outline: none;
-  filter: drop-shadow(0 5px 9px rgba(84, 34, 49, .3)) drop-shadow(0 0 7px rgba(159, 82, 107, .6));
 }
 .inv-names:focus { outline: none; } /* programmatic focus target, not interactive */
 .ck-seal svg { width: 100%; height: 100%; overflow: visible; }
@@ -1593,7 +1601,7 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   animation: ckline 1s ease 1.5s forwards;
 }
 @keyframes ckline { to { width: 44px; } }
-/* the invitation obeyed — the hint leaves the moment the seal is pressed */
+/* the hint leaves when the automatic opening begins */
 .ck-ov.ck-crack .ck-hint { animation: none; opacity: 0; transition: opacity .3s ease; }
 .ck-ov.ck-crack .ck-hintline { animation: none; }
 

@@ -24,9 +24,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 8 8%27%3E%3Crect x=%271%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%275%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%271%27 y=%273%27 width=%276%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%272%27 y=%275%27 width=%274%27 height=%271%27 fill=%27%23e85d75%27/%3E%3Crect x=%273%27 y=%276%27 width=%272%27 height=%271%27 fill=%27%23a4133c%27/%3E%3C/svg%3E">
   <link rel="preload" as="image" href="img/logo.webp" type="image/webp">
-  <link rel="stylesheet" href="css/style.css?v=61">
-  <link rel="stylesheet" href="css/invite-audio.css?v=2">
-  <link rel="prefetch" href="rsvp.html">
+  <link rel="stylesheet" href="css/style.css?v=63">
+  <link rel="stylesheet" href="css/invite-audio.css?v=3">
 </head>
 <body class="bg-sakura">
 <script>
@@ -46,14 +45,17 @@
       if (document.documentElement.classList.contains('env-boot')) {
         window.mwnEnvExpired = true;
         document.documentElement.classList.remove('env-boot');
+        var rsvp = document.getElementById('rsvp');
+        if (rsvp) { rsvp.inert = false; rsvp.removeAttribute('aria-hidden'); }
       }
     }, 4000);
   } catch (e) {}
 })();
 </script>
 
-<main class="invite-single" aria-label="Wedding invitation">
-  <section class="invite-card">
+<main class="invite-experience" aria-label="Wedding invitation and RSVP">
+  <section class="invite-single" id="invitation" aria-labelledby="names">
+   <div class="invite-card">
     <p class="inv-eyebrow">The wedding of</p>
     <h1 class="inv-names" id="names">Neha<span class="inv-and">and</span>Mayank</h1>
     <p class="inv-script">December 02 &ndash; 03</p>
@@ -61,12 +63,66 @@
     <div class="inv-rule" aria-hidden="true"></div>
     <p class="inv-venue">Khanna Pawna Estate<br><span>Pawna &middot; Lonavala</span></p>
     <p class="inv-note">A sundowner wedding on a hilltop.<br>We eat, we dance, we sit around the bonfire<br>&mdash; and nobody has to drive home.</p>
-    <a class="btn btn-primary inv-rsvp" href="rsvp.html">RSVP &rarr;</a>
+    <a class="btn btn-primary inv-rsvp" href="#rsvp">RSVP &rarr;</a>
     <p class="inv-links">
       <button type="button" class="linklike" id="gtkOpen">Good to know</button>
       <span aria-hidden="true">&middot;</span>
       <a class="linklike" href="game.html">Play the game</a>
     </p>
+   </div>
+  </section>
+
+  <section class="invite-rsvp-section wrap" id="rsvp" aria-labelledby="rsvpTitle" aria-hidden="true" inert>
+    <div class="deadline-banner">RSVP by 31 October 2026</div>
+    <p class="greet-line reveal" id="greet" hidden></p>
+    <div class="saved-banner" id="savedBanner" role="status" aria-live="polite"></div>
+    <button type="button" class="btn btn-ghost" id="editRsvp" hidden>Edit my RSVP</button>
+
+    <form id="rsvpForm" class="card-dark gold-frame" novalidate>
+      <h2 class="names form-title" id="rsvpTitle">We&rsquo;re saving you a seat<br>by the bonfire</h2>
+      <div class="form-group">
+        <label for="name">Your name</label>
+        <input type="text" id="name" maxlength="40" autocomplete="name" placeholder="Sharma ji's beta" required>
+      </div>
+
+      <div class="form-group">
+        <label>Are you coming?</label>
+        <div class="choice-row" id="attendRow">
+          <label class="choice"><input type="radio" name="attending" value="yes">Obviously</label>
+          <label class="choice"><input type="radio" name="attending" value="no">Can't make it</label>
+        </div>
+      </div>
+
+      <div id="detailsBlock">
+        <div class="form-group">
+          <label>When are you arriving?</label>
+          <div class="choice-row cols" id="arrivalRow">
+            <label class="choice"><input type="radio" name="arrivalDay" value="2">2 Dec &mdash; up early</label>
+            <label class="choice"><input type="radio" name="arrivalDay" value="3">3 Dec &mdash; straight to the wedding</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Are you bringing a +1?</label>
+          <div class="choice-row cols" id="plusRow">
+            <label class="choice"><input type="radio" name="plusOne" value="no" checked>Just me</label>
+            <label class="choice"><input type="radio" name="plusOne" value="yes">Yes &mdash; plus one</label>
+          </div>
+        </div>
+
+        <div class="form-group" id="plusNameGroup" style="display:none;margin-bottom:.4rem">
+          <input type="text" id="plusName" maxlength="40" placeholder="Your +1's name" aria-label="Your +1's name">
+        </div>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+      <p class="tent-line">No RSVP by 31 October? You sleep in the camp tent. On the floor.</p>
+    </form>
+
+    <nav class="foot-nav" aria-label="Continue">
+      <a class="footlink" href="#invitation">Back to invitation</a>
+      <button type="button" class="footlink" id="lbOpen">Top players</button>
+    </nav>
   </section>
 </main>
 
@@ -104,9 +160,18 @@
   </div>
 </div>
 
+<div class="lb-modal" id="lbModal" hidden>
+  <div class="lb-box card-dark gold-frame" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <button type="button" class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+    <p class="lead" id="lbTitle"><b>&#127942; Top Players &#10022;</b></p>
+    <div id="lbRows"></div>
+    <a class="btn btn-ghost leaderboard-game" href="game.html">&#9654; Beat them &mdash; play the game</a>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<audio id="inviteAudio" src="audio/darkhaast.m4a" preload="none" loop></audio>
+<audio id="inviteAudio" src="audio/darkhaast.m4a" preload="auto" loop></audio>
 <button type="button" id="inviteSound" class="invite-sound" aria-label="Invitation music" aria-pressed="false" title="Play invitation music — Darkhaast" hidden>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
     <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
@@ -145,11 +210,14 @@
 })();
 </script>
 <script src="js/logo.js"></script>
-<script src="js/sakura.js?v=2"></script>
-<script src="js/invite-audio.js?v=1"></script>
-<script src="js/entry.js?v=10"></script>
+<script src="js/sakura.js?v=3"></script>
+<script src="js/invite-audio.js?v=4"></script>
+<script src="js/entry.js?v=12"></script>
 <script src="js/eggs.js"></script>
-<script type="module" src="js/cloud.js"></script>
+<script src="js/story.js"></script>
+<script src="js/store.js"></script>
+<script src="js/rsvp.js?v=4"></script>
+<script type="module" src="js/cloud.js?v=2"></script>
 <script src="js/nav.js?v=2"></script>
 </body>
 </html>
