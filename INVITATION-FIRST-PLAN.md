@@ -1,6 +1,6 @@
 # Invitation-first homepage and Sakura-only presentation — implementation plan
 
-**Status:** Approved; IF0–IF4 complete; release requested
+**Status:** Released; IF0–IF5 complete
 **Date:** 2026-09-12
 **Author:** OpenCode assistant
 **Domain:** Frontend routing migration and theme retirement
