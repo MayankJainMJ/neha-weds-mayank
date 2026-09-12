@@ -293,6 +293,8 @@
     ov.querySelector('.ck-seal').addEventListener('click', function () {
       if (opened) return;
       opened = true;
+      // Start in this same user gesture; optional audio must never block entry.
+      try { if (window.INVITE_AUDIO) window.INVITE_AUDIO.open(); } catch (e) {}
       try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {}
 
       var staleInk = document.querySelector('.ink-names');
