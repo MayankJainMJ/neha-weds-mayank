@@ -49,8 +49,8 @@
     card.insertBefore(d, card.firstChild);
   }
 
-  /* ---------- names: handwritten, then kept as a faint gold watermark ---------- */
-  function inkNames(run) {
+  /* ---------- names: handwritten, then dissolve into formal caps ---------- */
+  function inkNames() {
     var names = document.querySelector('.inv-names');
     if (!names || matchMedia('(prefers-reduced-motion: reduce)').matches ||
         document.querySelector('.ink-names')) return;
@@ -64,13 +64,16 @@
     names.style.opacity = '0';
     names.parentNode.style.position = 'relative';
     names.parentNode.appendChild(ink);
-    setTimeout(function () {
-      if (run.dead) return;
-      ink.classList.add('ink-keep');            /* lifts + dissolves, one motion */
+  }
+
+  function formalNames() {
+    var ink = card.querySelector('.ink-names');
+    var names = card.querySelector('.inv-names');
+    if (ink) ink.classList.add('ink-keep');
+    if (names) {
       names.style.transition = 'opacity .45s ease';
       names.style.opacity = '1';
-      setTimeout(function () { ink.remove(); }, 650); /* gone the moment the fade completes */
-    }, 900);
+    }
   }
 
   /* ---------- wax seal: two halves + crack ---------- */
@@ -239,22 +242,13 @@
     return ov;
   }
 
-  /* staggered blossom release: upper-left first, sides, lower-right, petals last */
-  function releaseBloom(run) {
-    var b = document.body;
-    b.classList.add('go1');
-    setTimeout(function () { if (!run.dead) b.classList.add('go2'); }, 140);
-    setTimeout(function () { if (!run.dead) b.classList.add('go3'); }, 280);
-    setTimeout(function () { if (!run.dead) b.classList.add('go4'); }, 900);
-    setTimeout(function () { if (!run.dead) b.classList.remove('hold-bloom', 'go1', 'go2', 'go3', 'go4'); }, 1600);
-  }
-
   /* card content groups revealed in sequence after the FLIP lands */
   function contentGroups() {
     var sel = [
       ['.inv-script', '.inv-year', '#invCount'],            /* date + countdown */
       ['.inv-rule', '.inv-venue'],                          /* venue */
-      ['.inv-note', '.inv-rsvp', '.inv-links']              /* note + actions */
+      ['.inv-note'],                                       /* wedding note */
+      ['.inv-rsvp', '.inv-links']                           /* actions + footer */
     ];
     return sel.map(function (g) {
       return g.map(function (s) { return card.querySelector(s); }).filter(Boolean);
@@ -266,6 +260,7 @@
      run.dead invalidates every timer/rAF queued by this play() run. */
   function bail(mq, onmq, run) {
     run.dead = true;
+    cancelAnimationFrame(run.frame);
     if (run.dispose) run.dispose();
     try { if (mq.removeEventListener) mq.removeEventListener('change', onmq); else mq.removeListener(onmq); } catch (e) {}
     var o = document.getElementById('envOv');
@@ -277,7 +272,14 @@
     var els = document.querySelectorAll('.ck-g');
     for (var i = 0; i < els.length; i++) els[i].classList.remove('ck-g', 'ckh');
     var names = document.querySelector('.inv-names');
-    if (names) { names.style.opacity = ''; names.style.transition = ''; }
+    if (names) {
+      names.style.transition = 'none';
+      names.style.opacity = '';
+      /* Commit full opacity with transitions disabled: simply clearing the
+         inline transition lets an in-flight fade survive (or restart). */
+      void getComputedStyle(names).opacity;
+      names.style.transition = '';
+    }
     var ink = document.querySelector('.ink-names');
     if (ink) ink.remove();
     unlockRsvp();
@@ -338,7 +340,7 @@
         var nm = card.querySelector('.inv-names');
         if (nm) nm.style.opacity = '0';  /* no flash before the ink writes them */
         requestAnimationFrame(function () { requestAnimationFrame(function () {
-          if (run.dead) { card.style.opacity = ''; return; }
+          if (run.dead) return;
           ov.classList.add('ck-away');                    /* envelope lowers + fades */
           var insert = ov.querySelector('.ck-insert');
           var first = insert.getBoundingClientRect();     /* read at launch — it is mid-rise */
@@ -351,6 +353,10 @@
           var s = first.width / last.width;
           var dx = first.left - last.left, dy = first.top - last.top;
           var hid = Math.max(0, (1 - first.height / (last.height * s)) * 100);
+          /* One clock starts HERE, after both compositor-commit frames, at
+             the actual lift launch. Content never races ahead of the FLIP
+             if those frames are delayed. All post-lift work uses this clock. */
+          var liftedAt = performance.now();
           try {
             var fl = card.animate([
               { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')', transformOrigin: 'top left' },
@@ -363,23 +369,62 @@
             ], { duration: 780, easing: 'cubic-bezier(.3, .4, .2, 1)', fill: 'both' });
             cl.onfinish = function () { cl.cancel(); };
           } catch (e) {}
+          revealFromLift(liftedAt);
         }); });
       }, 1400);
 
-      setTimeout(function () { if (!run.dead) inkNames(run); }, 1750);
-      setTimeout(function () { if (!run.dead) releaseBloom(run); }, 1800);
-      /* staggered reveal: date/countdown -> venue -> note/actions */
-      [2250, 2450, 2650].forEach(function (t, i) {
-        setTimeout(function () {
-          if (run.dead) return;
+      function revealFromLift(liftedAt) {
+        function bloom(stage) { return function () { document.body.classList.add(stage); }; }
+        function showGroup(i) { return function () {
           groups[i].forEach(function (el) { el.classList.remove('ckh'); });
-        }, t);
-      });
-      setTimeout(function () {
+        }; }
+        /* Card settles at 1050ms; the name pass has the stage to itself
+           before information arrives in 500ms beats. Drift waits for venue. */
+        var cues = [
+          [1050, bloom('go1')],
+          [1100, inkNames],
+          [1550, bloom('go2')],
+          [2000, formalNames],
+          [2050, bloom('go3')],
+          [2450, function () {
+            var ink = card.querySelector('.ink-names');
+            if (ink) ink.remove();
+          }],
+          [2600, showGroup(0)],
+          [3100, showGroup(1)],
+          [3100, bloom('go4')],
+          [3600, showGroup(2)],
+          [4100, showGroup(3)],
+          [4600, complete]
+        ];
+        var next = 0;
+        function tick() {
+          if (run.dead) return;
+          var elapsed = performance.now() - liftedAt;
+          while (!run.dead && next < cues.length && elapsed >= cues[next][0]) {
+            cues[next++][1]();
+          }
+          if (!run.dead && next < cues.length) run.frame = requestAnimationFrame(tick);
+        }
+        run.frame = requestAnimationFrame(tick);
+      }
+
+      function complete() {
         if (run.dead) return;
+        /* A late render frame can start the last fade a little late too.
+           Keep interaction locked until its real CSS transition finishes. */
+        if (groups.some(function (g) { return g.some(function (el) {
+          return el.getAnimations && el.getAnimations().some(function (a) {
+            return a.playState === 'running' || a.pending;
+          });
+        }); })) {
+          run.frame = requestAnimationFrame(complete);
+          return;
+        }
+        run.dead = true;
         try { if (mq.removeEventListener) mq.removeEventListener('change', onmq); else mq.removeListener(onmq); } catch (e) {}
         ov.remove();
-        document.body.classList.remove('env-locked', 'ck-flip');
+        document.body.classList.remove('env-locked', 'ck-flip', 'hold-bloom', 'go1', 'go2', 'go3', 'go4');
         card.inert = false;
         unlockRsvp();
         groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('ck-g', 'ckh'); }); });
@@ -394,7 +439,7 @@
             try { names.focus({ preventScroll: true }); } catch (e) {}
           }
         }
-      }, 3400);
+      }
     }
     function beginPrelude() {
       if (run.dead || sequenceStarted) return;

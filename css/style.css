@@ -1649,7 +1649,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 /* names: handwriting lifts and dissolves in one continuous motion,
    formal caps appear beneath — no watermark pause */
 .ink-names.ink-keep {
-  transition: transform .6s cubic-bezier(.3, 0, .3, 1), opacity .6s ease;
+  transition: transform .45s cubic-bezier(.3, 0, .3, 1), opacity .45s ease;
   transform: translateY(-14px) scale(.6);
   opacity: 0;
 }
@@ -1685,7 +1685,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 .ink-wipe {
   display: inline-block;
   clip-path: inset(-12% 100% -12% -4%);
-  animation: inkwipe .85s cubic-bezier(.35, 0, .35, 1) .05s forwards;
+  animation: inkwipe .85s cubic-bezier(.35, 0, .35, 1) forwards;
 }
 @keyframes inkwipe { to { clip-path: inset(-12% -6% -12% -4%); } }
 
