@@ -2,7 +2,9 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://mayankjainmj.github.io/neha-weds-mayank/
 
-## Local preview — seal playback + RSVP popup (2026-09-13; not deployed)
+## Current release — v7.5 LIVE (2026-09-13)
+
+- App commit **26c3f6c** pushed to `origin/master`; Pages deployment **34753819695** succeeded. Production tests ran sequentially in foreground, headed Chromium/WebKit: `rsvp-popup.mjs` passed at 320/375/1280px, including gated seal/deep links, form validation/save/edit, nested leaderboard, focus/scroll restoration and missing-entry recovery. `refined-reveal-audio.mjs` confirmed actual MP3/gain playback through seal tap, full reveal and popup open/edit/close. Cloud requests were stubbed/blocked; no production RSVP records created. RB-02 recovery is now deployed and production-tested.
 
 - Removed the invitation's separate play/mute button and its stylesheet. Autoplay still runs immediately; blocked/pending/error playback keeps the envelope closed with **“Tap the seal to open your invitation”**, or retry feedback. The accessible seal button invokes media/context playback directly in the tap; successful output starts the existing 5.5s prelude and ~13.3s sequence. No independent mute control remains.
 - Music pauses while hidden; previously started playback retries on return. If the browser blocks that resume after entry, the next real page tap retries it without restarting the envelope. Initial entry still requires the seal when autoplay is blocked. Simulated visibility/pagehide/pageshow checks pass; actual bfcache and physical iPhone behavior are not claimed.
@@ -10,9 +12,9 @@ Spec: [`SPEC.md`](./SPEC.md) · Live target: https://mayankjainmj.github.io/neha
 - Preserved validation, +1, saved/edit state, local storage and cloud scheduling. Leaderboard opens within the dialog with separate focus handling; Escape closes only the active dialog layer. The title remains visible in saved mode. Hash/game links request the popup only after entry finishes.
 - **Foreground local Chromium/WebKit PASS:** visible headed windows, sequential runs. `refined-reveal.mjs` confirms normal/delayed timing and full-opacity unlock (~6.379–6.424s after lift) with the new button and popup. `refined-reveal-audio.mjs` verifies touch seal, real MP3 decode/gain fade and uninterrupted audio during popup open/edit/close. `seal-lifecycle.mjs` covers pending media/output, real tap activation, simulated lifecycle recovery and 320/375/1280 layouts. `rsvp-popup.mjs` covers focus containment, submit/edit/reload, +1 validation, stubbed Firestore writes, one-time leaderboard query, nested close behavior, offline save, gated hash links and missing-script recovery at 320/375/1280px.
 - **RB-02 resolved locally:** the four-second entry-script safety timer now also protects `?entry=0#rsvp`; foreground tests aborting entry.js on both root and skip links confirm the popup opens and accepts input. The timer does not bypass a healthy blocked-audio gate.
-- Local cache tokens: CSS **69**, entry **18**, audio **6**, RSVP **5**. Cloud and stored data schema unchanged. Existing logo/MP3 hashes protected. All QA stays outside the repository; cloud requests were mocked/blocked. Physical iPhone Safari/WhatsApp, virtual keyboard and screen-reader testing remain unperformed. Local commit approved; push and deployment pending.
+- Release cache tokens: CSS **69**, entry **18**, audio **6**, RSVP **5**. Cloud and stored data schema unchanged. Existing logo/MP3 hashes protected. All QA stays outside the repository; cloud requests were mocked/blocked. Physical iPhone Safari/WhatsApp, virtual keyboard and screen-reader testing remain unperformed.
 
-## Current release — v7.4.1 LIVE (2026-09-12)
+## Previous release — v7.4.1 (2026-09-12; historical evidence)
 
 - App committed/pushed/deployed: `6259774f651cdd1e537116ed8842f3d8fd9dd432`; Pages run **34700102114 succeeded**. Deployed cache references: shared CSS **67**, entry JS **17**.
 - User-requested names/detail appearance durations **50% longer**; envelope, **5.5s prelude** and card lift unchanged. Relative to actual lift: settle **0–1.05s**; ink starts **1.10s**, duration **1.275s** (was .85); formal names **2.45–3.125s**, duration **.675s** (was .45); date **3.35s**, venue **4.10s**, note **4.85s**, actions **5.60s**; finish **6.35s onward**, waiting for the actual final fade. Detail fades/start intervals **.75s** (was .5). Flowers **1.05 / 1.55 / 2.05 / 4.10s**. Total entry **~13.3s after music confirmation**, previously 11.6s.
@@ -79,7 +81,7 @@ Detailed contract and C01–C15 change ledger: [INVITATION-FIRST-PLAN.md](./INVI
 
 ## Feature backlog
 
-- **RSVP without scrolling down the invitation — implemented and verified locally, awaiting release.** User approved the popup implementation; form scroll stays inside the dialog, music continues, and closing restores the invitation. See the local-preview section above for validation/persistence/focus evidence.
+- **RSVP without scrolling down the invitation — shipped in v7.5.** Form scroll stays inside the dialog, music continues, and closing restores the invitation. See the current release section above for production evidence.
 
 ## Changelog
 

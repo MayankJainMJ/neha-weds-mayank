@@ -1,8 +1,8 @@
 # Post-envelope reveal — independent bug tracker
 
-## Current local preview — seal entry and RSVP dialog (2026-09-13)
+## Current release — v7.5 seal entry and RSVP dialog (2026-09-13)
 
-Application changes remain local; commit approved, push and deployment pending. Verification was performed directly in sequential, headed Chromium/WebKit windows; no background agents/tests were used for this change.
+App **26c3f6c** is pushed and deployed through successful Pages run **34753819695**. Production `rsvp-popup.mjs` passed in headed Chromium/WebKit at 320/375/1280px, including the missing-entry recovery for RB-02. Production `refined-reveal-audio.mjs` passed real MP3/gain playback through seal opening and popup open/edit/close. Verification ran directly in sequential foreground browser windows, with cloud requests stubbed/blocked. The detailed local evidence below is retained.
 
 - **RB-02 resolved locally:** moved entry bootstrap's safety timer outside the skip-route exemption by removing that early return. `rsvp-popup.mjs` aborts entry.js at both `/#rsvp` and `/?entry=0#rsvp` and confirms recovery opens the dialog and accepts name input. A healthy blocked-audio skip route remains on the seal after 4.5 seconds, proving the timer does not bypass that gate.
 - **Popup keyboard wrap — found and resolved during testing:** native dialog focus could temporarily leave its controls on Shift+Tab. Explicit visible/enabled control wrapping now passes in both engines; page controls remain inaccessible behind the native dialog.
@@ -10,7 +10,7 @@ Application changes remain local; commit approved, push and deployment pending. 
 - **Current PASS evidence:** `rsvp-popup.mjs` at 320/375/1280px; local storage/offline persistence, +1 validation, stubbed Firestore scheduling and lazy leaderboard query, nested Escape handling, gated deep links and root/skip script failure. `refined-reveal.mjs` full suites passed after seal changes; normal/delayed timing slices passed again after popup integration. `refined-reveal-audio.mjs` confirmed native MP3/gain output through touch seal and popup open/edit/close. `seal-lifecycle.mjs` tested pending output, stale playback attempts, simulated visibility/page lifecycle and seal layouts. Current CSS **69**, entry **18**, audio **6**, RSVP **5**.
 - **Coverage limits:** Firestore transport was stubbed, not written to production. Native iPhone/WhatsApp, actual OS background/bfcache, phone keyboard and screen readers remain untested. Reduced-motion/static entry intentionally keeps its immediate reveal after music confirmation. No new blocker found in the checked local flows.
 
-The sections below retain earlier-release evidence and historical issue states; their older RB-02 “open” disposition is superseded **locally only** by the verification above.
+The sections below retain earlier-release evidence and historical issue states; their older RB-02 “open” disposition is superseded by the local and production verification above.
 
 ## Historical delta review — 50% longer names/details (CSS 67 / entry 17)
 
