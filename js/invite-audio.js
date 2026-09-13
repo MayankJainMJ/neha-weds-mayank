@@ -1,14 +1,14 @@
 /* Invitation soundtrack. Attempt autoplay on page load, then fade in.
-   Browsers that require a gesture fall back to the same fade on button tap.
+   Browsers that require a gesture fall back to the same fade on seal tap.
    The game owns its separate MUSIC controller. */
 (function () {
   'use strict';
 
   var audio = document.getElementById('inviteAudio');
-  var button = document.getElementById('inviteSound');
-  if (!audio || !button) return;
+  if (!audio) return;
 
-  var muted = false;
+  var hasPlayed = false;
+  var resumeNeeded = false;
   var state = 'pending';
   var waitTimer = 0;
   var requested = false;
@@ -19,12 +19,11 @@
   var fadeDuration = 2400;
   var audioContext = null;
   var gainNode = null;
-  var autoReady = true;
   var autoAttempted = false;
   try { audio.volume = 0; } catch (e) {}
 
   // iOS ignores HTMLMediaElement.volume. Route through a gain node there so
-  // the button-triggered fallback still fades instead of starting abruptly.
+  // the seal-triggered fallback still fades instead of starting abruptly.
   if (audio.volume > 0) {
     try {
       var AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -41,14 +40,6 @@
   }
 
   function render() {
-    var playing = requested && started && !audio.paused && !audio.error;
-    button.hidden = false;
-    button.setAttribute('aria-pressed', playing ? 'true' : 'false');
-    button.dataset.state = state;
-    button.title = playing ? 'Mute invitation music — Darkhaast' : 'Play invite with music';
-    button.setAttribute('aria-label', button.title);
-    var label = button.querySelector('.invite-sound-label');
-    if (label) label.textContent = playing ? '' : (state === 'pending' ? 'Starting…' : 'Play invite');
     window.dispatchEvent(new CustomEvent('invite-audio-state', { detail: state }));
   }
 
@@ -122,6 +113,8 @@
         if (currentAttempt !== attempt || !requested || audio.paused ||
             (audioContext && audioContext.state !== 'running')) return failed();
         started = true;
+        hasPlayed = true;
+        resumeNeeded = false;
         clearTimeout(waitTimer);
         state = 'playing';
         fadeIn(currentAttempt);
@@ -131,23 +124,13 @@
     } catch (e) { return Promise.resolve(failed()); }
   }
 
-  function setMuted(value) {
-    muted = value;
+  function retry() {
+    if (started && !audio.paused) return Promise.resolve(true);
+    if (requested) pause(); // replace a pending autoplay attempt in this gesture
+    return play();
   }
 
-  button.addEventListener('click', function () {
-    try { button.focus({ preventScroll: true }); } catch (e) {}
-    if (started && !audio.paused) {
-      setMuted(true);
-      pause('muted');
-    } else {
-      setMuted(false);
-      if (requested) pause(); // replace a pending autoplay attempt in this gesture
-      play();
-    }
-  });
-
-  // A cancelled pending play must never restart after muting or navigation.
+  // A cancelled pending play must never restart after backgrounding/navigation.
   function playbackRequested() {
     if (!requested) audio.pause();
     render();
@@ -169,32 +152,36 @@
   });
   audio.addEventListener('error', function () { pause('error'); });
 
-  // Stop on backgrounding/navigation, including bfcache. Resume only through
-  // the music button, not an automatic page event.
+  // Never play in a hidden page. With no separate music control, restore an
+  // already-started soundtrack on return; a real page tap can unlock a blocked
+  // resume after entry. Before entry, the seal remains the only retry action.
+  function suspend() {
+    if (hasPlayed) resumeNeeded = true;
+    pause();
+  }
   function attemptAutoPlay() {
-    if (!autoReady || autoAttempted || document.hidden) return;
+    if (document.hidden) return;
+    if (autoAttempted) {
+      if (resumeNeeded && !requested) play();
+      return;
+    }
     autoAttempted = true;
-    window.INVITE_AUDIO.open();
+    play();
   }
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) pause();
+    if (document.hidden) suspend();
     else attemptAutoPlay();
   });
-  window.addEventListener('pagehide', pause);
-  window.addEventListener('pageshow', render);
+  window.addEventListener('pagehide', suspend);
+  window.addEventListener('pageshow', attemptAutoPlay);
+  document.addEventListener('click', function (event) {
+    if (event.isTrusted && resumeNeeded && !document.hidden &&
+        !document.getElementById('envOv')) retry();
+  }, true);
 
   window.INVITE_AUDIO = {
     getState: function () { return state; },
-    open: function () {
-      if (muted) { button.hidden = false; render(); return Promise.resolve(false); }
-      var revealTimer = setTimeout(function () { button.hidden = false; render(); }, 1200);
-      return play().then(function (playing) {
-        clearTimeout(revealTimer);
-        button.hidden = false;
-        render();
-        return playing;
-      });
-    }
+    open: retry
   };
   render();
   attemptAutoPlay();

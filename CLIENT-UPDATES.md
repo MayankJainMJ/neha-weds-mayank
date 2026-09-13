@@ -1,6 +1,28 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 12 September 2026 · v7.4.1 live; production reveal checks passed**
+**Last updated: 13 September 2026 · Seal interaction and RSVP popup verified locally**
+
+## Ready to preview on this computer
+
+**Local preview: http://127.0.0.1:8765/** — local commit approved; push and deployment pending.
+
+| Guest-visible change | Current status |
+| --- | --- |
+| Tap the wax seal when music cannot start automatically; no separate play/mute control | Implemented; foreground Chromium/WebKit checks passed |
+| Existing romantic prelude and slower names/detail reveal | Preserved; timing checks passed |
+| RSVP opens in a popup with music continuing | Implemented; actual MP3 playback checked through open/edit/close |
+| Smaller outlined **RSVP** button, without arrow or solid pink fill | Implemented; phone and desktop visuals checked |
+| Submit, save, edit, +1 details and nested leaderboard | Verified locally; cloud calls safely stubbed during tests |
+| Direct RSVP links still work if the entry script fails | Fixed locally; RB-02 recovery checks passed |
+
+Tests ran directly in **visible foreground browser windows**, sequentially, at phone and desktop sizes. The popup keeps its own scrolling area on shorter screens and restores the invitation when closed. Physical iPhone Safari/WhatsApp and the phone keyboard still need a device check.
+
+### Latest progress
+
+- **13 September — Seal preview completed.** Autoplay remains first; a seal tap retries blocked music and starts the full sequence. Removed the separate audio control.
+- **13 September — RSVP backlog item implemented.** Popup, subtle RSVP label/button, persistence, editing and focus handling completed. Foreground tests found and resolved keyboard-wrap and Safari saved-summary focus issues. Music remains uninterrupted.
+
+## Confirmed live version (before these local changes)
 
 **Current position: v7.4.1 is live.** Names and wedding details now take 50% longer to appear, as requested. The envelope, 5.5-second prelude and card lift keep their timing. Production reveal checks passed in Chromium and WebKit; review found no new blocker. **RB-01 and RB-03 remain resolved**. RB-02 remains open, and physical phone checks are pending.
 
@@ -15,7 +37,7 @@ Live invitation: https://mayankjainmj.github.io/neha-weds-mayank/
 
 Guests now see the slower v7.4.1 names-and-details reveal, verified on the live site in Chromium and WebKit. Physical iPhone Safari and WhatsApp in-app browser checks remain pending.
 
-## What is happening now
+## Deployed v7.4.1 behavior
 
 The requested slower appearance is implemented and deployed. The implementation agent’s slower-reveal and reduced-motion heading tests passed locally in both engines; the reviewer inspected the latest changes and found no new blocker. Updated production reveal checks also passed. Earlier audio and layout evidence is labeled below by release.
 
@@ -85,6 +107,7 @@ The complete entry takes approximately **13.3 seconds after music is confirmed**
 
 | Item | Current status | Evidence / next milestone |
 | --- | --- | --- |
+| RSVP without scrolling down the invitation | **Implemented and verified locally** | User approved implementation; popup and subtler RSVP button tested in foreground Chromium/WebKit. Awaiting release. |
 | Music-led envelope opening | **Live in v7.4.1** | Current production gate checks pass; real MP3/gain tests passed historically in v7.4. |
 | Names and detail appearance 50% longer | **Live in v7.4.1** | Local and production slower-reveal checks pass; reviewer found no new blocker. |
 | Separate bonfire message; RSVP/footer last | **Live in v7.4.1** | Message at 4.85s; actions at 5.6s; normal production unlock 6.373s / 6.421s after lift, fully visible. |

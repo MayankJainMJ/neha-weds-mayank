@@ -13,6 +13,89 @@
   var detailsBlock = document.getElementById('detailsBlock');
   var savedBanner = document.getElementById('savedBanner');
   var toast = document.getElementById('toast');
+  var rsvpModal = document.getElementById('rsvpModal');
+  var rsvpSection = document.getElementById('rsvp');
+  var rsvpOpen = document.querySelector('.inv-rsvp');
+  var rsvpClose = document.getElementById('rsvpClose');
+  var rsvpHead = rsvpModal.querySelector('.rsvp-dialog-head');
+  var pendingOpen = location.hash === '#rsvp';
+  var savedScroll = 0;
+
+  function entryReady() {
+    return !rsvpSection.inert && !document.body.classList.contains('env-locked') &&
+      !document.documentElement.classList.contains('env-boot');
+  }
+  function openRsvp() {
+    if (!entryReady()) { pendingOpen = true; return; }
+    pendingOpen = false;
+    if (rsvpModal.open) return;
+    savedScroll = window.scrollY;
+    document.body.style.setProperty('--rsvp-scroll-top', -savedScroll + 'px');
+    document.body.classList.add('rsvp-open');
+    rsvpModal.appendChild(toast); // validation messages must be in the dialog's top layer
+    rsvpModal.showModal();
+    rsvpOpen.setAttribute('aria-expanded', 'true');
+    rsvpSection.scrollTop = 0;
+    rsvpClose.focus({ preventScroll: true });
+  }
+  function closeRsvp() {
+    pendingOpen = false;
+    if (rsvpModal.open) rsvpModal.close();
+  }
+  rsvpOpen.addEventListener('click', openRsvp);
+  rsvpClose.addEventListener('click', closeRsvp);
+  document.getElementById('rsvpBack').addEventListener('click', closeRsvp);
+  rsvpModal.addEventListener('cancel', function (e) {
+    e.preventDefault();
+    if (lbModal && !lbModal.hidden) closeBoard();
+    else closeRsvp();
+  });
+  rsvpModal.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || e.defaultPrevented) return;
+    var controls = Array.prototype.filter.call(rsvpModal.querySelectorAll('button, a[href], input, select, textarea, [tabindex]'), function (el) {
+      return !el.disabled && el.tabIndex >= 0 && !el.closest('[inert]') && el.getClientRects().length;
+    });
+    var first = controls[0], last = controls[controls.length - 1];
+    if (e.shiftKey && (document.activeElement === first || controls.indexOf(document.activeElement) === -1)) {
+      e.preventDefault(); if (last) last.focus();
+    } else if (!e.shiftKey && (document.activeElement === last || controls.indexOf(document.activeElement) === -1)) {
+      e.preventDefault(); if (first) first.focus();
+    }
+  });
+  rsvpModal.addEventListener('click', function (e) {
+    if (e.target !== rsvpModal) return;
+    var box = rsvpModal.getBoundingClientRect();
+    if (e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom) closeRsvp();
+  });
+  rsvpModal.addEventListener('close', function () {
+    if (lbModal && !lbModal.hidden) closeBoard();
+    document.body.appendChild(toast);
+    toast.classList.remove('show');
+    document.body.classList.remove('rsvp-open');
+    document.body.style.removeProperty('--rsvp-scroll-top');
+    rsvpOpen.setAttribute('aria-expanded', 'false');
+    if (location.hash === '#rsvp') history.replaceState(history.state, '', location.pathname + location.search);
+    var scrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo(0, savedScroll);
+    document.documentElement.style.scrollBehavior = scrollBehavior;
+    rsvpOpen.focus({ preventScroll: true });
+  });
+  function flushPendingOpen() {
+    if (!entryReady()) return;
+    entryObserver.disconnect();
+    if (pendingOpen) openRsvp();
+  }
+  var entryObserver = new MutationObserver(flushPendingOpen);
+  entryObserver.observe(rsvpSection, { attributes: true, attributeFilter: ['inert'] });
+  entryObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  entryObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('hashchange', function () {
+    pendingOpen = location.hash === '#rsvp';
+    if (pendingOpen) openRsvp();
+    else closeRsvp();
+  });
+  flushPendingOpen();
 
   /* ---------- helpers ---------- */
 
@@ -90,6 +173,7 @@
 
   /* RSVP'd: collapse the form into a summary + edit button. */
   function showSummary() {
+    var returnToSummary = rsvpModal.open;
     savedBanner.textContent = state.rsvp.attending
       ? '\u2713 You\u2019ve RSVP\u2019d \u2014 ' + (state.rsvp.partySize > 1 ? 'you + 1, ' : '') + 'arriving on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '. See you on the hill!'
       : '\u2713 Your response is saved. Changed your mind? The hill awaits.';
@@ -97,6 +181,11 @@
     form.hidden = true;
     editBtn.hidden = false;
     document.body.classList.remove('editing');
+    if (returnToSummary) {
+      savedBanner.setAttribute('tabindex', '-1');
+      savedBanner.focus({ preventScroll: true });
+      rsvpSection.scrollTop = 0;
+    }
   }
 
   if (state.rsvp) {
@@ -114,6 +203,7 @@
     editBtn.hidden = true;
     form.hidden = false;
     document.body.classList.add('editing');
+    nameEl.focus();
   });
   updatePlusVisibility();
   updateDetailsVisibility();
@@ -136,9 +226,19 @@
   var lbModal = document.getElementById('lbModal');
   var lbOpen = document.getElementById('lbOpen');
   var lbClose = document.getElementById('lbClose');
+  function closeBoard() {
+    if (!lbModal || lbModal.hidden) return;
+    lbModal.hidden = true;
+    rsvpSection.inert = false;
+    rsvpHead.inert = false;
+    try { lbOpen.focus({ preventScroll: true }); } catch (e) {}
+  }
   if (lbModal && lbOpen) {
+    rsvpModal.appendChild(lbModal); // nested board stays above the native RSVP dialog
     lbOpen.addEventListener('click', function () {
       lbModal.hidden = false;
+      rsvpSection.inert = true;
+      rsvpHead.inert = true;
       try { lbClose.focus({ preventScroll: true }); } catch (e) {}
       /* the leaderboard tempts guests toward the game — warm up that hop */
       if (!document.getElementById('pfGame') && !(navigator.connection && navigator.connection.saveData)) {
@@ -147,15 +247,10 @@
         document.head.appendChild(l);
       }
     });
-    function closeBoard() {
-      if (lbModal.hidden) return;
-      lbModal.hidden = true;
-      try { lbOpen.focus({ preventScroll: true }); } catch (e) {}
-    }
     lbClose.addEventListener('click', closeBoard);
     lbModal.addEventListener('click', function (e) { if (e.target === lbModal) closeBoard(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBoard(); });
     lbModal.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeBoard(); return; }
       if (e.key !== 'Tab' || lbModal.hidden) return;
       var focusable = lbModal.querySelectorAll('button, a[href]');
       var first = focusable[0], last = focusable[focusable.length - 1];

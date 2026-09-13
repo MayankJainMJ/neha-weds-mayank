@@ -232,13 +232,14 @@
           '<div class="ck-grain"></div>' +
           '<div class="ck-flapcast" aria-hidden="true"></div>' +
           '<div class="ck-flap"><picture><source srcset="img/logo.webp" type="image/webp"><img class="ck-flaplogo" src="img/logo.png" alt=""></picture></div>' +
-          '<div class="ck-seal" aria-hidden="true">' + sealSVG() + '</div>' +
+          '<button type="button" class="ck-seal" aria-label="Open your invitation with music" aria-describedby="sealPrompt">' +
+            sealSVG().replace('<svg ', '<svg aria-hidden="true" focusable="false" ') + '</button>' +
         '</div>' +
       '</div>' +
       '<p class="ck-hint"><span class="ck-hintcopy ck-hint-one">invite you to share in their joy</span>' +
         '<span class="ck-hintcopy ck-hint-two">as they begin their forever</span>' +
         '<span class="ck-hintline" aria-hidden="true"></span></p>' +
-      '<p class="ck-audio-prompt" role="status" aria-live="polite">Starting your invitation with music…</p>';
+      '<p id="sealPrompt" class="ck-audio-prompt" role="status" aria-live="polite">Starting your invitation with music…</p>';
     return ov;
   }
 
@@ -264,6 +265,7 @@
     if (run.dispose) run.dispose();
     try { if (mq.removeEventListener) mq.removeEventListener('change', onmq); else mq.removeListener(onmq); } catch (e) {}
     var o = document.getElementById('envOv');
+    var focusFromEnvelope = o && o.contains(document.activeElement);
     if (o) o.remove();
     try { card.getAnimations().forEach(function (a) { a.cancel(); }); } catch (e) {}
     card.style.opacity = '';
@@ -283,6 +285,11 @@
     var ink = document.querySelector('.ink-names');
     if (ink) ink.remove();
     unlockRsvp();
+    if (focusFromEnvelope && names) {
+      names.setAttribute('tabindex', '-1');
+      names.addEventListener('blur', function () { names.removeAttribute('tabindex'); }, { once: true });
+      try { names.focus({ preventScroll: true }); } catch (e) {}
+    }
   }
 
   function play() {
@@ -303,6 +310,15 @@
     var ov = buildOverlay();
     if (instant) ov.classList.add('ck-static');
     document.body.appendChild(ov);
+    var seal = ov.querySelector('.ck-seal');
+    function tapSeal() {
+      if (run.dead || sequenceStarted) return;
+      try { seal.focus({ preventScroll: true }); } catch (e) {}
+      // Keep media play/context resume in the actual click, not a later timer.
+      if (window.INVITE_AUDIO) window.INVITE_AUDIO.open();
+      else beginPrelude();
+    }
+    seal.addEventListener('click', tapSeal);
     requestAnimationFrame(function () {
       if (run.dead) return;
       ov.classList.add('ck-in');
@@ -446,6 +462,10 @@
       if (run.dead || sequenceStarted) return;
       sequenceStarted = true;
       run.dispose();
+      seal.setAttribute('aria-disabled', 'true');
+      seal.setAttribute('tabindex', '-1');
+      seal.setAttribute('aria-label', 'Your invitation is opening');
+      seal.removeAttribute('aria-describedby');
       if (instant) { bail(mq, onmq, run); return; }
       ov.classList.remove('ck-wait');
       ov.querySelector('.ck-audio-prompt').hidden = true;
@@ -461,10 +481,13 @@
       var state = controller.getState();
       var prompt = ov.querySelector('.ck-audio-prompt');
       prompt.textContent = state === 'pending' ? 'Starting your invitation with music…' :
-        state === 'error' ? 'Music could not start. Press Play invite to try again.' :
-        'Press Play invite to begin with music';
+        state === 'error' ? 'Music could not start. Tap the seal to try again.' :
+        'Tap the seal to open your invitation';
     }
-    run.dispose = function () { window.removeEventListener('invite-audio-state', audioState); };
+    run.dispose = function () {
+      window.removeEventListener('invite-audio-state', audioState);
+      seal.removeEventListener('click', tapSeal);
+    };
     window.addEventListener('invite-audio-state', audioState);
     audioState();
   }
