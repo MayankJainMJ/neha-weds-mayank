@@ -2,6 +2,13 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://mayankjainmj.github.io/neha-weds-mayank/
 
+## Local changes — invitation copy and sharing photo (2026-10-07; not deployed)
+
+- `index.html`: removed the em dash from the invitation note, preserving all three lines. Open Graph title now reads **“Neha & Mayank are getting married in the hills”**. The preview description and its `2–3` date range remain unchanged.
+- Downloaded the user-supplied Google-hosted landscape image and converted it from WebP to `img/og-pawna-lake.jpg`: JPEG, **1360×1020**, **297,138 bytes**, original full composition. Added absolute HTTPS `og:image`, JPEG MIME type, dimensions, alt text, and `og:type=website` in the HTML head. The photo is hosted with the invitation rather than hotlinked.
+- Source: https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlHa7ow8VVzmbq7LiDMB0fwIdQ9TU3pdieuTP0vUz6G4FQX04nqJBqCGfklkvrUpewXpZrZ5XZJq22hvOSjnnen1jFeKhXM87te-l1zo8Cjq6krK6wc1dNT4I26Y1r0qTBLPFNO=s1360-w1360-h1020-rw
+- Local foreground HTTP checks PASS: title/description/image metadata, note copy and line breaks, JPEG HTTP 200/content type/signature. Dimensions verified with `sips`; `git diff --check` passes; protected logo and soundtrack hashes unchanged. Actual WhatsApp preview/caching remains unverified until deployment. No commit/push/deploy requested for this change.
+
 ## Current release — v7.5 LIVE (2026-09-13)
 
 - App commit **26c3f6c** pushed to `origin/master`; Pages deployment **34753819695** succeeded. Production tests ran sequentially in foreground, headed Chromium/WebKit: `rsvp-popup.mjs` passed at 320/375/1280px, including gated seal/deep links, form validation/save/edit, nested leaderboard, focus/scroll restoration and missing-entry recovery. `refined-reveal-audio.mjs` confirmed actual MP3/gain playback through seal tap, full reveal and popup open/edit/close. Cloud requests were stubbed/blocked; no production RSVP records created. RB-02 recovery is now deployed and production-tested.
@@ -81,6 +88,8 @@ Detailed contract and C01–C15 change ledger: [INVITATION-FIRST-PLAN.md](./INVI
 
 ## Feature backlog
 
+- **Invitation/WhatsApp copy cleanup — implemented and verified locally, awaiting release.** Removed `&mdash;` from the note and updated `og:title`; line breaks and preview description/date range are preserved.
+- **WhatsApp preview photo — implemented and verified locally, awaiting release.** User-selected image saved as `img/og-pawna-lake.jpg`; absolute `og:image` and image metadata added. Full 1360×1020 composition preserved. Local delivery/metadata checks pass; WhatsApp presentation and cache behavior need checking after deployment.
 - **RSVP without scrolling down the invitation — shipped in v7.5.** Form scroll stays inside the dialog, music continues, and closing restores the invitation. See the current release section above for production evidence.
 
 ## Changelog

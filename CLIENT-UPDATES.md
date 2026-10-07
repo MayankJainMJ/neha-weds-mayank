@@ -1,6 +1,13 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 13 September 2026 · v7.5 live; seal interaction and RSVP popup production-verified**
+**Last updated: 7 October 2026 · Sharing photo and copy cleanup ready locally; v7.5 remains live**
+
+## New local changes — awaiting release
+
+- Removed the em dash before “and nobody has to drive home”, preserving the invitation's line breaks.
+- Updated the sharing title to **“Neha & Mayank are getting married in the hills”**. The preview description and dates are unchanged.
+- Added the supplied lake-and-hills photo to the sharing metadata. It is saved with the website as a 1360×1020 JPEG, about 297 KB, with the full photo preserved.
+- Local HTTP/image/metadata checks pass. Changes are not committed or deployed; the actual WhatsApp preview still needs checking after release.
 
 ## Live now
 
@@ -110,6 +117,8 @@ The complete entry takes approximately **13.3 seconds after music is confirmed**
 
 | Item | Current status | Evidence / next milestone |
 | --- | --- | --- |
+| Remove em dash from invitation note and WhatsApp title | **Implemented and verified locally** | Approved copy applied; line breaks and preview description/date unchanged. Awaiting release. |
+| Photo in WhatsApp link preview | **Implemented and verified locally** | Supplied image downloaded and saved with the site; Open Graph metadata and JPEG delivery checked. Actual sharing check follows deployment. |
 | RSVP without scrolling down the invitation | **Live in v7.5 — production verified** | Popup and subtle RSVP button passed foreground Chromium/WebKit checks; release evidence above. |
 | Music-led envelope opening | **Live in v7.4.1** | Current production gate checks pass; real MP3/gain tests passed historically in v7.4. |
 | Names and detail appearance 50% longer | **Live in v7.4.1** | Local and production slower-reveal checks pass; reviewer found no new blocker. |
