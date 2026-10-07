@@ -143,7 +143,7 @@
   nameEl.value = state.name || '';
   window.addEventListener('mwn-synced', function () {
     if (savedBanner.classList.contains('show') && savedBanner.textContent.indexOf('sent') === -1) {
-      savedBanner.textContent = savedBanner.textContent.replace('saved on this phone \u2014 it will sync automatically', 'sent to Neha & Mayank');
+      savedBanner.textContent = savedBanner.textContent.replace('saved on this phone - it will sync automatically', 'sent to Neha & Mayank');
       if (savedBanner.textContent.indexOf('\u2713') === -1) savedBanner.textContent += ' \u00B7 sent \u2713';
     }
   });
@@ -160,7 +160,7 @@
       var empty = document.createElement('p');
       empty.className = 'muted';
       empty.style.cssText = 'font-size:.88rem;line-height:1.6';
-      empty.textContent = 'No runs on this phone yet \u2014 the board is yours for the taking.';
+      empty.textContent = 'No runs on this phone yet - the board is yours for the taking.';
       lbRows.appendChild(empty);
     }
   }
@@ -175,7 +175,7 @@
   function showSummary() {
     var returnToSummary = rsvpModal.open;
     savedBanner.textContent = state.rsvp.attending
-      ? '\u2713 You\u2019ve RSVP\u2019d \u2014 ' + (state.rsvp.partySize > 1 ? 'you + 1, ' : '') + 'arriving on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '. See you on the hill!'
+      ? '\u2713 You\u2019ve RSVP\u2019d - ' + (state.rsvp.partySize > 1 ? 'you + 1, ' : '') + 'arriving on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '. See you on the hill!'
       : '\u2713 Your response is saved. Changed your mind? The hill awaits.';
     savedBanner.classList.add('show');
     form.hidden = true;
@@ -274,7 +274,7 @@
       return;
     }
     if (attending === 'yes' && !radioValue('arrivalDay')) {
-      showToast('Pick an arrival day \u2014 2nd or 3rd?');
+      showToast('Pick an arrival day - 2nd or 3rd?');
       return;
     }
     var plusOne = attending === 'yes' && radioValue('plusOne') === 'yes';
@@ -296,7 +296,7 @@
 
     showSummary();
     savedBanner.textContent = state.rsvp.attending
-      ? '\u2713 RSVP saved \u2014 it will sync automatically. See you on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '!'
+      ? '\u2713 RSVP saved - it will sync automatically. See you on the ' + (state.rsvp.arrivalDay === '2' ? '2nd' : '3rd') + '!'
       : '\u2713 Saved. You will be missed (and mentioned at the bonfire).';
     showToast(state.rsvp.attending ? 'Spot claimed \u{1F525}' : 'Saved \u{1F494}');
     if (window.CLOUD) window.CLOUD.schedulePush();

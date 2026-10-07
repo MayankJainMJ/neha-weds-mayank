@@ -2,6 +2,13 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://mayankjainmj.github.io/neha-weds-mayank/
 
+## Local update — wedding date, RSVP punctuation and shared previews (2026-10-07)
+
+- Main heading now has explicit spans for **Neha / and / Mayank**, preserving the existing three-line styling; the main date is **3rd December**, with **2026** below. Arrival options remain 2/3 December. RSVP form/leaderboard labels, generated validation and saved-state messages use ordinary hyphens instead of em dashes; RSVP JS cache token is **6**.
+- Both `index.html` and `game.html` now share the approved Open Graph title/description and the attached envelope image, `img/og-invitation-envelope.jpg`. It was recovered from the supplied PNG and converted to a high-quality JPEG, preserving the full **1104×870** composition. Updated image dimensions/alt metadata; game `og:url` identifies `game.html`. The sharing description retains its approved 2–3 December date range.
+- Game subtitle is exactly **THE ROAD TO PAWNA**, centred by the existing splash layout; removed the date suffix.
+- Local foreground Chrome PASS: stacked name positions, wedding date/year, RSVP validation/save/reload/leaderboard punctuation, matching OG metadata, served JPEG, and game subtitle centring at 375/1280px. Cloud and audio were stubbed for these focused content/layout checks; no production RSVP writes. JS syntax and whitespace checks pass. Local commit requested; no push/deploy requested.
+
 ## Current release — v7.5.1 LIVE (2026-10-07)
 
 - App commit **be5ef56** published; Pages deployment **37655889263** succeeded. Standard Git pushes returned GitHub internal server errors, so the same commit was published via the Git Database API with every blob, tree and commit SHA verified, followed by a non-forced fast-forward update. `origin/master` matches the published commit.
