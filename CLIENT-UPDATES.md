@@ -1,16 +1,16 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 7 October 2026 · Wedding-date and shared-preview update verified locally; v7.5.1 remains live**
+**Last updated: 7 October 2026 · v7.5.2 wedding-date and shared-preview update live**
 
-## New local update — commit requested
+## Current release — v7.5.2
 
 - Invitation names are explicitly stacked: **Neha / and / Mayank**. Main date is **3rd December**, with 2026 beneath it.
 - RSVP labels, confirmations, validation and leaderboard copy now use hyphens instead of em dashes. Early-arrival choices remain available.
 - Invitation and game sharing previews use the attached envelope image and matching approved title/description. Each page retains its own sharing URL.
 - Game subtitle now reads only **THE ROAD TO PAWNA**, centred.
-- Foreground Chrome checks passed for the content, RSVP messages, image delivery, metadata and phone/desktop alignment. Local commit approved; not pushed or deployed.
+- App **a5dabd0** deployed through successful Pages run **37659663060**. Local and production foreground Chrome checks passed for content, RSVP messages, image delivery, metadata and phone/desktop alignment. The live envelope image matches the committed file exactly. Cloud writes were stubbed; actual WhatsApp preview/cache refresh still needs observation.
 
-## Current release — v7.5.1
+## Previous release — v7.5.1
 
 - Removed the em dash before “and nobody has to drive home”, preserving the invitation's line breaks.
 - Updated the sharing title to **“Neha & Mayank are getting married in the hills”**. The preview description and dates are unchanged.
