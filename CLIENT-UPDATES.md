@@ -1,8 +1,13 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 10 October 2026 · v7.5.3 resized PNG sharing image live**
+**Last updated: 10 October 2026 · v7.5.4 edited PNG resynced and live**
 
-## Current release — v7.5.3
+## Current release — v7.5.4
+
+- Your latest edited PNG is live unchanged: **863×670**, about **251 KB**. Both pages have matching dimensions and a versioned preview URL (`?v=2`).
+- Commit **03b0cf8**, successful deployment **38056558637**. Browser/crawler HTTP checks confirm the exact edited file is served and both pages reference it correctly. WhatsApp may still cache the page preview.
+
+## Previous release — v7.5.3
 
 - Your resized PNG is live on both invitation and game previews, preserved exactly as supplied. Canvas: **1104×870**; image file: **366 KB**.
 - Both pages now use the `.png` URL and correct image type. Commit **3adba87**, successful deployment **38056093382**. Live metadata, image delivery, dimensions and exact file hash checks pass for browser and crawler user agents. WhatsApp may still retain cached previews.
