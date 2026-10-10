@@ -1,8 +1,13 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 7 October 2026 · v7.5.2 wedding-date and shared-preview update live**
+**Last updated: 10 October 2026 · v7.5.3 resized PNG sharing image live**
 
-## Current release — v7.5.2
+## Current release — v7.5.3
+
+- Your resized PNG is live on both invitation and game previews, preserved exactly as supplied. Canvas: **1104×870**; image file: **366 KB**.
+- Both pages now use the `.png` URL and correct image type. Commit **3adba87**, successful deployment **38056093382**. Live metadata, image delivery, dimensions and exact file hash checks pass for browser and crawler user agents. WhatsApp may still retain cached previews.
+
+## Previous release — v7.5.2
 
 - Invitation names are explicitly stacked: **Neha / and / Mayank**. Main date is **3rd December**, with 2026 beneath it.
 - RSVP labels, confirmations, validation and leaderboard copy now use hyphens instead of em dashes. Early-arrival choices remain available.

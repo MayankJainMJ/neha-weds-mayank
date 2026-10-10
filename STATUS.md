@@ -2,7 +2,12 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://mayankjainmj.github.io/neha-weds-mayank/
 
-## Current release — v7.5.2 LIVE (2026-10-07)
+## Current release — v7.5.3 LIVE (2026-10-10)
+
+- Synced the user's resized `img/og-invitation-envelope.png` unchanged and removed the replaced JPEG. Both invitation and game now reference the PNG with `image/png`; the canvas remains **1104×870**, **366,125 bytes**. App **3adba87**, successful Pages run **38056093382**.
+- Production HTTP checks pass for normal-browser and Facebook-crawler user agents: both pages reference the new image, MIME type/dimensions match, and the deployed PNG's Git blob hash exactly matches the committed file. WhatsApp's rendered/cached preview remains outside these HTTP checks.
+
+## Previous release — v7.5.2 (2026-10-07; historical evidence)
 
 - App **a5dabd0** pushed to `origin/master`; Pages deployment **37659663060** succeeded. Foreground production Chrome checks passed for stacked names, wedding date, RSVP labels/validation/save punctuation, matching sharing metadata, centred game subtitle at 375/1280px, and envelope JPEG delivery with exact Git blob hash. Cloud/audio were stubbed for these focused checks; no production RSVP records created. Actual WhatsApp rendering/cache refresh remains unverified.
 
