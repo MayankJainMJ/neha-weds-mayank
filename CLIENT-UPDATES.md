@@ -1,6 +1,14 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · v7.6 invitation polish and custom-domain updates live**
+**Last updated: 16 October 2026 · Tactile envelope and wax seal ready locally; v7.6 remains live**
+
+## New local update — envelope craftsmanship (awaiting release)
+
+- The envelope now looks like real blush stationery: soft paper grain, believable overlapping folds with delicate seams and paper-edge light, gentle directional lighting, and natural shadows under the flap and beneath the envelope.
+- The seal is now convincing burgundy wax with a raised rim, subtle surface texture and a crisp embossed ivory-gold **NM** - still the tap target that opens the invitation.
+- A second cherry-blossom branch, matching the invitation's own artwork, now frames the top-right corner opposite the existing branch.
+- Nothing else changed: names, wording, music behaviour and the full opening sequence are exactly as before. Verified in foreground Chrome at phone and desktop sizes, including the complete opening and reduced-motion. **Not committed or deployed yet.**
+- Quality was independently reviewed twice against your reference photo by a second AI validator (ChatGPT Codex). After two build-test-validate rounds it confirmed the lighting is fully resolved and every other gap improved, with no high-priority issues remaining; its final suggestions (an irregular poured-wax seal edge and softer flap geometry) are implemented and re-tested.
 
 ## Current release — v7.6
 

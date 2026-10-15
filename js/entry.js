@@ -100,23 +100,68 @@
     return s + '<circle r="1.5" fill="#b98c28"/></g>';
   }
 
-  /* organic wax: irregular edge, radial depth, soft top-left light,
-     bottom-right inner shade — no rings, no button styling */
+  /* organic wax: irregular edge, radial depth, raised rim, matte
+     micro-texture, soft top-left light, bottom-right inner shade —
+     no rings, no button styling. OUT is the uncracked outer silhouette
+     (L + R outer curves without the zigzag), used for the rim, the soft
+     edge and the texture so none of them pre-draw the crack line. */
   function sealSVG() {
     var L = 'M50 3 L46 22 L54 40 L47 60 L52 78 L47 97 C 38 96.5, 29 94, 21 87.5 C 13 81, 7.5 72, 5.5 62 C 3.5 51, 4.5 40, 9 30.5 C 13.5 21, 21 12.5, 31 8 C 37 5.2, 43.5 3.4, 50 3 Z';
     var R = 'M50 3 C 57 2.6, 64.5 4.4, 71.5 8.5 C 80 13.5, 87 21.5, 90.5 31 C 94 40.5, 94.5 51.5, 92 61.5 C 89.5 71.5, 83.5 80.5, 75.5 86.5 C 67.5 92.5, 57.5 96.5, 47 97 L52 78 L47 60 L54 40 L46 22 L50 3 Z';
+    var OUT = 'M50 3 C 57 2.6, 64.5 4.4, 71.5 8.5 C 80 13.5, 87 21.5, 90.5 31 C 94 40.5, 94.5 51.5, 92 61.5 C 89.5 71.5, 83.5 80.5, 75.5 86.5 C 67.5 92.5, 57.5 96.5, 47 97 C 38 96.5, 29 94, 21 87.5 C 13 81, 7.5 72, 5.5 62 C 3.5 51, 4.5 40, 9 30.5 C 13.5 21, 21 12.5, 31 8 C 37 5.2, 43.5 3.4, 50 3 Z';
     return '<svg viewBox="0 0 100 100" aria-hidden="true">' +
       '<defs>' +
-      '<radialGradient id="ckwaxg" cx=".42" cy=".38" r=".78">' +
-      '<stop offset="0" stop-color="#b26380"/><stop offset=".55" stop-color="#9f526b"/><stop offset="1" stop-color="#86405a"/></radialGradient>' +
+      '<radialGradient id="ckwaxg" cx=".4" cy=".36" r=".82">' +
+      '<stop offset="0" stop-color="#a0526c"/><stop offset=".45" stop-color="#883f58"/><stop offset=".82" stop-color="#6d2b43"/><stop offset="1" stop-color="#592036"/></radialGradient>' +
       '<filter id="ckwsoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/></filter>' +
+      '<filter id="ckwrim" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.1"/></filter>' +
+      '<filter id="ckwtx" x="-5%" y="-5%" width="110%" height="110%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="7"/>' +
+      '<feColorMatrix values="0 0 0 0 1 0 0 0 0 .88 0 0 0 0 .82 0 0 0 .55 0"/>' +
+      '<feComposite operator="in" in2="SourceGraphic"/></filter>' +
+      /* lighting-direction masks: rim catch-light lives upper-left,
+         rim shade lower-right — never a continuous bright ring */
+      '<linearGradient id="ckmlg" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#555"/><stop offset="1" stop-color="#000"/></linearGradient>' +
+      '<linearGradient id="ckmlg2" x1="1" y1="1" x2="0" y2="0">' +
+      '<stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#555"/><stop offset="1" stop-color="#000"/></linearGradient>' +
+      '<mask id="ckmTL"><rect x="-5" y="-5" width="110" height="110" fill="url(#ckmlg)"/></mask>' +
+      '<mask id="ckmBR"><rect x="-5" y="-5" width="110" height="110" fill="url(#ckmlg2)"/></mask>' +
+      '<linearGradient id="cklet" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#f4e6cc"/><stop offset="1" stop-color="#dcc8a6"/></linearGradient>' +
+      /* poured-wax perimeter: one low-frequency displacement shared by both
+         halves and every silhouette overlay, so the lobes are irregular yet
+         the hidden crack seam still lines up. Monogram and crack stay crisp
+         (unfiltered). */
+      '<filter id="ckwobble" x="-15%" y="-15%" width="130%" height="130%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3" result="n"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>' +
       '</defs>' +
-      '<g class="ck-half ck-half-l"><path class="ck-wax" d="' + L + '"/></g>' +
-      '<g class="ck-half ck-half-r"><path class="ck-wax" d="' + R + '"/></g>' +
-      '<ellipse cx="38" cy="33" rx="19" ry="13" fill="#ffdac9" opacity=".17" filter="url(#ckwsoft)"/>' +
-      '<ellipse cx="63" cy="69" rx="21" ry="15" fill="#4a1d2e" opacity=".18" filter="url(#ckwsoft)"/>' +
-      '<g class="ck-mg-sh" transform="translate(1.1,1.3)"><path d="' + MG + '"/></g>' +
-      '<g class="ck-mg-hi" transform="translate(-0.9,-1)"><path d="' + MG + '"/></g>' +
+      /* pooled wax lip: a slightly larger darker silhouette behind the
+         halves gives the edge visible thickness and irregularity */
+      '<g filter="url(#ckwobble)">' +
+      '<path d="' + OUT + '" transform="translate(50 50) scale(1.04) translate(-50 -50)" fill="#5d2136" opacity=".5" filter="url(#ckwrim)"/>' +
+      '</g>' +
+      '<g class="ck-half ck-half-l" filter="url(#ckwobble)"><path class="ck-wax" d="' + L + '"/></g>' +
+      '<g class="ck-half ck-half-r" filter="url(#ckwobble)"><path class="ck-wax" d="' + R + '"/></g>' +
+      '<g filter="url(#ckwobble)">' +
+      '<path d="' + OUT + '" filter="url(#ckwtx)" opacity=".07"/>' +
+      /* recessed stamp face inside the rim */
+      '<path d="' + OUT + '" transform="translate(50.5 50.7) scale(.78) translate(-50 -50)" fill="#45172a" opacity=".07" filter="url(#ckwsoft)"/>' +
+      /* raised rim with uneven thickness: offset centres + directional masks */
+      '<g filter="url(#ckwrim)">' +
+      '<path d="' + OUT + '" transform="translate(49.4 49.2) scale(.9) translate(-50 -50)" fill="none" stroke="#f3c9b4" stroke-width="2.4" opacity=".3" mask="url(#ckmTL)"/>' +
+      '<path d="' + OUT + '" transform="translate(50.9 51.5) scale(.85) translate(-50 -50)" fill="none" stroke="#401426" stroke-width="2.8" opacity=".3" mask="url(#ckmBR)"/>' +
+      '</g>' +
+      '<path d="' + OUT + '" fill="none" stroke="#4a1a2d" stroke-width=".9" opacity=".4" filter="url(#ckwrim)"/>' +
+      '</g>' +
+      /* broken-up matte sheen: two unequal soft pools instead of one broad glow */
+      '<ellipse cx="33" cy="25" rx="10" ry="6.5" fill="#ffd9c6" opacity=".13" filter="url(#ckwsoft)"/>' +
+      '<ellipse cx="46" cy="35" rx="7" ry="4.5" fill="#ffd9c6" opacity=".08" filter="url(#ckwsoft)"/>' +
+      '<ellipse cx="64" cy="71" rx="22" ry="15" fill="#3c1222" opacity=".2" filter="url(#ckwsoft)"/>' +
+      '<ellipse cx="30" cy="20" rx="6" ry="3.5" fill="#ffe8da" opacity=".18" filter="url(#ckwrim)"/>' +
+      '<g class="ck-mg-sh" transform="translate(0.9,1.1)"><path d="' + MG + '"/></g>' +
+      '<g class="ck-mg-hi" transform="translate(-0.7,-0.8)"><path d="' + MG + '"/></g>' +
       '<g class="ck-mg"><path d="' + MG + '"/></g>' +
       junctionBloom() +
       '<path class="ck-crack" d="M50 3 L46 22 L54 40 L47 60 L52 78 L47 97" fill="none"/>' +
@@ -199,6 +244,25 @@
       '</svg>';
   }
 
+  function sprigSVG() {
+    /* smaller companion branch for the opposite corner; same blossom
+       artwork as the invitation page, mirrored to enter from the right.
+       Reuses the gradient/filter defs declared in branchSVG (earlier in
+       the same overlay), so none are redeclared here. */
+    return '<svg viewBox="0 0 170 132" fill="none">' +
+      '<g transform="translate(170,0) scale(-1,1)">' +
+      '<g filter="url(#ckedge)">' +
+      '<path d="M-6 8 C 30 18, 60 36, 88 74 C 93 81, 97 89, 99 97" stroke="#654a38" stroke-width="3.2" stroke-linecap="round"/>' +
+      '<path d="M38 24 C 50 20, 62 20, 72 24" stroke="#654a38" stroke-width="1.8" stroke-linecap="round"/>' +
+      '<path d="M-6 8 C 30 18, 60 36, 88 74" stroke="#503728" stroke-width=".8" opacity=".45"/>' +
+      '</g>' +
+      ckLeaf(58, 36, 118) +
+      ckBlossom(45, 27, .6, false) +
+      ckBlossom(80, 60, .52, true) +
+      ckBud(97, 92, 155) +
+      '</g></svg>';
+  }
+
   function looseSVG() {
     /* three recognisable drifting petals, lower-right */
     return '<svg width="96" height="72" viewBox="0 0 96 72" fill="none">' +
@@ -216,6 +280,7 @@
       '<div class="ck-vignette" aria-hidden="true"></div>' +
       '<div class="ck-glow" aria-hidden="true"></div>' +
       '<div class="ck-branch" aria-hidden="true">' + branchSVG() + '</div>' +
+      '<div class="ck-branch2" aria-hidden="true">' + sprigSVG() + '</div>' +
       '<div class="ck-loose" aria-hidden="true">' + looseSVG() + '</div>' +
       '<div class="ck-head">' +
         '<p class="ck-eyebrow">Together with their families</p>' +
@@ -230,6 +295,7 @@
           '<div class="ck-fold ck-fold-r"></div>' +
           '<div class="ck-fold ck-fold-b"></div>' +
           '<div class="ck-grain"></div>' +
+          '<div class="ck-sheen" aria-hidden="true"></div>' +
           '<div class="ck-flapcast" aria-hidden="true"></div>' +
           '<div class="ck-flap"><picture><source srcset="img/logo.webp" type="image/webp"><img class="ck-flaplogo" src="img/logo.png" alt=""></picture></div>' +
           '<button type="button" class="ck-seal" aria-label="Open your invitation with music" aria-describedby="sealPrompt">' +

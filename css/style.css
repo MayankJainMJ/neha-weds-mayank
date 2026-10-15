@@ -1475,11 +1475,13 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 .ck-glow {
   position: absolute; left: 50%; top: 50%; width: 420px; height: 340px;
   transform: translate(-50%, -54%);
-  background: radial-gradient(closest-side, rgba(255, 236, 228, .75), transparent 72%);
+  background: radial-gradient(closest-side, rgba(255, 238, 230, .38), transparent 72%);
   pointer-events: none;
 }
-.ck-branch { position: absolute; top: -6px; left: -14px; width: min(52vw, 230px); opacity: .85; }
+.ck-branch { position: absolute; top: -6px; left: -14px; width: min(52vw, 230px); opacity: .85; pointer-events: none; }
 .ck-branch svg { width: 100%; height: auto; }
+.ck-branch2 { position: absolute; top: -8px; right: -12px; width: min(40vw, 172px); opacity: .8; pointer-events: none; }
+.ck-branch2 svg { width: 100%; height: auto; }
 .ck-loose { position: absolute; right: 5vw; bottom: 8vh; pointer-events: none; }
 .ck-loose svg { animation: ckfloat 7s ease-in-out infinite alternate; }
 @keyframes ckfloat { from { transform: translateY(0) rotate(0); } to { transform: translateY(-8px) rotate(7deg); } }
@@ -1496,13 +1498,16 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 }
 .ck-heart { color: #9c536c; font-size: .75em; letter-spacing: 0; }
 
-/* the envelope — physical stationery */
+/* the envelope — physical stationery.
+   Light reads from the upper left: every fold carries its own matte
+   gradient, a soft contact shadow where its edge overlaps the panel
+   beneath, and a hairline paper-thickness light along that edge. */
 .ck-scene { perspective: 1150px; position: relative; }
 /* ground contact shadow beneath the envelope */
 .ck-scene::after {
-  content: ''; position: absolute; left: 9%; right: 9%; bottom: -13px; height: 18px;
-  background: radial-gradient(50% 100% at 50% 0, rgba(84, 34, 49, .16), transparent 72%);
-  filter: blur(3px); pointer-events: none;
+  content: ''; position: absolute; left: 11%; right: 11%; bottom: -11px; height: 15px;
+  background: radial-gradient(50% 100% at 50% 0, rgba(76, 30, 44, .20), transparent 70%);
+  filter: blur(4px); pointer-events: none;
 }
 .ck-env {
   position: relative;
@@ -1510,15 +1515,18 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   aspect-ratio: 1.48 / 1;
   transform: translateY(8px);
   transition: transform .35s ease .45s;
-  filter: drop-shadow(0 24px 55px rgba(112, 67, 78, .16)) drop-shadow(0 5px 14px rgba(112, 67, 78, .10));
+  filter: drop-shadow(5px 18px 40px rgba(112, 67, 78, .17)) drop-shadow(1px 4px 10px rgba(112, 67, 78, .11));
 }
 .ck-in .ck-env { transform: translateY(0); }
-.ck-body { position: absolute; inset: 0; background: #edcad4; border-radius: 7px; }
+.ck-body {
+  position: absolute; inset: 0; border-radius: 7px;
+  background: linear-gradient(118deg, #f0d2da 0%, #ecc8d2 45%, #e5bac7 100%);
+}
 .ck-interior {
   position: absolute; left: 3px; right: 3px; top: 3px; height: 58%;
-  background: linear-gradient(180deg, #dfaab9, #e6b8c5);
+  background: linear-gradient(180deg, #dca6b6, #e5b6c3);
   border-radius: 6px 6px 0 0;
-  box-shadow: inset 0 6px 14px rgba(84, 34, 49, .18);
+  box-shadow: inset 0 8px 16px rgba(84, 34, 49, .22), inset 0 2px 4px rgba(84, 34, 49, .16);
 }
 .ck-insert {
   position: absolute; left: 7%; right: 7%; top: 24%; height: 72%;
@@ -1531,30 +1539,62 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 .ck-fold { position: absolute; inset: 0; border-radius: 7px; }
 .ck-fold-l {
   clip-path: polygon(0 0, 50% 58%, 0 100%);
-  background: linear-gradient(100deg, #e8c0cc 0%, #edcad4 70%);
-  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, .55));
+  background:
+    linear-gradient(64deg, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, 0) 46%),
+    linear-gradient(100deg, #edc9d3 0%, #eecbd5 55%, #e9c0cb 100%);
+  filter: drop-shadow(1.5px .5px 2px rgba(96, 52, 64, .16)) drop-shadow(.5px 0 0 rgba(255, 250, 246, .5));
 }
 .ck-fold-r {
   clip-path: polygon(100% 0, 100% 100%, 50% 58%);
-  background: linear-gradient(260deg, #e8c0cc 0%, #edcad4 70%);
-  filter: drop-shadow(-1px 0 0 rgba(255, 255, 255, .55));
+  /* shading concentrated near the crease; broad face closer to its
+     neighbours so the panel stops reading as a distinct geometric fill */
+  background:
+    linear-gradient(296deg, rgba(96, 52, 64, .07) 0%, rgba(96, 52, 64, 0) 22%),
+    linear-gradient(260deg, #ebc6d1 0%, #ecc8d2 55%, #e8c0cb 100%);
+  filter: drop-shadow(-1.5px .5px 2px rgba(96, 52, 64, .16)) drop-shadow(-.5px 0 0 rgba(255, 250, 246, .5));
 }
 .ck-fold-b {
   clip-path: polygon(0 100%, 50% 56%, 100% 100%);
-  background: linear-gradient(0deg, #f0d3db 0%, #e8c0cc 90%);
-  filter: drop-shadow(0 -1px 0 rgba(255, 255, 255, .6));
+  background:
+    /* curved tonal lift near the base: paper tension in the folded pocket */
+    radial-gradient(95% 75% at 50% 112%, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 72%),
+    linear-gradient(0deg, rgba(255, 255, 255, .08) 0%, rgba(255, 255, 255, 0) 30%),
+    linear-gradient(0deg, #f0d2da 0%, #eccad4 55%, #e6bcc9 96%);
+  filter: drop-shadow(0 -2px 3px rgba(96, 52, 64, .18)) drop-shadow(0 -.75px 0 rgba(255, 250, 246, .55));
 }
 .ck-grain {
-  position: absolute; inset: 0; border-radius: 7px; opacity: .15; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .27 0 0 0 0 .3 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  position: absolute; inset: 0; border-radius: 7px; opacity: .17; pointer-events: none;
+  /* fine matte grain + a much weaker large-scale mottling pass */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .27 0 0 0 0 .3 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.014 .02' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .3 0 0 0 0 .34 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23m)'/%3E%3C/svg%3E");
+}
+/* one directional light pass over body + folds (under the flap, so the
+   flap carries its own lighting and nothing jumps when it swings) */
+.ck-sheen {
+  position: absolute; inset: 0; border-radius: 7px; pointer-events: none;
+  background:
+    linear-gradient(126deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, .05) 30%, rgba(255, 255, 255, 0) 48%, rgba(96, 52, 64, .05) 72%, rgba(96, 52, 64, .10) 100%),
+    radial-gradient(130% 90% at 50% 0%, rgba(0, 0, 0, 0) 62%, rgba(96, 52, 64, .05) 100%);
 }
 .ck-flap {
   position: absolute; inset: 0; border-radius: 7px 7px 0 0;
-  clip-path: polygon(0 0, 100% 0, 50% 62%);
-  /* tonal separation from the body + its own paper grain */
+  /* gently bowed, slightly asymmetric diagonals: intermediate vertices
+     break the cut-vector straightness near the shoulders and the point */
+  clip-path: polygon(0 0, 100% 0, 99.7% 2.4%, 75.6% 30.4%, 50.3% 62%, 24.2% 30.8%, .3% 2.2%);
+  /* tonal separation from the body + its own paper grain, a top crease
+     catch-light, a hint of side light, and a hairline pale paper edge
+     along the diagonals (thickness) — all in the flap's own background,
+     so the shading travels with it as it swings open */
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .27 0 0 0 0 .3 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, #e5b6c3 0%, #deabbb 88%);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 62' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L50 61.4 L100 0' fill='none' stroke='rgba(255,250,244,.5)' stroke-width='.45'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 255, 255, .24) 0%, rgba(255, 255, 255, 0) 7%),
+    linear-gradient(118deg, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 45%, rgba(96, 52, 64, .05) 100%),
+    linear-gradient(180deg, #e8bbc8 0%, #e1aebd 55%, #d8a0b2 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: auto, 100% 62%, 100% 100%, 100% 100%, 100% 100%;
+  background-position: 0 0, top, 0 0, 0 0, 0 0;
   transform-origin: top center;
   transition: transform .9s cubic-bezier(.34, .05, .18, 1.08) .25s, z-index 0s .8s;
   z-index: 3;
@@ -1562,11 +1602,19 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 }
 .ck-open .ck-flap { transform: rotateX(-172deg); z-index: 1; }
 /* the flap's cast shadow on the body — its own layer, opacity-only animation */
+/* a blurred, down-offset copy of the flap silhouette: the flap visibly
+   floats above the pocket and casts a distinct shadow along both
+   diagonal edges, deepening toward the tip (validator P1) */
 .ck-flapcast {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  clip-path: polygon(0 1.5%, 100% 1.5%, 50% 65%);
-  background: linear-gradient(180deg, rgba(112, 67, 78, 0) 55%, rgba(112, 67, 78, .18) 96%);
-  filter: blur(2.5px);
+  /* a blurred copy of the flap's own silhouette, nudged down-right: the
+     flap hides everything above its diagonals, so only a crisp directional
+     band of shadow shows beneath both edges, deepening toward the point */
+  clip-path: polygon(1% 2%, 99.4% 2.8%, 50.6% 66%);
+  /* uneven band: the shadow breathes along the edges instead of a
+     constant-width strip */
+  background: linear-gradient(94deg, rgba(90, 48, 60, .30) 0%, rgba(90, 48, 60, .19) 38%, rgba(90, 48, 60, .29) 62%, rgba(90, 48, 60, .17) 100%);
+  filter: blur(3.5px);
   transition: opacity .7s ease .25s;
 }
 .ck-open .ck-flapcast { opacity: 0; }
@@ -1574,7 +1622,7 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
    mid-rotation frame reads as the flap's underside, not a white glare */
 .ck-flap::after {
   content: ''; position: absolute; inset: 0;
-  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  clip-path: polygon(0 0, 100% 0, 99.7% 2.4%, 75.6% 30.4%, 50.3% 62%, 24.2% 30.8%, .3% 2.2%);
   background: linear-gradient(0deg, #dfaab9 0%, #e7bfca 90%);
   opacity: 0; transition: opacity .32s ease .62s;
 }
@@ -1594,18 +1642,22 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   border-radius: 50%; cursor: pointer; touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   z-index: 4;
-  filter: drop-shadow(0 5px 9px rgba(84, 34, 49, .3));
+  /* tight contact shadow against the paper + softer down-right falloff */
+  filter: drop-shadow(.5px 1.5px 1.5px rgba(60, 22, 34, .36)) drop-shadow(3px 7px 10px rgba(84, 34, 49, .22));
 }
 .ck-seal:focus-visible { outline: 2px solid #8b5a2b; outline-offset: 7px; }
 .ck-seal[aria-disabled="true"] { cursor: default; pointer-events: none; outline: none; }
 .inv-names:focus { outline: none; } /* programmatic focus target, not interactive */
 .ck-seal svg { width: 100%; height: 100%; overflow: visible; }
-.ck-wax { fill: url(#ckwaxg); stroke: #7c3a51; stroke-width: 1.2; }
+/* no hard outline: the edge is defined by the gradient falloff plus a
+   soft blurred stroke inside the SVG, so the wax reads matte, not drawn */
+.ck-wax { fill: url(#ckwaxg); stroke: none; }
 .ck-crack { stroke: #5c2438; stroke-width: 1.1; stroke-dasharray: 160; stroke-dashoffset: 160; opacity: 0; }
-/* NM monogram: warm-ivory emboss — top-left light, bottom-right inset shade */
-.ck-mg path { fill: #efe2d0; }
-.ck-mg-hi path { fill: rgba(255, 246, 232, .4); }
-.ck-mg-sh path { fill: rgba(74, 29, 46, .42); }
+/* NM monogram: warm-ivory emboss — top-left light, bottom-right inset shade;
+   muted ivory-gold gradient across the lettering, not metallic shine */
+.ck-mg path { fill: url(#cklet); }
+.ck-mg-hi path { fill: rgba(255, 244, 226, .5); }
+.ck-mg-sh path { fill: rgba(58, 18, 30, .5); }
 .ck-sweep { fill: rgba(255, 236, 220, .28); opacity: 0; animation: cksweep 2.8s ease .9s 1; }
 @keyframes cksweep { 6% { opacity: 1; } 18% { transform: rotate(18deg) translateX(150px); opacity: 0; } 100% { opacity: 0; } }
 .ck-half { transition: transform .42s ease .22s; }
@@ -1690,6 +1742,7 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 @media (max-height: 640px), (max-width: 340px) {
   .ck-ov { padding-bottom: 4vh; }
   .ck-env { width: clamp(255px, 78vw, 320px); }
+  .ck-branch2 { width: min(34vw, 140px); }
   .ck-flaplogo { width: 56px; margin-top: calc(1% + 10px); }
   /* seal keeps the non-negotiable 61-67px size; space recovered above */
   .ck-head { margin-bottom: 16px; }
