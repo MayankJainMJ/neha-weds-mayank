@@ -2,13 +2,15 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Local update — photographed wax seal (2026-10-16; commit approved)
+## Current release — v7.8 LIVE (2026-10-16)
+
+- App **42c1f5b** pushed; Pages run **38806494780** succeeded. Live HTML serves CSS 72 / entry 22 with the seal preload, and the deployed `img/wax-seal.png` matches the committed Git blob exactly. Production foreground Chrome checks passed: closed state at 320/375/1280px, full seal-tap opening transition (press, crack, halves separating, flap, FLIP, card + RSVP unlocked, zero page errors), and the reduced-motion static gate.
 
 - Replaced the SVG-drawn wax seal with the user's supplied photoreal pressed-wax artwork. Source `~/Downloads/Wax Seal.png` (1424x752, white background with baked shadow) was processed: border-connected flood fill removed the white background and its baked gray shadow (interior wax highlights preserved since the fill only spreads from the border), edges feathered and un-matted, cropped to the seal's bounding box, padded to a centred square and resized to **`img/wax-seal.png`** (400x400 transparent PNG, ~207 KB). Square crop keeps the seal's true proportions at the existing clamp(61-67px) size; CSS contact shadow now shades the photo silhouette.
 - The crack-open behaviour is preserved exactly: the photo is painted as two clipped half layers (`clip-path` polygons along the same hidden zigzag the SVG seal cracked on), the overlay SVG retains only the crack-draw line, and the existing press/crack/separate/fade CSS drives them unchanged - the N and M visibly part on either side of the crack. Earlier crisp-edge SVG work (entry v21) is superseded; `sealSVG`/monogram paths/junction bloom and their dead CSS (`.ck-wax`, `.ck-mg*`, `.ck-sweep`) were removed. Seal image is preloaded from the head. Cache tokens: CSS **72**, entry **22**.
 - Foreground Chrome PASS: closed state at 320/375/1280px (seal `elementFromPoint` hit target, branches clear, no overflow), full seal-tap opening at 390px (press, crack draw, halves separating cleanly in a verified mid-crack frame, flap swing, FLIP, card + RSVP unlocked, zero page errors), and reduced-motion static gate. Composite check confirmed no shadow remnant against the blush paper.
 
-## Current release — v7.7 LIVE (2026-10-16)
+## Previous release — v7.7 (2026-10-16; historical evidence)
 
 - App **d2b3aca** pushed; Pages run **38797897717** succeeded. Production foreground Chrome checks passed on https://neha-and-mayank.in/: closed envelope at 320/375/1280px (seal hit target, new material layers, branches clear, no overflow), full seal-tap opening transition at 390px (crack, flap swing, FLIP, card + RSVP unlocked, zero page errors), reduced-motion static gate, and served cache tokens CSS 71 / entry 20.
 

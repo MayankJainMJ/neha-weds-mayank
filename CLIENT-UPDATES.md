@@ -1,14 +1,14 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · v7.7 tactile envelope and wax seal live**
+**Last updated: 16 October 2026 · v7.8 photographed wax seal live**
 
-## New update — your real wax seal photo (release approved)
+## Current release — v7.8
 
 - The envelope now carries your actual photographed burgundy wax seal with the raised gold NM, cleanly cut from its white background and kept in true proportion.
 - Tapping it works exactly as before: the seal presses, cracks down the middle and the two halves part before the envelope opens.
-- Verified in foreground Chrome at phone and desktop sizes, including the complete opening sequence and reduced motion.
+- Deployed as **42c1f5b** (Pages run **38806494780**). The same foreground Chrome checks re-passed against the live site, and the deployed seal image matches your file exactly.
 
-## Current release — v7.7
+## Previous release — v7.7
 
 - The envelope now looks like real blush stationery: soft paper grain, believable overlapping folds with delicate seams and paper-edge light, gentle directional lighting, and natural shadows under the flap and beneath the envelope.
 - The seal is now convincing burgundy wax with a raised rim, subtle surface texture and a crisp embossed ivory-gold **NM** - still the tap target that opens the invitation.
