@@ -2,7 +2,9 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Local update — game at the root + new OG image (2026-10-16; release approved)
+## Current release — v7.9 LIVE (2026-10-16)
+
+- App **a0dd11d** pushed; Pages run **38809055116** succeeded. The complete route-swap suite re-passed against production at 375/1280px, including the clean **/invite** URL, legacy `/game.html?q#h` → `/?q#h` redirect, in-game RSVP deep link into the popup, invitation↔game navigation, and the real 404 recovery button. Browser and Facebook-crawler user agents see the new v3 sharing JPEG on both pages; the deployed image matches the committed Git blob byte-for-byte (64,350 bytes), and the retired PNG returns 404.
 
 - **Route swap.** The game now lives at the bare domain: `index.html` (invitation) was renamed to `invite.html` (replacing the legacy redirect stub), `game.html` was renamed to `index.html`, and a new `game.html` redirect stub forwards legacy links to `./` preserving query and hash. Both pages keep all relative asset paths. Shareable invitation URL: **https://neha-and-mayank.in/invite** (GitHub Pages extensionless).
 - **Metadata.** Root (game) canonical/`og:url` → `https://neha-and-mayank.in/`; invitation canonical/`og:url` → `/invite`. Both pages now share the user's new envelope artwork as `img/og-invitation-envelope-v3.jpg` (supplied 2000x1332 PNG converted to 1200x799 progressive JPEG, 64,350 bytes - WhatsApp-friendly; new filename busts caches). Retired `img/og-invitation-envelope.png` and the long-unreferenced `img/og-pawna-lake.jpg`.

@@ -2,12 +2,12 @@
 
 **Last updated: 16 October 2026 · v7.8 photographed wax seal live**
 
-## New update — game first! (release approved)
+## Current release — v7.9 · game first
 
 - Sharing **https://neha-and-mayank.in/** now opens the game straight away; the invitation lives at **https://neha-and-mayank.in/invite**.
 - Every existing link keeps working: old game links redirect to the new game home, in-game "RSVP" and "walk to the mandap" lead to the invitation, and the invitation links back to the game.
 - WhatsApp previews on both pages now use your new envelope artwork (heart separator and the photographed wax seal), served as a fast-loading image.
-- Verified in foreground Chrome at phone and desktop sizes: game start, invitation seal/opening, RSVP popup via the in-game shortcut, legacy redirects and the lost-page recovery button.
+- Deployed as **a0dd11d** (Pages run **38809055116**). All checks re-passed live in foreground Chrome: game start at the bare domain, the clean /invite address, invitation seal/opening, RSVP popup via the in-game shortcut, legacy redirects and the lost-page recovery button. WhatsApp may briefly show cached previews for already-shared links.
 
 ## Previous release — v7.8
 
