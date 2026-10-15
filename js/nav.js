@@ -14,9 +14,11 @@
   var leaving = false;
 
   function veilFor(url) {
-    /* destination-aware wash: game = warm marigold, paper pages = blush */
+    /* destination-aware wash: game = warm marigold, paper pages = blush.
+       The game now lives at the root; game.html survives as a redirect stub. */
     var destination = new URL(url, location.href);
-    if (/(^|\/)game\.html$/.test(destination.pathname)) return '#f2debc';
+    var path = destination.pathname;
+    if (/\/$/.test(path) || /(^|\/)(index\.html|game\.html)$/.test(path)) return '#f2debc';
     return '';   /* keep the blush veil set by the destination head snippet */
   }
 

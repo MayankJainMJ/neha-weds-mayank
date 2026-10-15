@@ -77,7 +77,7 @@
     buttons.forEach(function (b) {
       h += '<button class="btn ' + (b.ghost ? 'btn-ghost" style="color:#2b2118"' : 'btn-primary"') + ' data-a="' + b.a + '">' + b.label + '</button>';
     });
-    if (!noSkip) h += '<a class="skip-link" style="display:block;margin-top:1rem" href="./">Skip to the invitation \u2192</a>';
+    if (!noSkip) h += '<a class="skip-link" style="display:block;margin-top:1rem" href="invite.html">Skip to the invitation \u2192</a>';
     h += '</div>';
     overlay.innerHTML = h;
     overlay.style.display = 'flex';
@@ -94,8 +94,8 @@
     if (a === 'continue') { loadAct(actIdx); startAct(); } // full act rebuild — no stale enemies/icicles
     if (a === 'replay') beginRun();
     if (a === 'resume') { mode = 'run'; hideOverlay(); lastT = 0; }
-    if (a === 'goinvite') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./');
-    if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./?entry=0#rsvp');
+    if (a === 'goinvite') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('invite.html');
+    if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('invite.html?entry=0#rsvp');
     if (a === 'share') {
       var url = 'https://neha-and-mayank.in/';
       var txt = (store.name ? store.name + ' scored ' : 'I scored ') + lastScore +

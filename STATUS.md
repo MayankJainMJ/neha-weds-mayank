@@ -2,7 +2,15 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Current release — v7.8 LIVE (2026-10-16)
+## Local update — game at the root + new OG image (2026-10-16; release approved)
+
+- **Route swap.** The game now lives at the bare domain: `index.html` (invitation) was renamed to `invite.html` (replacing the legacy redirect stub), `game.html` was renamed to `index.html`, and a new `game.html` redirect stub forwards legacy links to `./` preserving query and hash. Both pages keep all relative asset paths. Shareable invitation URL: **https://neha-and-mayank.in/invite** (GitHub Pages extensionless).
+- **Metadata.** Root (game) canonical/`og:url` → `https://neha-and-mayank.in/`; invitation canonical/`og:url` → `/invite`. Both pages now share the user's new envelope artwork as `img/og-invitation-envelope-v3.jpg` (supplied 2000x1332 PNG converted to 1200x799 progressive JPEG, 64,350 bytes - WhatsApp-friendly; new filename busts caches). Retired `img/og-invitation-envelope.png` and the long-unreferenced `img/og-pawna-lake.jpg`.
+- **Links.** Invitation "Play the game" + leaderboard CTA → `./`; game skip link/`goinvite` → `invite.html`; `gorsvp` → `invite.html?entry=0#rsvp`; game share URL stays the bare domain (now opens the game first, as intended). `js/rsvp.js` game prefetch → `./`; `js/nav.js` marigold veil now matches `/`, `index.html` and the `game.html` stub; 404 "TAKE ME THERE" + prefetch → `invite.html` (user-approved). Cache tokens: game JS **6**, nav JS **3**, RSVP JS **7**.
+- **Unchanged.** Envelope entry/music gate, RSVP popup, Firestore sync, localStorage guest state (per-origin, survives the path move), env-boot bootstrap, CSS/entry tokens.
+- **Local foreground Chrome PASS at 375/1280px** (`route-swap-qa.mjs`): root serves the game splash with root canonical/OG and the new JPEG; PRESS START reaches Act 1; skip links target `invite.html`; legacy `/game.html?q#h` redirects to `/?q#h`; invitation gate/seal/open/reveal and RSVP unlock at `invite.html`; invitation→game link navigation; in-game `gorsvp` deep-links into the RSVP popup after the gate; 404 button targets the invitation. One benign pre-existing Chrome view-transition abort message on cross-page link navigation was verified to also occur on the old layout and is excluded from error assertions.
+
+## Previous release — v7.8 (2026-10-16; historical evidence)
 
 - App **42c1f5b** pushed; Pages run **38806494780** succeeded. Live HTML serves CSS 72 / entry 22 with the seal preload, and the deployed `img/wax-seal.png` matches the committed Git blob exactly. Production foreground Chrome checks passed: closed state at 320/375/1280px, full seal-tap opening transition (press, crack, halves separating, flap, FLIP, card + RSVP unlocked, zero page errors), and the reduced-motion static gate.
 

@@ -243,7 +243,7 @@
       /* the leaderboard tempts guests toward the game — warm up that hop */
       if (!document.getElementById('pfGame') && !(navigator.connection && navigator.connection.saveData)) {
         var l = document.createElement('link');
-        l.id = 'pfGame'; l.rel = 'prefetch'; l.href = 'game.html';
+        l.id = 'pfGame'; l.rel = 'prefetch'; l.href = './';
         document.head.appendChild(l);
       }
     });

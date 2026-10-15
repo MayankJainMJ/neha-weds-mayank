@@ -2,7 +2,14 @@
 
 **Last updated: 16 October 2026 · v7.8 photographed wax seal live**
 
-## Current release — v7.8
+## New update — game first! (release approved)
+
+- Sharing **https://neha-and-mayank.in/** now opens the game straight away; the invitation lives at **https://neha-and-mayank.in/invite**.
+- Every existing link keeps working: old game links redirect to the new game home, in-game "RSVP" and "walk to the mandap" lead to the invitation, and the invitation links back to the game.
+- WhatsApp previews on both pages now use your new envelope artwork (heart separator and the photographed wax seal), served as a fast-loading image.
+- Verified in foreground Chrome at phone and desktop sizes: game start, invitation seal/opening, RSVP popup via the in-game shortcut, legacy redirects and the lost-page recovery button.
+
+## Previous release — v7.8
 
 - The envelope now carries your actual photographed burgundy wax seal with the raised gold NM, cleanly cut from its white background and kept in true proportion.
 - Tapping it works exactly as before: the seal presses, cracks down the middle and the two halves part before the envelope opens.
