@@ -1,22 +1,22 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · Custom domain active; domain and invitation-polish updates ready locally**
+**Last updated: 16 October 2026 · v7.6 invitation polish and custom-domain updates live**
 
-## New local invitation polish
+## Current release — v7.6
 
 - Envelope heading now reads **NEHA ♥ MAYANK**.
 - Mumbai and Pune each have their own driving-time row with a car icon.
 - Removed **Come up early?** and **Where do I sleep?** from Good to know.
 - Replaced remaining visible em dashes with hyphens across the invitation and game, including tab titles and sharing text.
-- Foreground Chrome checks passed at phone and desktop widths; game chapter/HUD/share checks also passed. These changes and the domain URL updates below are **not committed or deployed**.
+- App **9e5020c**, successful Pages deployment **38791676209**. Local and live foreground Chrome checks passed at phone/desktop widths for invitation layout, entry, game chapter/HUD/share text and modal focus. Physical iPhone checks remain pending.
 
 ## Custom-domain update
 
 - Live invitation: **https://neha-and-mayank.in/**; game: **https://neha-and-mayank.in/game.html**. HTTPS homepage availability confirmed.
-- Local changes align sharing/canonical URLs, the game share action and 404 recovery with the new domain. The GitHub-created CNAME is synced locally.
-- Metadata/path checks pass. These code changes are **not yet committed or deployed**; the domain setup is already active. Historical release links below are retained as evidence.
+- Deployed changes align sharing/canonical URLs, the game share action and 404 recovery with the new domain. The GitHub-created CNAME is synced locally.
+- Live checks pass for sharing-image delivery, metadata, legacy invite redirects and styled nested error pages with a correct home link. Historical release links below are retained as evidence.
 
-## Current release — v7.5.4
+## Previous release — v7.5.4
 
 - Your latest edited PNG is live unchanged: **863×670**, about **251 KB**. Both pages have matching dimensions and a versioned preview URL (`?v=2`).
 - Commit **03b0cf8**, successful deployment **38056558637**. Browser/crawler HTTP checks confirm the exact edited file is served and both pages reference it correctly. WhatsApp may still cache the page preview.

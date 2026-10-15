@@ -2,20 +2,23 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Local update — travel details, punctuation and envelope heading (2026-10-16; not committed/deployed)
+## Current release — v7.6 LIVE (2026-10-16)
+
+- App **9e5020c** pushed; Pages run **38791676209** succeeded. Foreground production Chrome checks passed at 320/375/390/1280px for heart heading, full/static entry, car travel rows, removed sections, hyphenated visible copy, modal focus and overflow. Both game chapters/HUD labels and intercepted sharing text passed.
+- Production custom-domain checks passed: HTTPS homepage/game, canonical/OG/image URLs, legacy invite query/hash redirect, and nested 404 with loaded root CSS/navigation and correct home link. Audio/cloud/share transport was stubbed for focused browser checks; no production RSVP writes or actual shares. Physical iPhone testing remains unperformed.
 
 - Good to know now has separate car-icon rows for Mumbai/Pune driving times; removed the airplane/separator and the “Come up early?” / “Where do I sleep?” sections. Packing and dress guidance remain, with hyphens.
 - Envelope heading is **NEHA ♥ MAYANK**, with a small rose-coloured text-style heart. Main invitation names and the supplied static preview artwork are unchanged.
 - Replaced all remaining authored, user-facing em dashes with hyphens across page titles, accessibility text, game chapters/token messages/share text and champion text. Updated HUD act-name parsing to match the new separator. Remaining source em dashes are only comments. Cache tokens: CSS **70**, entry **19**, game **5**, levels **2**, cloud **3**.
-- Foreground local Chrome PASS at **320/375/390/1280px**: heart heading, a complete normal entry, compact/static entries, travel-row alignment and matching car icons, removed sections, visible punctuation, modal close/focus, and no horizontal overflow. Both game chapters/HUD labels and intercepted share text pass; cloud/audio/share transport stubbed. Screenshots and checks are in the external temporary directory. Previous custom-domain changes remain included locally; no push/deploy performed.
+- Foreground local Chrome PASS at **320/375/390/1280px**: heart heading, a complete normal entry, compact/static entries, travel-row alignment and matching car icons, removed sections, visible punctuation, modal close/focus, and no horizontal overflow. Both game chapters/HUD labels and intercepted share text pass; cloud/audio/share transport stubbed. Screenshots and checks are in the external temporary directory. Custom-domain changes shipped in the same release.
 
-## Local update — custom-domain URLs (2026-10-16; not committed/deployed)
+## Custom-domain migration — shipped in v7.6 (2026-10-16)
 
 - Fast-forwarded GitHub's `5f09bef` CNAME commit; `CNAME` contains `neha-and-mayank.in`. Pages custom domain and HTTPS enforcement are configured; the new homepage returns HTTPS 200 from this environment.
-- Updated invitation/game `og:url` and `og:image`, invitation/legacy redirect canonical links, and added the game canonical. Updated the game share URL and bumped `js/game.js` to **v4**. The 404 base is now `/`, so missing nested URLs resolve assets and the home link at the domain root.
-- Local HTTP assertions pass for metadata, CNAME, versioned share code and root/nested 404 URL resolution. JS syntax and whitespace checks pass. No old project URL remains in application HTML/JS. Firebase configuration and relative navigation/assets are unchanged. These code updates remain local; the domain itself is already active.
+- Updated invitation/game `og:url` and `og:image`, invitation/legacy redirect canonical links, and added the game canonical. Updated the game share URL; final `js/game.js` cache token is **v5** including the punctuation changes. The 404 base is now `/`, so missing nested URLs resolve assets and the home link at the domain root.
+- Local HTTP assertions pass for metadata, CNAME, versioned share code and root/nested 404 URL resolution. JS syntax and whitespace checks pass. No old project URL remains in application HTML/JS. Firebase configuration and relative navigation/assets are unchanged. Domain updates are deployed and production-verified above.
 
-## Current release — v7.5.4 LIVE (2026-10-10)
+## Previous release — v7.5.4 (2026-10-10; historical evidence)
 
 - Resynced the user's edited PNG unchanged: **863×670**, **250,582 bytes**. Updated both pages' dimensions and `og:image` URL with **`?v=2`**. App **03b0cf8**; Pages run **38056558637** succeeded.
 - Production normal-browser/Facebook-crawler checks pass for both pages' versioned image URL, PNG MIME type, dimensions and exact deployed file hash. Actual WhatsApp rendering/cache refresh remains unverified.

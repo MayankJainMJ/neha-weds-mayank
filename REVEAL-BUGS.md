@@ -1,6 +1,8 @@
 # Post-envelope reveal — independent bug tracker
 
-## Local UI follow-up (2026-10-16; not deployed)
+## UI follow-up — v7.6 deployed (2026-10-16)
+
+App **9e5020c**, Pages **38791676209**. Local checks below repeated successfully against https://neha-and-mayank.in/ in foreground Chrome at 320/375/390/1280px, including the game chapter/HUD/share assertions. Additional production checks passed for custom-domain metadata/image delivery, query/hash-preserving legacy redirect, nested 404 styles/navigation and home-link resolution. Transport stubs avoided real shares/cloud writes. No physical iPhone testing performed.
 
 - **Travel icon wrapping/mismatch — resolved locally.** The Pune airplane icon could stay beside Mumbai's time while its label wrapped. Replaced it with a car and gave each city a flex row within a vertical layout. Foreground Chrome at 320/375/390/1280px confirms identical car SVGs, aligned icon/text, separate rows and no horizontal overflow.
 - Removed two requested FAQ sections, changed the envelope separator to a text-style heart and replaced authored visible em dashes sitewide. Game HUD separator parsing was updated with the chapter data; both ACT labels and intercepted share copy pass. Normal entry, compact/static presentation and dialog close/focus pass. Audio/cloud/share transport was stubbed for these focused checks. No physical iPhone check or independent agent review for this local follow-up.
