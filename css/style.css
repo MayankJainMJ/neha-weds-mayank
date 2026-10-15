@@ -1648,21 +1648,21 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
 .ck-seal:focus-visible { outline: 2px solid #8b5a2b; outline-offset: 7px; }
 .ck-seal[aria-disabled="true"] { cursor: default; pointer-events: none; outline: none; }
 .inv-names:focus { outline: none; } /* programmatic focus target, not interactive */
-.ck-seal svg { width: 100%; height: 100%; overflow: visible; }
-/* no hard outline: the edge is defined by the gradient falloff plus a
-   soft blurred stroke inside the SVG, so the wax reads matte, not drawn */
-.ck-wax { fill: url(#ckwaxg); stroke: none; }
-.ck-crack { stroke: #5c2438; stroke-width: 1.1; stroke-dasharray: 160; stroke-dashoffset: 160; opacity: 0; }
-/* NM monogram: warm-ivory emboss — top-left light, bottom-right inset shade;
-   muted ivory-gold gradient across the lettering, not metallic shine */
-.ck-mg path { fill: url(#cklet); }
-.ck-mg-hi path { fill: rgba(255, 244, 226, .5); }
-.ck-mg-sh path { fill: rgba(58, 18, 30, .5); }
-.ck-sweep { fill: rgba(255, 236, 220, .28); opacity: 0; animation: cksweep 2.8s ease .9s 1; }
-@keyframes cksweep { 6% { opacity: 1; } 18% { transform: rotate(18deg) translateX(150px); opacity: 0; } 100% { opacity: 0; } }
+/* photographed wax seal: two clipped copies of the same image form the
+   crackable halves; the overlay SVG carries only the crack line */
+.ck-sealart { position: absolute; inset: 0; display: block; pointer-events: none; }
+.ck-seal svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ck-seal .ck-half {
+  position: absolute; inset: 0;
+  background: url(../img/wax-seal.png) center / 100% 100% no-repeat;
+}
+/* split along the same hidden zigzag the crack line draws over */
+.ck-seal .ck-half-l { clip-path: polygon(50% 0, 46% 22%, 54% 40%, 47% 60%, 52% 78%, 47% 100%, 0 100%, 0 0); }
+.ck-seal .ck-half-r { clip-path: polygon(50% 0, 46% 22%, 54% 40%, 47% 60%, 52% 78%, 47% 100%, 100% 100%, 100% 0); }
+.ck-crack { stroke: #4a1726; stroke-width: 1.1; stroke-dasharray: 160; stroke-dashoffset: 160; opacity: 0; }
 .ck-half { transition: transform .42s ease .22s; }
 .ck-crackt .ck-seal, .ck-crack .ck-seal { pointer-events: none; }
-.ck-crack .ck-seal svg { animation: ckpress .32s ease both; }
+.ck-crack .ck-seal .ck-sealart { animation: ckpress .32s ease both; }
 @keyframes ckpress { 40% { transform: scale(.94); } 100% { transform: scale(1.03); } }
 .ck-crack .ck-crack { opacity: 1; animation: ckcrackdraw .38s ease .24s forwards; }
 @keyframes ckcrackdraw { to { stroke-dashoffset: 0; } }

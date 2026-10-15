@@ -2,6 +2,12 @@
 
 **Last updated: 16 October 2026 · v7.7 tactile envelope and wax seal live**
 
+## New update — your real wax seal photo (release approved)
+
+- The envelope now carries your actual photographed burgundy wax seal with the raised gold NM, cleanly cut from its white background and kept in true proportion.
+- Tapping it works exactly as before: the seal presses, cracks down the middle and the two halves part before the envelope opens.
+- Verified in foreground Chrome at phone and desktop sizes, including the complete opening sequence and reduced motion.
+
 ## Current release — v7.7
 
 - The envelope now looks like real blush stationery: soft paper grain, believable overlapping folds with delicate seams and paper-edge light, gentle directional lighting, and natural shadows under the flap and beneath the envelope.
