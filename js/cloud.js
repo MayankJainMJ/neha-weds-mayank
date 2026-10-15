@@ -131,7 +131,7 @@ async function renderChamp() {
     snap.forEach(d => { const v = d.data(); if (!top && !blocked(v)) top = v; });
     if (!top || (top.bestScore | 0) <= 0 || !top.name) return; // line stays hidden
     const nm = String(top.name).replace(/[<>&]/g, '');
-    el.textContent = '\u{1F3C6} ' + nm + ' \u00B7 ' + (top.bestScore | 0) + ' \u2014 think you can beat it?';
+    el.textContent = '\u{1F3C6} ' + nm + ' \u00B7 ' + (top.bestScore | 0) + ' - think you can beat it?';
     el.hidden = false;
   } catch (e) { /* stays hidden */ }
 }

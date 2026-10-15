@@ -97,9 +97,9 @@
     if (a === 'goinvite') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./');
     if (a === 'gorsvp') (window.MWN_NAV ? window.MWN_NAV.go : function (u) { location.href = u; })('./?entry=0#rsvp');
     if (a === 'share') {
-      var url = 'https://mayankjainmj.github.io/neha-weds-mayank/';
+      var url = 'https://neha-and-mayank.in/';
       var txt = (store.name ? store.name + ' scored ' : 'I scored ') + lastScore +
-        ' on Neha \u2665 Mayank\u2019s wedding invite game \u2014 beat that: ' + url;
+        ' on Neha \u2665 Mayank\u2019s wedding invite game - beat that: ' + url;
       if (navigator.share) {
         navigator.share({ title: 'Neha \u2665 Mayank', text: txt }).catch(function () {});
       } else {
@@ -126,7 +126,7 @@
 
   function hud() {
     hudLives.innerHTML = '<span style="color:#ffd23f">\u2665</span> ' + store.hearts;
-    hudScore.innerHTML = act.name.split(' \u2014 ')[0] + (ringGot ? ' \u25CB' : '') + (sessionTokens ? ' \u2726' : '');
+    hudScore.innerHTML = act.name.split(' - ')[0] + (ringGot ? ' \u25CB' : '') + (sessionTokens ? ' \u2726' : '');
   }
 
   function resetPlayer() {

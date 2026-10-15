@@ -1494,6 +1494,7 @@ body.hold-bloom .lotus-fg .twig path { animation-play-state: paused !important; 
   font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 500;
   letter-spacing: .14em; text-transform: uppercase; color: #554648;
 }
+.ck-heart { color: #9c536c; font-size: .75em; letter-spacing: 0; }
 
 /* the envelope — physical stationery */
 .ck-scene { perspective: 1150px; position: relative; }
@@ -1801,7 +1802,10 @@ body.go4 .lotus-fg .drift { animation-play-state: running !important; }
 }
 .gtk-answer { margin: 0; color: var(--gtk-ink) !important; font: 400 .84rem/1.55 Montserrat, sans-serif; }
 .gtk-icon { width: 15px; height: 15px; margin-right: 5px; color: var(--gtk-accent); vertical-align: -2px; }
-.gtk-travel span { white-space: nowrap; }
+.gtk-travel { display: grid; gap: 4px; }
+.gtk-travel-row { display: flex; align-items: center; gap: 6px; }
+.gtk-travel-row .gtk-icon { flex: none; margin-right: 0; }
+.gtk-travel-row > span { min-width: 0; }
 .gtk-map {
   display: inline-flex; align-items: center; min-height: 44px; margin-top: 7px; padding: 0 16px;
   border: 1px solid var(--gtk-accent); border-radius: 999px;

@@ -1,5 +1,10 @@
 # Post-envelope reveal — independent bug tracker
 
+## Local UI follow-up (2026-10-16; not deployed)
+
+- **Travel icon wrapping/mismatch — resolved locally.** The Pune airplane icon could stay beside Mumbai's time while its label wrapped. Replaced it with a car and gave each city a flex row within a vertical layout. Foreground Chrome at 320/375/390/1280px confirms identical car SVGs, aligned icon/text, separate rows and no horizontal overflow.
+- Removed two requested FAQ sections, changed the envelope separator to a text-style heart and replaced authored visible em dashes sitewide. Game HUD separator parsing was updated with the chapter data; both ACT labels and intercepted share copy pass. Normal entry, compact/static presentation and dialog close/focus pass. Audio/cloud/share transport was stubbed for these focused checks. No physical iPhone check or independent agent review for this local follow-up.
+
 ## Current release — v7.5 seal entry and RSVP dialog (2026-09-13)
 
 App **26c3f6c** is pushed and deployed through successful Pages run **34753819695**. Production `rsvp-popup.mjs` passed in headed Chromium/WebKit at 320/375/1280px, including the missing-entry recovery for RB-02. Production `refined-reveal-audio.mjs` passed real MP3/gain playback through seal opening and popup open/edit/close. Verification ran directly in sequential foreground browser windows, with cloud requests stubbed/blocked. The detailed local evidence below is retained.

@@ -219,7 +219,7 @@
       '<div class="ck-loose" aria-hidden="true">' + looseSVG() + '</div>' +
       '<div class="ck-head">' +
         '<p class="ck-eyebrow">Together with their families</p>' +
-        '<p class="ck-topnames">Neha &nbsp;&middot;&nbsp; Mayank</p>' +
+        '<p class="ck-topnames">Neha &nbsp;<span class="ck-heart">&#9829;&#65038;</span>&nbsp; Mayank</p>' +
       '</div>' +
       '<div class="ck-scene">' +
         '<div class="ck-env">' +

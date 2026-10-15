@@ -1,6 +1,20 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 10 October 2026 · v7.5.4 edited PNG resynced and live**
+**Last updated: 16 October 2026 · Custom domain active; domain and invitation-polish updates ready locally**
+
+## New local invitation polish
+
+- Envelope heading now reads **NEHA ♥ MAYANK**.
+- Mumbai and Pune each have their own driving-time row with a car icon.
+- Removed **Come up early?** and **Where do I sleep?** from Good to know.
+- Replaced remaining visible em dashes with hyphens across the invitation and game, including tab titles and sharing text.
+- Foreground Chrome checks passed at phone and desktop widths; game chapter/HUD/share checks also passed. These changes and the domain URL updates below are **not committed or deployed**.
+
+## Custom-domain update
+
+- Live invitation: **https://neha-and-mayank.in/**; game: **https://neha-and-mayank.in/game.html**. HTTPS homepage availability confirmed.
+- Local changes align sharing/canonical URLs, the game share action and 404 recovery with the new domain. The GitHub-created CNAME is synced locally.
+- Metadata/path checks pass. These code changes are **not yet committed or deployed**; the domain setup is already active. Historical release links below are retained as evidence.
 
 ## Current release — v7.5.4
 
