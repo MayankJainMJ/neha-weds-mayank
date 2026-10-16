@@ -1,13 +1,13 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · private guest book ready**
+**Last updated: 16 October 2026 · v7.10 private guest book live**
 
-## New update — private guest book (release approved)
+## Current release — v7.10 · private guest book
 
 - A hidden page at **https://neha-and-mayank.in/guestbook** shows everyone who has RSVP'd and/or played the game, in one tidy list — merged so each person appears once even if they used several phones.
 - At the top: how many are attending, the total headcount including +1s, how many arrive on the 2nd vs the 3rd, and how many played. There's a "Download CSV" button and a "Show raw entries" toggle (which lists every individual device record, for tidying up duplicates later).
 - It is unlisted (linked from nowhere) and hidden from search engines, but — as discussed — not password-protected, and the underlying list is technically readable by anyone, so treat the URL as semi-private.
-- Independently reviewed twice by a second AI (ChatGPT Codex) and hardened for security, accuracy, readability and robustness. **Duplicate cleanup is the next phase.**
+- Independently reviewed twice by a second AI (ChatGPT Codex) and hardened for security, accuracy, readability and robustness. Deployed as **5f358aa** (Pages run **38849781246**); the live page and its clean `/guestbook` URL re-passed every check in production. **Duplicate cleanup is the next phase.**
 
 ## Current release — v7.9 · game first
 

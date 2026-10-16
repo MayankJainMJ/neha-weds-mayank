@@ -2,7 +2,11 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Local update — hidden guest book admin page (2026-10-16; release approved)
+## Current release — v7.10 LIVE (2026-10-16)
+
+- App **5f358aa** pushed; Pages run **38849781246** succeeded. Production checks PASS: `/guestbook` and `/guestbook.html` both serve HTTP 200 with `noindex, nofollow`; the page is linked from neither `/` nor `/invite`; the live read-only Firestore load (7 merged / 17 raw), summary math, raw toggle, CSV export and zero page errors all re-passed in foreground Chrome at 390/1280px against production.
+
+## Hidden guest book admin page
 
 - New **`guestbook.html`** (clean URL `https://neha-and-mayank.in/guestbook`): a self-contained, `noindex, nofollow`, unlisted admin view of who has RSVP'd and/or played. Read-only — it imports Firebase directly and never loads `cloud.js`, so it performs no guest writes; it reuses the same public config, `ping`/`test player` blocklist, and per-name merge as `js/cloud.js`. Not linked from anywhere on the site. Footer explicitly discloses the collection is world-readable and the page is not password-protected.
 - Shows a summary strip (Attending, total heads incl +1s, parties 2 Dec vs 3 Dec, played), a merged one-row-per-guest table (best score kept; most-recent RSVP by `updatedAt` wins; attendees sorted first then by score), a raw per-device table with full selectable doc IDs for later duplicate cleanup, and a CSV export. Duplicate **deletion is deferred to a later phase** per the user.
