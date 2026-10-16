@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guest book — Neha &amp; Mayank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 8 8%27%3E%3Crect x=%271%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%275%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%271%27 y=%273%27 width=%276%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%272%27 y=%275%27 width=%274%27 height=%271%27 fill=%27%23e85d75%27/%3E%3Crect x=%273%27 y=%276%27 width=%272%27 height=%271%27 fill=%27%23a4133c%27/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --paper: #fffdfc; --ink: #5a4a44; --heading: #44353b;
+      --accent: #a85f7d; --accent-soft: rgba(168, 95, 125, .1);
+      --line: rgba(168, 95, 125, .32); --gold: #8a5c16; --rose: #a8486a;
+      --muted: #6b5b61; --ok: #276843; --wait: #6f4f0d; --decl: #9a3030;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0 16px 56px;
+      font-family: Montserrat, system-ui, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(170deg, #f8eff0 0%, #f6e9eb 55%, #f3e2e5 100%);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    header.gb-head { text-align: center; padding: 34px 0 10px; }
+    .gb-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 8px;
+    }
+    .gb-title {
+      margin: 0; font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(26px, 7vw, 38px); color: var(--rose); font-weight: 700;
+    }
+    .gb-sub { margin: 6px 0 0; font-size: 13px; color: var(--muted); font-style: italic;
+      font-family: 'Cormorant Garamond', Georgia, serif; }
+    .gb-stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+      gap: 10px; margin: 24px 0 18px;
+    }
+    .gb-stats[hidden] { display: none; }
+    .gb-stat {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 12px; text-align: center;
+      box-shadow: 0 8px 22px rgba(122, 66, 88, .07);
+    }
+    .gb-stat b { display: block; font-size: 26px; color: var(--heading);
+      font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; line-height: 1; }
+    .gb-stat span { display: block; margin-top: 6px; font-size: 10px; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    .gb-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      justify-content: space-between; margin: 10px 0 14px; }
+    .gb-bar .gb-left { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .gb-btn {
+      appearance: none; border: 1px solid var(--accent); background: none;
+      color: var(--heading); font: 700 11px/1 Montserrat, sans-serif;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: 10px 16px; min-height: 40px; border-radius: 999px; cursor: pointer;
+      transition: background-color .15s ease;
+    }
+    .gb-btn:hover { background: var(--accent-soft); }
+    .gb-btn[aria-expanded="true"] { background: var(--accent); color: #fff; }
+    .gb-btn:disabled { opacity: .5; cursor: default; }
+    .gb-status { font-size: 12px; color: var(--muted); }
+    .gb-stale { margin: 0 0 14px; padding: 10px 14px; border-radius: 10px;
+      background: rgba(154, 48, 48, .08); border: 1px solid rgba(154, 48, 48, .25);
+      color: var(--decl); font-size: 12.5px; }
+    .gb-stale[hidden] { display: none; }
+    .gb-card { background: var(--paper); border: 1px solid var(--line);
+      border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(122, 66, 88, .08); }
+    .gb-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    caption { text-align: left; padding: 14px 16px 2px; font-size: 11px;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+    th, td { padding: 11px 14px; text-align: left; white-space: nowrap; }
+    thead th { font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--line); font-weight: 700; }
+    tbody tr + tr td { border-top: 1px solid rgba(168, 95, 125, .16); }
+    tbody tr:hover td { background: var(--accent-soft); }
+    td.gb-name { font-weight: 600; color: var(--heading); white-space: normal; }
+    .gb-pill { display: inline-block; padding: 3px 9px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+    .gb-pill.yes { background: rgba(39, 104, 67, .14); color: var(--ok); }
+    .gb-pill.no { background: rgba(138, 100, 17, .14); color: var(--wait); }
+    .gb-pill.decl { background: rgba(154, 48, 48, .14); color: var(--decl); }
+    td.gb-score { font-variant-numeric: tabular-nums; color: var(--gold); font-weight: 700; }
+    td.gb-muted, .gb-muted { color: var(--muted); }
+    .gb-uid { font-family: ui-monospace, Menlo, monospace; font-size: 11px;
+      color: var(--ink); user-select: all; }
+    .gb-note { margin: 16px 2px 0; font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+    .gb-empty, .gb-error { padding: 40px 16px; text-align: center; color: var(--muted); }
+    .gb-error { color: var(--decl); }
+    #rawCard { display: none; margin-top: 18px; }
+    #rawCard.show { display: block; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="gb-head">
+      <p class="gb-eyebrow">Private &middot; Neha &amp; Mayank</p>
+      <h1 class="gb-title">The Guest Book</h1>
+      <p class="gb-sub" id="gbFreshness">Loading live responses&hellip;</p>
+    </header>
+
+    <p class="gb-stale" id="gbStale" role="alert" hidden></p>
+
+    <section class="gb-stats" id="gbStats" aria-label="Summary" hidden>
+      <div class="gb-stat"><b id="sAttending">0</b><span>Attending</span></div>
+      <div class="gb-stat"><b id="sHeads">0</b><span>Total heads</span></div>
+      <div class="gb-stat"><b id="sDec2">0</b><span>Parties 2 Dec</span></div>
+      <div class="gb-stat"><b id="sDec3">0</b><span>Parties 3 Dec</span></div>
+      <div class="gb-stat"><b id="sPlayed">0</b><span>Played game</span></div>
+    </section>
+
+    <div class="gb-bar">
+      <div class="gb-left">
+        <button type="button" class="gb-btn" id="btnReload">Refresh</button>
+        <button type="button" class="gb-btn" id="btnCsv" disabled>Download CSV</button>
+        <button type="button" class="gb-btn" id="btnRaw" aria-expanded="false" aria-controls="rawCard">Show raw entries</button>
+      </div>
+      <span class="gb-status" id="gbStatus" role="status" aria-live="polite">Connecting&hellip;</span>
+    </div>
+
+    <div class="gb-card">
+      <div class="gb-scroll" tabindex="0" role="region" aria-label="Merged guest list (scrollable)">
+        <table id="gbTable">
+          <caption>One row per guest &middot; merged across devices</caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Guest</th>
+              <th scope="col">RSVP</th>
+              <th scope="col">Arrival</th>
+              <th scope="col">Party</th>
+              <th scope="col">+1</th>
+              <th scope="col">Best score</th>
+              <th scope="col">Plays</th>
+              <th scope="col">Last activity</th>
+            </tr>
+          </thead>
+          <tbody id="gbBody">
+            <tr><td colspan="9" class="gb-empty" id="gbLoadingRow">Signing in&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="gb-card" id="rawCard">
+      <div class="gb-scroll" tabindex="0" role="region" aria-label="Raw per-device entries (scrollable)">
+        <table>
+          <caption>Every per-device document &middot; use to spot duplicates (deletion is a later phase)</caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">RSVP</th>
+              <th scope="col">Arrival</th>
+              <th scope="col">Party</th>
+              <th scope="col">Best</th>
+              <th scope="col">Plays</th>
+              <th scope="col">Updated</th>
+              <th scope="col">Device</th>
+              <th scope="col">Doc ID</th>
+            </tr>
+          </thead>
+          <tbody id="rawBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="gb-note">
+      Live, read-only view of the shared guest database &mdash; the same data the leaderboard reads, and the same
+      collection <strong>any visitor can already read</strong> (security lives in the write rules, not in secrecy).
+      Names typed on multiple phones/laptops are merged into one row by name; the best score is kept and the most
+      recent RSVP wins. &ldquo;Plays&rdquo; sums the per-device counters and <em>(n&nbsp;auth)</em> shows how many
+      anonymous sign-in documents share that name &mdash; a proxy for devices, not verified hardware. Known test
+      entries (<code>ping</code>, <code>test player</code>) are hidden. This page is unlisted and marked noindex,
+      but is <strong>not password-protected</strong>. Duplicate cleanup is a separate later phase.
+    </p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getFirestore, collection, query, orderBy, limit, getDocs }
+      from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    /* Same public config + blocklist as js/cloud.js. This page is READ-ONLY and
+       never imports cloud.js, so it performs no guest writes. */
+    const CFG = {
+      apiKey: 'AIzaSyBSSXaJeiv-90OdqTla7It0vP_gni105oE',
+      authDomain: 'neha-weds-mayank.firebaseapp.com',
+      projectId: 'neha-weds-mayank',
+      storageBucket: 'neha-weds-mayank.firebasestorage.app',
+      messagingSenderId: '747793962308',
+      appId: '1:747793962308:web:ad566ee8c4d9093405b311'
+    };
+    const BLOCKLIST = ['ping', 'test player'];
+    const blocked = name => BLOCKLIST.includes(String(name || '').trim().toLowerCase());
+
+    const $ = id => document.getElementById(id);
+    /* escape for HTML text AND double-quoted attributes (includes quotes) */
+    const esc = s => String(s == null ? '' : s).replace(/[<>&"']/g,
+      c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c]));
+    /* ToNumber can run hostile valueOf/toString on a map value; keep it safe */
+    const num = v => { try { const n = v | 0; return n > 0 ? n : 0; } catch (e) { return 0; } };
+    const dash = '<span class="gb-muted">&mdash;</span>';
+    /* neutralise spreadsheet formula injection before CSV quoting (OWASP:
+       a leading = + - @ tab CR or LF can be read as a formula) */
+    const csvSafe = s => {
+      const t = String(s == null ? '' : s);
+      return /^[=+\-@\t\r\n]/.test(t) ? "'" + t : t;
+    };
+
+    const toDate = ts => {
+      if (!ts) return null;
+      try {
+        const d = (ts && typeof ts.toDate === 'function') ? ts.toDate() : new Date(ts);
+        return (d instanceof Date && !isNaN(d.getTime())) ? d : null;
+      } catch (e) { return null; }
+    };
+    const fmtDate = d => d ? d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+
+    /* normalise one Firestore doc into a predictable shape so a single
+       malformed record can never break the whole view */
+    function normalise(d, data) {
+      const r = data && typeof data.rsvp === 'object' && data.rsvp ? data.rsvp : null;
+      const rsvp = r ? {
+        attending: r.attending === true,
+        declined: r.attending === false,
+        arrivalDay: r.arrivalDay === '3' ? '3' : '2',
+        partySize: Math.min(2, Math.max(1, (r.partySize | 0) || 1)),
+        partyNames: Array.isArray(r.partyNames) ? r.partyNames.filter(x => typeof x === 'string' && x.trim()) : []
+      } : null;
+      return {
+        _uid: d.id,
+        name: String(data && data.name != null ? data.name : ''),
+        nameLower: String(data && (data.nameLower || data.name) || '').trim().toLowerCase(),
+        bestScore: num(data && data.bestScore),
+        plays: num(data && data.plays),
+        device: String(data && data.device != null ? data.device : ''),
+        updated: toDate(data && data.updatedAt),
+        rsvp: rsvp,
+        rsvpSubmitted: !!r
+      };
+    }
+
+    let merged = [];
+    let rawRows = [];
+    let loading = false;
+
+    /* collapse to one row per typed name: best score kept; the most recently
+       updated RSVP wins (so a stale decline/party size never governs forever) */
+    function mergeByName(rows) {
+      const best = new Map();
+      for (const v of rows) {
+        const k = v.nameLower;
+        if (!k) continue;
+        let m = best.get(k);
+        if (!m) {
+          m = { name: v.name || k, bestScore: 0, plays: 0, docs: 0,
+                rsvp: null, rsvpAt: null, updated: null };
+          best.set(k, m);
+        }
+        m.docs += 1;
+        m.plays += v.plays;
+        if (v.bestScore > m.bestScore) { m.bestScore = v.bestScore; if (v.name) m.name = v.name; }
+        if (v.rsvp) {
+          const at = v.updated ? v.updated.getTime() : 0;
+          if (!m.rsvp || at >= (m.rsvpAt || 0)) { m.rsvp = v.rsvp; m.rsvpAt = at; }
+        }
+        if (v.updated && (!m.updated || v.updated > m.updated)) m.updated = v.updated;
+      }
+      return [...best.values()].sort((a, b) => {
+        const ar = a.rsvp && a.rsvp.attending ? 1 : 0, br = b.rsvp && b.rsvp.attending ? 1 : 0;
+        if (br !== ar) return br - ar;
+        return b.bestScore - a.bestScore;
+      });
+    }
+
+    function rsvpPill(rsvp) {
+      if (!rsvp) return '<span class="gb-pill no">Not yet</span>';
+      if (rsvp.declined) return '<span class="gb-pill decl">Declined</span>';
+      if (rsvp.attending) return '<span class="gb-pill yes">Attending</span>';
+      return '<span class="gb-pill no">Not yet</span>';
+    }
+
+    function renderMerged() {
+      const body = $('gbBody');
+      if (!merged.length) { body.innerHTML = '<tr><td colspan="9" class="gb-empty">No guests yet.</td></tr>'; return; }
+      body.innerHTML = merged.map((g, i) => {
+        const r = g.rsvp;
+        const arrival = r && r.attending ? (r.arrivalDay === '3' ? '3 Dec' : '2 Dec') : '';
+        const party = r && r.attending ? r.partySize : '';
+        const plus1 = r && r.partyNames.length ? esc(r.partyNames.join(', ')) : '';
+        const score = g.bestScore > 0 ? g.bestScore : dash;
+        const devNote = g.docs > 1 ? ' <span class="gb-muted">(' + g.docs + ' auth)</span>' : '';
+        const plays = g.plays > 0 ? (g.plays + devNote) : ('<span class="gb-muted">0</span>' + devNote);
+        return '<tr>' +
+          '<td class="gb-muted">' + (i + 1) + '</td>' +
+          '<td class="gb-name">' + esc(g.name) + '</td>' +
+          '<td>' + rsvpPill(r) + '</td>' +
+          '<td>' + (arrival || dash) + '</td>' +
+          '<td>' + (party || dash) + '</td>' +
+          '<td>' + (plus1 || dash) + '</td>' +
+          '<td class="gb-score">' + score + '</td>' +
+          '<td>' + plays + '</td>' +
+          '<td class="gb-muted">' + (g.updated ? fmtDate(g.updated) : '&mdash;') + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function renderRaw() {
+      const body = $('rawBody');
+      if (!rawRows.length) { body.innerHTML = '<tr><td colspan="9" class="gb-empty">No entries.</td></tr>'; return; }
+      body.innerHTML = rawRows.map(v => {
+        const r = v.rsvp;
+        return '<tr>' +
+          '<td class="gb-name">' + esc(v.name) + '</td>' +
+          '<td>' + rsvpPill(r) + '</td>' +
+          '<td>' + (r && r.attending ? (r.arrivalDay === '3' ? '3 Dec' : '2 Dec') : dash) + '</td>' +
+          '<td>' + (r && r.attending ? r.partySize : dash) + '</td>' +
+          '<td class="gb-score">' + v.bestScore + '</td>' +
+          '<td>' + v.plays + '</td>' +
+          '<td class="gb-muted">' + (fmtDate(v.updated) || '&mdash;') + '</td>' +
+          '<td class="gb-muted" title="' + esc(v.device) + '">' + esc(v.device.slice(0, 24)) + '</td>' +
+          '<td class="gb-uid">' + esc(v._uid) + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function renderStats() {
+      const attending = merged.filter(g => g.rsvp && g.rsvp.attending);
+      const heads = attending.reduce((n, g) => n + (g.rsvp.partySize || 1), 0);
+      const dec2 = attending.filter(g => g.rsvp.arrivalDay !== '3').length;
+      const dec3 = attending.filter(g => g.rsvp.arrivalDay === '3').length;
+      const played = merged.filter(g => g.bestScore > 0 || g.plays > 0).length;
+      $('sAttending').textContent = attending.length;
+      $('sHeads').textContent = heads;
+      $('sDec2').textContent = dec2;
+      $('sDec3').textContent = dec3;
+      $('sPlayed').textContent = played;
+      $('gbStats').hidden = false;
+    }
+
+    function downloadCsv() {
+      if (!merged.length) return;
+      const head = ['Guest', 'RSVP', 'Arrival', 'PartySize', 'PlusOnes', 'BestScore', 'Plays', 'AuthDocs', 'LastActivity'];
+      const cell = s => '"' + csvSafe(s).replace(/"/g, '""') + '"';
+      const lines = [head.map(cell).join(',')];
+      for (const g of merged) {
+        const r = g.rsvp;
+        lines.push([
+          g.name,
+          r ? (r.declined ? 'Declined' : (r.attending ? 'Attending' : 'Not yet')) : 'Not yet',
+          r && r.attending ? (r.arrivalDay === '3' ? '3 Dec' : '2 Dec') : '',
+          r && r.attending ? r.partySize : '',
+          r ? r.partyNames.join('; ') : '',
+          g.bestScore || 0,
+          g.plays || 0,
+          g.docs || 0,
+          g.updated ? fmtDate(g.updated) : ''
+        ].map(cell).join(','));
+      }
+      const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'neha-mayank-guestbook-' + new Date().toISOString().slice(0, 10) + '.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    let app, db, auth;
+    async function load() {
+      if (loading) return;
+      loading = true;
+      const status = $('gbStatus');
+      $('btnReload').disabled = true;
+      try {
+        status.textContent = 'Loading…';
+        if (!app) { app = initializeApp(CFG); db = getFirestore(app); auth = getAuth(app); }
+        await signInAnonymously(auth);
+        const CAP = 3000;
+        const snap = await getDocs(query(collection(db, 'guests'), orderBy('bestScore', 'desc'), limit(CAP)));
+        const next = [];
+        let scanned = 0;
+        snap.forEach(d => {
+          scanned += 1;
+          try {
+            const data = (d.data && d.data()) || {};
+            if (blocked(data.name)) return;
+            next.push(normalise(d, data));   // one bad doc can't abort the rest
+          } catch (e) {}
+        });
+        rawRows = next;
+        merged = mergeByName(rawRows);
+        renderMerged();
+        renderRaw();
+        renderStats();
+        $('btnCsv').disabled = merged.length === 0;
+        const capped = scanned >= CAP;
+        const stale = $('gbStale');
+        if (capped) {
+          stale.textContent = 'Showing the top ' + CAP + ' records by score — totals may be incomplete.';
+          stale.hidden = false;
+        } else {
+          stale.hidden = true;
+        }
+        status.textContent = merged.length + ' guests · ' + rawRows.length + ' raw entries';
+        $('gbFreshness').textContent = 'Live as of ' + new Date().toLocaleString('en-GB',
+          { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        status.textContent = 'Could not refresh';
+        if (merged.length) {
+          const stale = $('gbStale');
+          stale.textContent = 'Could not reach the guest database — showing the last loaded snapshot. Tap Refresh to retry.';
+          stale.hidden = false;
+        } else {
+          $('gbBody').innerHTML = '<tr><td colspan="9" class="gb-error">Could not reach the guest database. Check your connection and tap Refresh.</td></tr>';
+        }
+      } finally {
+        loading = false;
+        $('btnReload').disabled = false;
+      }
+    }
+
+    $('btnReload').addEventListener('click', load);
+    $('btnCsv').addEventListener('click', downloadCsv);
+    $('btnRaw').addEventListener('click', () => {
+      const card = $('rawCard');
+      const open = !card.classList.contains('show');
+      card.classList.toggle('show', open);
+      $('btnRaw').setAttribute('aria-expanded', open ? 'true' : 'false');
+      $('btnRaw').textContent = open ? 'Hide raw entries' : 'Show raw entries';
+    });
+
+    load();
+  </script>
+</body>
+</html>
