@@ -902,6 +902,7 @@ body.rsvp-open { overflow: hidden; position: fixed; left: 0; right: 0; top: var(
 .rsvp-modal .lb-close { min-width: 44px; min-height: 44px; }
 .invite-rsvp-section .deadline-banner { margin: 0 auto 10px; }
 .invite-rsvp-section .greet-line { text-align: center; }
+.invite-rsvp-section .saved-banner { text-align: center; }
 .invite-rsvp-section .form-title {
   font-size: clamp(1.15rem, 4.6vw, 1.5rem);
   text-align: center; margin-bottom: .6rem;
