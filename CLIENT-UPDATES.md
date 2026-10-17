@@ -1,8 +1,15 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · v7.10 private guest book live**
+**Last updated: 16 October 2026 · game scoreboard + Play Again ready**
 
-## Current release — v7.10 · private guest book
+## New update — scores on the game home page (release approved)
+
+- The game's start screen now shows **YOUR BEST** score and a live **TOP PLAYERS** board right below PRESS START, so guests can see where they stand before (and after) they play. A crown marks players who've already RSVP'd.
+- When someone finishes a run, there's now a **▶ PLAY AGAIN** button right under "Share the invite" so they can jump straight back in.
+- The board refreshes with the player's new score after each run, shows a friendly "be the first" message when it's empty, and fits neatly on small phones.
+- Independently reviewed twice by a second AI (ChatGPT Codex) and hardened. Verified in Chrome at phone and desktop sizes. Not yet deployed.
+
+## Previously live — v7.10 · private guest book
 
 - A hidden page at **https://neha-and-mayank.in/guestbook** shows everyone who has RSVP'd and/or played the game, in one tidy list — merged so each person appears once even if they used several phones.
 - At the top: how many are attending, the total headcount including +1s, how many arrive on the 2nd vs the 3rd, and how many played. There's a "Download CSV" button and a "Show raw entries" toggle (which lists every individual device record, for tidying up duplicates later).

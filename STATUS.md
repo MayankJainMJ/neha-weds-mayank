@@ -2,6 +2,14 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
+## Local update — splash scoreboard + Play Again (2026-10-16; release approved)
+
+- **Game home page (`index.html` splash):** added a `.splash-score` section below PRESS START showing **YOUR BEST** (only when this device has a positive saved score, read synchronously from `window.MWN.load()` — `store.js` is a parser-blocking classic script, no race) and a live **TOP PLAYERS** board. The board reuses `js/cloud.js renderBoard()` → `#lbRows`; the cloud bootstrap now also renders when a standalone `#lbRows` exists (no RSVP modal) and re-renders on `mwn-synced` so a just-finished score appears without reload. `invite.html` still takes the `lbOpen` branch — unchanged.
+- **End-of-game screen (`js/game.js finishGame`):** added a third button **▶ PLAY AGAIN** (`data-a="replay"` → existing `beginRun`) below SHARE THE INVITE; order is invitation → share → replay. Fixed a pre-existing keydown issue the button exposed: the gameplay Space/ArrowUp handler now returns early (no `preventDefault`) when a `button/a/input/select/textarea` is focused, so a focused control activates normally.
+- **Robustness/polish:** empty cloud read writes "No scores yet — be the first on the board!" into the splash placeholder and a read error writes "Board unavailable right now…" (invite modal fallback untouched); splash board names wrap (`overflow-wrap:anywhere`); footnote contrast raised (`#e4d6c0`, opacity 1 → ~6.95:1); short phones get `overflow-y:auto` plus a `@media (max-height:720px)` block (placed after the base rules so it wins) shrinking the scene/margins — verified 68vw scene applies at 375×667 with all 5 rows + PRESS START + skip link reachable.
+- **Two Codex validation loops** (reports in temp `splash-report-1/2.txt`). Loop 1: no P1; fixed Space-key trap (P2), added live refresh (P2), empty/error state (P3), footnote contrast (P3), short-phone safety (P3). Loop 2: four findings RESOLVED, short-phone IMPROVED with one P3 (media block ordering) — now fixed and re-verified.
+- Local foreground Chrome PASS at 390/1280/375×667px: ranked board (blocklist hidden, RSVP crown), YOUR BEST, first-time hidden, PLAY AGAIN restarts Act 1 + increments plays, empty-state, Space-on-button, no overflow, long-name wrap, compact scene. QA scripts: temp `splash-score-qa.mjs`, `splash-fixes-qa.mjs`. Cache tokens: CSS **74**, game JS **7**, cloud JS **4**.
+
 ## Current release — v7.10 LIVE (2026-10-16)
 
 - App **5f358aa** pushed; Pages run **38849781246** succeeded. Production checks PASS: `/guestbook` and `/guestbook.html` both serve HTTP 200 with `noindex, nofollow`; the page is linked from neither `/` nor `/invite`; the live read-only Firestore load (7 merged / 17 raw), summary math, raw toggle, CSV export and zero page errors all re-passed in foreground Chrome at 390/1280px against production.

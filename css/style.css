@@ -172,7 +172,8 @@ h2.section-title {
   text-align: center;
   padding: 2rem 1.2rem 3rem;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;   /* short phones: scroll rather than clip the scoreboard */
 }
 
 .splash-title {
@@ -188,6 +189,33 @@ h2.section-title {
   margin-bottom: 2.2rem;
 }
 
+/* splash scoreboard: your best + live Top Players, under PRESS START */
+.splash-score {
+  width: min(92vw, 360px);
+  margin: 1.6rem auto 0;
+  display: flex; flex-direction: column; gap: .9rem;
+}
+.splash-you {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .6rem; letter-spacing: .05em; color: #3a2a10; margin: 0;
+}
+.splash-you b { color: #a4133c; margin-left: .3em; }
+.splash-board {
+  background: rgba(42, 28, 18, .82);
+  border: 3px solid #3a2200;
+  border-radius: 6px;
+  padding: .85rem 1rem 1rem;
+  box-shadow: 4px 4px 0 rgba(58, 34, 0, .3);
+}
+.splash-board-head {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .6rem; letter-spacing: .12em; text-align: center;
+  color: #ffd23f; margin: 0 0 .6rem;
+}
+.splash-rows p { color: #fff4e0; overflow-wrap: anywhere; }
+.splash-rows .muted { color: #e4d6c0 !important; opacity: 1 !important; }
+.splash-empty { font-size: .82rem; color: #e8dccb; margin: .3rem 0; text-align: center; }
+
 .blink { animation: blink 1.2s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }
 
@@ -199,6 +227,17 @@ h2.section-title {
   color: #5c4520;
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* short screens: tighten the scene + gaps so the board, PRESS START and the
+   skip link stay reachable. Placed AFTER the base rules it overrides so the
+   compact values actually win. */
+@media (max-height: 720px) {
+  .pixel-scene { width: min(68vw, 300px); }
+  .splash-title { margin: .8rem 0 .3rem; }
+  .splash-sub { margin-bottom: 1.2rem; }
+  .splash-score { margin-top: 1rem; gap: .6rem; }
+  .skip-link { margin-top: 1.4rem; }
 }
 
 /* pixel dialog (press start modal) */

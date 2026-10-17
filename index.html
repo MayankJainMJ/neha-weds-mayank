@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 8 8%27%3E%3Crect x=%271%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%275%27 y=%272%27 width=%272%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%271%27 y=%273%27 width=%276%27 height=%272%27 fill=%27%23e85d75%27/%3E%3Crect x=%272%27 y=%275%27 width=%274%27 height=%271%27 fill=%27%23e85d75%27/%3E%3Crect x=%273%27 y=%276%27 width=%272%27 height=%271%27 fill=%27%23a4133c%27/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=73">
+  <link rel="stylesheet" href="css/style.css?v=74">
 </head>
 <body class="bg-morning">
 
@@ -75,6 +75,14 @@
 
     <button class="btn btn-pixel" id="pressStart">&#9654; PRESS START</button>
 
+    <section class="splash-score" id="splashScore" aria-label="Scores">
+      <p class="splash-you" id="splashYou" hidden>YOUR BEST <b id="splashYouScore">0</b></p>
+      <div class="splash-board">
+        <p class="splash-board-head">TOP PLAYERS</p>
+        <div id="lbRows" class="splash-rows"><p class="splash-empty">Loading the board&hellip;</p></div>
+      </div>
+    </section>
+
     <a class="skip-link" href="invite.html">In a hurry? Walk straight to the mandap &rarr;</a>
   </main>
 
@@ -105,11 +113,19 @@
   <script src="js/music.js"></script>
   <script src="js/entities.js"></script>
   <script src="js/levels.js?v=2"></script>
-  <script src="js/game.js?v=6"></script>
+  <script src="js/game.js?v=7"></script>
   <script>
     (function () {
       var dlg = document.getElementById('nameDlg');
       var input = document.getElementById('playerName');
+      // show the device's own best score on the splash, if they've played
+      try {
+        var st = window.MWN && window.MWN.load();
+        if (st && st.bestScore > 0) {
+          document.getElementById('splashYouScore').textContent = st.bestScore;
+          document.getElementById('splashYou').hidden = false;
+        }
+      } catch (e) {}
       function begin() {
         dlg.classList.remove('open');
         window.GAME.begin();
@@ -136,7 +152,7 @@
       });
     })();
   </script>
-  <script type="module" src="js/cloud.js?v=3"></script>
+  <script type="module" src="js/cloud.js?v=4"></script>
 <script src="js/nav.js?v=3"></script>
 <script>
 window.addEventListener('load', function () {

@@ -217,7 +217,8 @@
     ]);
     overlayHTML(lines, [
       { a: 'goinvite', label: 'OPEN YOUR INVITATION \u2192' },
-      { a: 'share', label: 'SHARE THE INVITE', ghost: true }
+      { a: 'share', label: 'SHARE THE INVITE', ghost: true },
+      { a: 'replay', label: '\u25B6 PLAY AGAIN', ghost: true }
     ], true);
   }
 
@@ -246,7 +247,11 @@
   }
   document.addEventListener('keydown', function (e) {
     if (e.code === 'Space' || e.code === 'ArrowUp') {
-      if (!gameEl.hidden) { e.preventDefault(); if (mode === 'monster') shoot(); else jump(); }
+      if (gameEl.hidden) return;
+      // let a focused control (e.g. PLAY AGAIN) take Space/Enter itself
+      var t = e.target;
+      if (t && t.closest && t.closest('button, a[href], input, select, textarea')) return;
+      e.preventDefault(); if (mode === 'monster') shoot(); else jump();
     }
   });
   document.addEventListener('visibilitychange', function () {

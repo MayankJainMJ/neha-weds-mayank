@@ -100,7 +100,13 @@ async function renderBoard() {
       if ((v.bestScore | 0) > 0 || v.name) raw.push(v);
     });
     const rows = dedupeByName(raw);
-    if (!rows.length) return; // keep the device-local fallback rows
+    if (!rows.length) {
+      // standalone splash board (has the loading placeholder) gets an empty
+      // state; the invite modal keeps its device-local fallback rows.
+      const ph = el.querySelector('.splash-empty');
+      if (ph) ph.textContent = 'No scores yet \u2014 be the first on the board!';
+      return;
+    }
     el.innerHTML = '';
     rows.slice(0, 5).forEach((v, i) => {
       const p = document.createElement('p');
@@ -117,7 +123,9 @@ async function renderBoard() {
     note.textContent = '\u{1F451} = RSVP\u2019d \u00B7 live across all guests';
     el.appendChild(note);
   } catch (e) {
-    /* read failed — the local board stays up */
+    /* read failed — the local board stays up; show the splash a quiet note */
+    const ph = el.querySelector('.splash-empty');
+    if (ph) ph.textContent = 'Board unavailable right now — play to get on it!';
   }
 }
 
@@ -141,6 +149,12 @@ window.CLOUD = { schedulePush, pushNow, renderBoard, renderChamp };
 schedulePush();   // auto-resync anything saved locally, every visit
 const lbOpen = document.getElementById('lbOpen');
 const lbModal = document.getElementById('lbModal');
+const lbRows = document.getElementById('lbRows');
 if (lbModal && !lbModal.hidden) renderBoard();
 else if (lbOpen) lbOpen.addEventListener('click', renderBoard, { once: true });
+else if (lbRows) {
+  renderBoard();   // standalone splash board (game home page)
+  // refresh once the device finishes uploading its own fresh score
+  window.addEventListener('mwn-synced', renderBoard);
+}
 renderChamp();    // challenge line (invite deck's last card — no-op elsewhere)
