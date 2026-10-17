@@ -2,7 +2,11 @@
 
 Spec: [`SPEC.md`](./SPEC.md) · Live target: https://neha-and-mayank.in/
 
-## Local update — splash scoreboard + Play Again (2026-10-16; release approved)
+## Current release — v7.11 LIVE (2026-10-16)
+
+- App **d7d06d2** pushed; Pages run **39027846718** succeeded. Production checks PASS: live `/` serves CSS 74 / game JS 7 / cloud JS 4 with the `#splashScore` markup (YOUR BEST + TOP PLAYERS); foreground Chrome at 390/1280px re-passed ranked board (blocklist hidden, RSVP crown), YOUR BEST, first-time hidden, and PLAY AGAIN restarting Act 1 against the production-served code.
+
+## Splash scoreboard + Play Again (2026-10-16)
 
 - **Game home page (`index.html` splash):** added a `.splash-score` section below PRESS START showing **YOUR BEST** (only when this device has a positive saved score, read synchronously from `window.MWN.load()` — `store.js` is a parser-blocking classic script, no race) and a live **TOP PLAYERS** board. The board reuses `js/cloud.js renderBoard()` → `#lbRows`; the cloud bootstrap now also renders when a standalone `#lbRows` exists (no RSVP modal) and re-renders on `mwn-synced` so a just-finished score appears without reload. `invite.html` still takes the `lbOpen` branch — unchanged.
 - **End-of-game screen (`js/game.js finishGame`):** added a third button **▶ PLAY AGAIN** (`data-a="replay"` → existing `beginRun`) below SHARE THE INVITE; order is invitation → share → replay. Fixed a pre-existing keydown issue the button exposed: the gameplay Space/ArrowUp handler now returns early (no `preventDefault`) when a `button/a/input/select/textarea` is focused, so a focused control activates normally.

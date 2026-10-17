@@ -1,13 +1,13 @@
 # Wedding invitation — client progress updates
 
-**Last updated: 16 October 2026 · game scoreboard + Play Again ready**
+**Last updated: 16 October 2026 · v7.11 game scoreboard + Play Again live**
 
-## New update — scores on the game home page (release approved)
+## Current release — v7.11 · scores on the game home page
 
 - The game's start screen now shows **YOUR BEST** score and a live **TOP PLAYERS** board right below PRESS START, so guests can see where they stand before (and after) they play. A crown marks players who've already RSVP'd.
 - When someone finishes a run, there's now a **▶ PLAY AGAIN** button right under "Share the invite" so they can jump straight back in.
 - The board refreshes with the player's new score after each run, shows a friendly "be the first" message when it's empty, and fits neatly on small phones.
-- Independently reviewed twice by a second AI (ChatGPT Codex) and hardened. Verified in Chrome at phone and desktop sizes. Not yet deployed.
+- Independently reviewed twice by a second AI (ChatGPT Codex) and hardened. Deployed as **d7d06d2** (Pages run **39027846718**); live site re-passed the checks in Chrome at phone and desktop sizes.
 
 ## Previously live — v7.10 · private guest book
 
